@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useAccessibility } from '../../context/AccessibilityContext';
+import { useTranslation } from 'react-i18next';
 
 // Icon components
 const MailIcon = () => (
@@ -103,7 +104,9 @@ function SidebarButton({ onClick, href, icon, label, variant = 'default' }: Side
 export default function Sidebar() {
   const { theme, setTheme } = useTheme();
   const { fontScale, setFontScale } = useAccessibility();
+  const { i18n } = useTranslation();
   const [showFontMenu, setShowFontMenu] = useState(false);
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
   const cycleFontSize = () => {
     const scales = ['100', '110', '125', '150'] as const;
@@ -135,13 +138,48 @@ export default function Sidebar() {
         variant="default"
       />
 
-      {/* Language - German flag placeholder */}
-      <SidebarButton
-        onClick={() => {}}
-        icon={<span className="text-sm">DE</span>}
-        label="Sprache: Deutsch"
-        variant="default"
-      />
+      {/* Language */}
+      <div className="relative">
+        <SidebarButton
+          onClick={() => setShowLanguageMenu(!showLanguageMenu)}
+          icon={<span className="text-sm font-semibold">{i18n.language.toUpperCase()}</span>}
+          label={`Sprache: ${i18n.language === 'de' ? 'Deutsch' : 'English'}`}
+          variant="default"
+        />
+        {showLanguageMenu && (
+          <>
+            <div
+              className="fixed inset-0 z-30"
+              onClick={() => setShowLanguageMenu(false)}
+              aria-hidden="true"
+            />
+            <div className="absolute right-12 top-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[120px] z-40">
+              <button
+                onClick={() => {
+                  void i18n.changeLanguage('de');
+                  setShowLanguageMenu(false);
+                }}
+                className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
+                  i18n.language === 'de' ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                Deutsch
+              </button>
+              <button
+                onClick={() => {
+                  void i18n.changeLanguage('en');
+                  setShowLanguageMenu(false);
+                }}
+                className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
+                  i18n.language === 'en' ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </>
+        )}
+      </div>
 
       {/* Font Size */}
       <div className="relative">

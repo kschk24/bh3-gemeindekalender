@@ -1,7 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../../components/accessibility/LanguageSwitcher';
 
 // Icon components for navigation
 const CalendarIcon = () => (
@@ -93,7 +92,6 @@ export default function Header() {
 
             {/* Auth buttons */}
             <div className="flex items-center space-x-3">
-              <LanguageSwitcher />
               {isAuthenticated ? (
                 <>
                   <span className="text-sm text-gray-600 dark:text-gray-400 hidden lg:inline">
