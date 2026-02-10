@@ -44,7 +44,7 @@ export default function FavoritesPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {favorites?.map((event) => (
-            <EventCard key={event.id} event={event} showFavoriteButton />
+            <EventCard key={event.id} event={event} />
           ))}
         </div>
       )}

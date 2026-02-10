@@ -36,11 +36,21 @@ export default function EventDetailPage() {
   });
 
   const favoriteMutation = useMutation({
-    mutationFn: () => favoritesService.add(id!),
+    mutationFn: ({ add }: { add: boolean }) =>
+      add ? favoritesService.add(id!) : favoritesService.remove(id!),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
     },
   });
+
+  // Fetch favorites to determine current state
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: favoritesService.getAll,
+    enabled: isAuthenticated,
+  });
+
+  const isFavorited = !!favorites?.some((f) => f.id === event?.id);
 
   if (isLoading) {
     return <LoadingSpinner label="Lade Veranstaltung..." />;
@@ -106,11 +116,21 @@ export default function EventDetailPage() {
           {isAuthenticated && (
             <Button
               variant="outline"
-              onClick={() => favoriteMutation.mutate()}
+              onClick={() => favoriteMutation.mutate({ add: !isFavorited })}
               disabled={favoriteMutation.isPending}
-              aria-label="Zu Favoriten hinzufügen"
+              aria-label={isFavorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+              className="text-yellow-600 border-yellow-600 hover:bg-yellow-50 dark:text-yellow-400 dark:border-yellow-400 dark:hover:bg-yellow-900/20"
             >
-              ❤️ Merken
+              {isFavorited ? (
+                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              )}
+              {isFavorited ? 'Gemerkt' : 'Merken'}
             </Button>
           )}
         </div>
