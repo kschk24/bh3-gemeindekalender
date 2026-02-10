@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 import { eventsService, favoritesService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/common/Button';
@@ -19,6 +20,8 @@ export default function EventDetailPage() {
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
+  const { t, i18n } = useTranslation();
 
   const { data: event, isLoading, error } = useQuery({
     queryKey: ['event', id],
@@ -53,7 +56,7 @@ export default function EventDetailPage() {
   const isFavorited = !!favorites?.some((f) => f.id === event?.id);
 
   if (isLoading) {
-    return <LoadingSpinner label="Lade Veranstaltung..." />;
+    return <LoadingSpinner label={t('event.loadingEvent')} />;
   }
 
   if (error || !event) {
@@ -81,14 +84,14 @@ export default function EventDetailPage() {
       <nav aria-label="Breadcrumb" className="mb-6">
         <ol className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
           <li>
-            <Link to="/" className="hover:text-primary-600">
-              Startseite
-            </Link>
-          </li>
+              <Link to="/" className="hover:text-primary-600">
+                {t('nav.home')}
+              </Link>
+            </li>
           <li aria-hidden="true">/</li>
           <li>
             <Link to="/events" className="hover:text-primary-600">
-              Veranstaltungen
+              {t('nav.events')}
             </Link>
           </li>
           <li aria-hidden="true">/</li>
@@ -118,7 +121,7 @@ export default function EventDetailPage() {
               variant="outline"
               onClick={() => favoriteMutation.mutate({ add: !isFavorited })}
               disabled={favoriteMutation.isPending}
-              aria-label={isFavorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+              aria-label={isFavorited ? t('event.favoriteRemove', { title: event.title }) : t('event.favoriteAdd', { title: event.title })}
               className="text-yellow-600 border-yellow-600 hover:bg-yellow-50 dark:text-yellow-400 dark:border-yellow-400 dark:hover:bg-yellow-900/20"
             >
               {isFavorited ? (
@@ -130,7 +133,7 @@ export default function EventDetailPage() {
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                 </svg>
               )}
-              {isFavorited ? 'Gemerkt' : 'Merken'}
+              {isFavorited ? t('event.marked') : t('event.mark')}
             </Button>
           )}
         </div>
@@ -156,7 +159,7 @@ export default function EventDetailPage() {
               id="description-heading"
               className="text-xl font-semibold text-gray-900 dark:text-white mb-3"
             >
-              Beschreibung
+              {t('event.description')}
             </h2>
             <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">
               {event.description}
@@ -170,7 +173,7 @@ export default function EventDetailPage() {
                 id="accessibility-heading"
                 className="text-xl font-semibold text-gray-900 dark:text-white mb-3"
               >
-                Barrierefreiheit
+                {t('event.accessibility')}
               </h2>
               <AccessibilityBadges accessibility={event.accessibility} />
             </section>
@@ -184,22 +187,22 @@ export default function EventDetailPage() {
         <aside className="space-y-6">
           {/* Info Card */}
           <div className="card">
-            <h2 className="sr-only">Veranstaltungsdetails</h2>
+            <h2 className="sr-only">{t('event.detailsTitle')}</h2>
 
             <dl className="space-y-4">
               <div>
                 <dt className="text-sm text-gray-500 dark:text-gray-400">
-                  Datum & Uhrzeit
-                </dt>
+                    {t('event.dateTime')}
+                  </dt>
                 <dd className="font-medium text-gray-900 dark:text-white">
-                  {format(startDate, 'EEEE, d. MMMM yyyy', { locale: de })}
-                  <br />
-                  {format(startDate, 'HH:mm', { locale: de })} - {format(endDate, 'HH:mm', { locale: de })} Uhr
+                    {format(startDate, 'EEEE, d. MMMM yyyy', { locale: i18n.language === 'de' ? de : enUS })}
+                    <br />
+                    {format(startDate, 'HH:mm', { locale: i18n.language === 'de' ? de : enUS })} - {format(endDate, 'HH:mm', { locale: i18n.language === 'de' ? de : enUS })} {t('event.timeUnit')}
                 </dd>
               </div>
 
               <div>
-                <dt className="text-sm text-gray-500 dark:text-gray-400">Ort</dt>
+                <dt className="text-sm text-gray-500 dark:text-gray-400">{t('event.location')}</dt>
                 <dd className="font-medium text-gray-900 dark:text-white">
                   {event.location}
                   <br />
@@ -212,10 +215,10 @@ export default function EventDetailPage() {
               {spotsLeft !== null && (
                 <div>
                   <dt className="text-sm text-gray-500 dark:text-gray-400">
-                    Verfügbare Plätze
+                    {t('event.spotsAvailable')}
                   </dt>
                   <dd className="font-medium text-gray-900 dark:text-white">
-                    {spotsLeft > 0 ? `${spotsLeft} von ${event.maxParticipants}` : 'Ausgebucht'}
+                    {spotsLeft > 0 ? `${spotsLeft} von ${event.maxParticipants}` : t('event.full')}
                   </dd>
                 </div>
               )}
@@ -225,7 +228,7 @@ export default function EventDetailPage() {
           {/* Registration */}
           <div className="card">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Anmeldung
+              {t('event.register')}
             </h2>
 
             {registrationSuccess ? (
@@ -252,24 +255,24 @@ export default function EventDetailPage() {
               >
                 {event.requiresAccount && !isAuthenticated ? (
                   <p className="text-gray-600 dark:text-gray-400">
-                    Bitte{' '}
+                    {t('event.pleaseLoginToRegisterPrefix')}{' '}
                     <Link to="/login" className="text-primary-600 hover:underline">
-                      melden Sie sich an
+                      {t('auth.login')}
                     </Link>
-                    , um sich für diese Veranstaltung anzumelden.
+                    {t('event.pleaseLoginToRegisterSuffix')}
                   </p>
                 ) : (
                   <>
                     {!isAuthenticated && (
                       <>
                         <Input
-                          label="Name"
+                          label={t('event.form.name')}
                           value={guestName}
                           onChange={(e) => setGuestName(e.target.value)}
                           required
                         />
                         <Input
-                          label="E-Mail"
+                          label={t('event.form.email')}
                           type="email"
                           value={guestEmail}
                           onChange={(e) => setGuestEmail(e.target.value)}
@@ -280,8 +283,8 @@ export default function EventDetailPage() {
 
                     {registerMutation.isError && (
                       <p className="text-red-600 text-sm" role="alert">
-                        Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.
-                      </p>
+                          {t('error.generic')}
+                        </p>
                     )}
 
                     <Button
@@ -289,7 +292,7 @@ export default function EventDetailPage() {
                       className="w-full"
                       isLoading={registerMutation.isPending}
                     >
-                      Jetzt anmelden
+                      {t('event.registerNow')}
                     </Button>
                   </>
                 )}

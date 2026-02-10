@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { eventsService, categoriesService } from '../services/api';
 import EventCard from '../components/events/EventCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 // Accessibility icons as SVG
 const WheelchairIcon = () => (
@@ -30,6 +31,7 @@ const EasyLanguageIcon = () => (
 );
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const { data: eventsData, isLoading: eventsLoading } = useQuery({
     queryKey: ['events', 'upcoming'],
     queryFn: () => eventsService.getAll({ limit: 6 }),
@@ -52,17 +54,16 @@ export default function HomePage() {
             id="hero-heading"
             className="text-3xl md:text-4xl font-bold mb-3"
           >
-            Gemeindekalender
+            {t('home.heroTitle')}
           </h1>
           <p className="text-lg mb-6 text-primary-100">
-            Entdecken Sie lokale Veranstaltungen in Ihrer Gemeinde. 
-            Barrierefrei und für alle zugänglich.
+            {t('home.heroText')}
           </p>
           <Link
             to="/events"
             className="inline-block bg-white text-primary-700 px-6 py-2.5 rounded font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500"
           >
-            Zum Kalender
+            {t('home.toCalendar')}
           </Link>
         </div>
       </section>
@@ -74,7 +75,7 @@ export default function HomePage() {
             id="categories-heading"
             className="text-2xl font-bold text-gray-900 dark:text-white mb-6"
           >
-            Kategorien
+            {t('home.categories')}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {categories.map((category) => (
@@ -92,7 +93,7 @@ export default function HomePage() {
                   {category.name}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {category._count?.events || 0} Veranstaltungen
+                  {t('home.eventsCount', { count: category._count?.events || 0 })}
                 </p>
               </Link>
             ))}
@@ -107,21 +108,21 @@ export default function HomePage() {
             id="upcoming-heading"
             className="text-2xl font-bold text-gray-900 dark:text-white"
           >
-            Kommende Veranstaltungen
+            {t('home.upcoming')}
           </h2>
           <Link
             to="/events"
             className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
           >
-            Alle ansehen →
+            {t('home.viewAll')}
           </Link>
         </div>
 
         {eventsLoading ? (
-          <LoadingSpinner label="Lade Veranstaltungen..." />
+          <LoadingSpinner label={t('home.loading') || t('loading')} />
         ) : eventsData?.data.length === 0 ? (
           <p className="text-center text-gray-600 dark:text-gray-400 py-12">
-            Keine kommenden Veranstaltungen gefunden.
+            {t('home.noUpcoming')}
           </p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -141,29 +142,28 @@ export default function HomePage() {
           id="accessibility-heading"
           className="text-xl font-bold text-gray-900 dark:text-white mb-3"
         >
-          Barrierefreiheit
+          {t('home.accessibility')}
         </h2>
         <p className="text-gray-600 dark:text-gray-400 mb-5 text-sm">
-          Unser Kalender ist für alle zugänglich. Filtern Sie Veranstaltungen 
-          nach Barrierefreiheits-Kriterien.
+          {t('home.accessibilityIntro')}
         </p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {[
-            { Icon: WheelchairIcon, label: 'Rollstuhlgerecht' },
-            { Icon: HearingIcon, label: 'Induktionsschleife' },
-            { Icon: SignLanguageIcon, label: 'Gebärdensprache' },
-            { Icon: EasyLanguageIcon, label: 'Leichte Sprache' },
-          ].map(({ Icon, label }) => (
+            {[
+            { Icon: WheelchairIcon, key: 'wheelchair' },
+            { Icon: HearingIcon, key: 'hearingLoop' },
+            { Icon: SignLanguageIcon, key: 'signLanguage' },
+            { Icon: EasyLanguageIcon, key: 'easyLanguage' },
+          ].map(({ Icon, key }) => (
             <Link
-              key={label}
-              to={`/events?${label === 'Rollstuhlgerecht' ? 'wheelchairAccessible' : label === 'Induktionsschleife' ? 'hearingLoop' : label === 'Gebärdensprache' ? 'signLanguage' : 'easyLanguage'}=true`}
+              key={key}
+              to={`/events?${key === 'wheelchair' ? 'wheelchairAccessible' : key === 'hearingLoop' ? 'hearingLoop' : key === 'signLanguage' ? 'signLanguage' : 'easyLanguage'}=true`}
               className="flex items-center space-x-3 bg-white dark:bg-gray-700 p-3 rounded border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
             >
               <span className="text-primary-600 dark:text-primary-400" aria-hidden="true">
                 <Icon />
               </span>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                {label}
+                {t(`home.accessLabels.${key}`)}
               </span>
             </Link>
           ))}

@@ -2,16 +2,18 @@ import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-// Setup date-fns localizer for German
+// Setup date-fns localizer with multiple locales
 const locales = {
   'de': de,
+  'en': enUS,
 };
 
 const localizer = dateFnsLocalizer({
@@ -37,26 +39,30 @@ interface CalendarViewProps {
   isLoading?: boolean;
 }
 
-// German translations for react-big-calendar
-const messages = {
-  allDay: 'Ganztägig',
-  previous: 'Zurück',
-  next: 'Weiter',
-  today: 'Heute',
-  month: 'Monat',
-  week: 'Woche',
-  day: 'Tag',
-  date: 'Datum',
-  time: 'Uhrzeit',
-  event: 'Veranstaltung',
-  noEventsInRange: 'Keine Veranstaltungen in diesem Zeitraum.',
-  showMore: (total: number) => `+${total} weitere`,
-};
-
 export default function CalendarView({ events, isLoading }: CalendarViewProps) {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
+  const { t, i18n } = useTranslation();
+
+  // Get current locale for date-fns
+  const currentLocale = i18n.language === 'de' ? de : enUS;
+
+  // Dynamic translations for react-big-calendar
+  const messages = useMemo(() => ({
+    allDay: t('calendar.allDay'),
+    previous: t('calendar.previous'),
+    next: t('calendar.next'),
+    today: t('calendar.today'),
+    month: t('calendar.month'),
+    week: t('calendar.week'),
+    day: t('calendar.day'),
+    date: t('calendar.date'),
+    time: t('calendar.time'),
+    event: t('calendar.event'),
+    noEventsInRange: t('calendar.noEventsInRange'),
+    showMore: (total: number) => t('calendar.showMore', { count: total }),
+  }), [t]);
 
   // Fetch favorites
   const { data: favorites } = useQuery({
@@ -97,8 +103,8 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
                 }}
                 disabled={favoriteMutation.isPending}
                 className="text-yellow-300 hover:text-yellow-400 focus:outline-none transition-colors opacity-0 group-hover:opacity-100"
-                aria-label={favorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
-                title={favorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+                aria-label={favorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
+                title={favorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
               >
                 {favorited ? (
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -152,12 +158,12 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
   }, []);
 
   // Custom toolbar component for better styling
-  const formats = {
+  const formats = useMemo(() => ({
     monthHeaderFormat: 'MMMM yyyy',
     dayHeaderFormat: 'EEEE, d. MMMM',
     dayRangeHeaderFormat: ({ start, end }: { start: Date; end: Date }) =>
-      `${format(start, 'd. MMMM', { locale: de })} - ${format(end, 'd. MMMM yyyy', { locale: de })}`,
-  };
+      `${format(start, 'd. MMMM', { locale: currentLocale })} - ${format(end, 'd. MMMM yyyy', { locale: currentLocale })}`,
+  }), [currentLocale]);
 
   if (isLoading) {
     return (
@@ -182,7 +188,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
           eventPropGetter={eventStyleGetter}
           messages={messages}
           formats={formats}
-          culture="de"
+          culture={i18n.language}
           views={[Views.MONTH, Views.WEEK, Views.DAY]}
           defaultView={Views.MONTH}
           popup
@@ -198,7 +204,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
       {events.length > 0 && (
         <div className="p-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
           <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-            Klicken Sie auf eine Veranstaltung, um Details anzuzeigen.
+            {t('calendar.clickForDetails')}
           </p>
         </div>
       )}

@@ -5,6 +5,7 @@ import { CreateCommentInput } from '../../types';
 import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { useTranslation } from 'react-i18next';
 
 interface CommentSectionProps {
   eventId: string;
@@ -12,6 +13,7 @@ interface CommentSectionProps {
 
 export default function CommentSection({ eventId }: CommentSectionProps) {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
   const [submitError, setSubmitError] = useState<string | undefined>();
   const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
 
@@ -29,7 +31,7 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
       setSubmitError(undefined);
     },
     onError: () => {
-      setSubmitError('Kommentar konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.');
+      setSubmitError(t('error.generic'));
     },
   });
 
@@ -50,7 +52,7 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
   };
 
   const handleDelete = (commentId: string) => {
-    if (window.confirm('Möchten Sie diesen Kommentar wirklich löschen?')) {
+    if (window.confirm(t('comment.deleteConfirm'))) {
       setDeletingCommentId(commentId);
       deleteMutation.mutate(commentId);
     }
@@ -99,11 +101,11 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
       {/* Comments List */}
       <div className="space-y-4">
         {isLoading ? (
-          <LoadingSpinner label="Lade Kommentare..." />
+          <LoadingSpinner label={t('comment.loading')} />
         ) : error ? (
           <div className="text-center py-8">
             <p className="text-red-600 dark:text-red-400">
-              Kommentare konnten nicht geladen werden.
+              {t('comment.loadError')}
             </p>
           </div>
         ) : comments && comments.length === 0 ? (
@@ -123,10 +125,10 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
               />
             </svg>
             <p className="text-gray-600 dark:text-gray-400">
-              Noch keine Kommentare vorhanden.
+              {t('comment.noComments')}
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-500 mt-1">
-              Seien Sie der Erste, der einen Kommentar hinterlässt!
+              {t('comment.beFirst')}
             </p>
           </div>
         ) : (

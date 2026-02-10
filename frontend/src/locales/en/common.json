@@ -1,0 +1,161 @@
+{
+  "nav": {
+    "events": "Events",
+    "home": "Home",
+    "favorites": "Favorites",
+    "info": "Info"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "loginPage": {
+    "title": "Login",
+    "invalidCredentials": "Invalid email address or password.",
+    "noAccount": "Don't have an account?",
+    "registerNow": "Register now",
+    "email": "Email Address",
+    "password": "Password"
+  },
+  "registerPage": {
+    "title": "Register",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordTooShort": "Password must be at least 6 characters.",
+    "registerFailed": "Registration failed. This email may already be in use.",
+    "passwordHelper": "At least 6 characters",
+    "alreadyRegistered": "Already registered?",
+    "loginNow": "Login now"
+  },
+  "loading": "Loading...",
+  "logo": {
+    "part1": "Community",
+    "part2": "calendar"
+  }
+  ,
+  "error": {
+    "generic": "An error occurred. Please try again."
+  }
+  ,
+  "event": {
+    "comments": "{{count}} comment",
+    "comments_plural": "{{count}} comments",
+    "favoriteAdd": "Add to favorites",
+    "favoriteRemove": "Remove from favorites",
+    "details": "View details →",
+    "loadingEvent": "Loading event...",
+    "notFound": "Event not found",
+    "backToAll": "Back to all events",
+    "description": "Description",
+    "accessibility": "Accessibility",
+    "detailsTitle": "Event details",
+    "dateTime": "Date & time",
+    "location": "Location",
+    "spotsAvailable": "Available spots",
+    "full": "Full",
+    "register": "Register",
+    "registeredSuccess": "Successfully registered!",
+    "registerConfirm": "You will receive a confirmation via email.",
+    "pleaseLoginToRegister": "Please log in to register for this event.",
+    "pleaseLoginToRegisterPrefix": "Please",
+    "pleaseLoginToRegisterSuffix": " to register for this event.",
+    "registerNow": "Register now",
+    "mark": "Save",
+    "marked": "Saved",
+    "loadingFavorites": "Loading favorites...",
+    "myFavorites": "My favorites",
+    "noFavoritesMessage": "You have not saved any favorites yet.",
+    "discoverEvents": "Discover events →",
+    "timeUnit": "",
+    "form": {
+      "name": "Name",
+      "email": "E-mail"
+    }
+  }
+  ,
+  "comment": {
+    "yourComment": "Your comment",
+    "placeholder": "Write your comment...",
+    "tip": "Tip: Log in to be able to edit your comment later.",
+    "submit": "Submit comment",
+    "loading": "Loading comments...",
+    "loadError": "Comments could not be loaded.",
+    "noComments": "No comments yet.",
+    "beFirst": "Be the first to leave a comment!",
+    "deleteConfirm": "Do you really want to delete this comment?",
+    "deleteAria": "Delete comment",
+    "guest": "Guest",
+    "registered": "(registered)",
+    "charCount": "{{count}}/2000 characters"
+  }
+  ,
+  "home": {
+    "heroTitle": "Community calendar",
+    "heroText": "Discover local events in your community. Accessible and open to everyone.",
+    "toCalendar": "To calendar",
+    "categories": "Categories",
+    "eventsCount": "{{count}} events",
+    "upcoming": "Upcoming events",
+    "viewAll": "View all →",
+    "noUpcoming": "No upcoming events found.",
+    "accessibility": "Accessibility",
+    "accessibilityIntro": "Our calendar is accessible to everyone. Filter events by accessibility criteria.",
+    "accessLabels": {
+      "wheelchair": "Wheelchair accessible",
+      "hearingLoop": "Hearing loop",
+      "signLanguage": "Sign language",
+      "easyLanguage": "Easy language"
+    }
+  }
+  ,
+  "eventsPage": {
+    "title": "Events",
+    "view": {
+      "calendar": "Calendar",
+      "grid": "Grid",
+      "list": "List"
+    },
+    "loading": "Loading events...",
+    "noResults": "No events found.",
+    "resetFilters": "Reset filters",
+    "results": "{{count}} event",
+    "results_plural": "{{count}} events",
+    "paginationPrev": "Previous",
+    "paginationNext": "Next"
+  },
+  "footer": {
+    "title": "Community Calendar",
+    "description": "Your portal for local events. Accessible and available for everyone.",
+    "contact": {
+      "title": "Contact",
+      "street": "Sample Street 1",
+      "city": "12345 Sample City",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "legal": {
+      "title": "Legal",
+      "ariaLabel": "Footer Navigation",
+      "imprint": "Imprint",
+      "privacy": "Privacy Policy",
+      "accessibility": "Accessibility",
+      "reportBarrier": "Report Barrier"
+    },
+    "copyright": "© {{year}} Community Calendar. All rights reserved."
+  },
+  "calendar": {
+    "allDay": "All day",
+    "previous": "Previous",
+    "next": "Next",
+    "today": "Today",
+    "month": "Month",
+    "week": "Week",
+    "day": "Day",
+    "date": "Date",
+    "time": "Time",
+    "event": "Event",
+    "noEventsInRange": "No events in this range.",
+    "showMore": "+{{count}} more",
+    "clickForDetails": "Click on an event to view details."
+  }
+}

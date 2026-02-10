@@ -1,0 +1,161 @@
+{
+  "nav": {
+    "events": "Veranstaltungen",
+    "home": "Startseite",
+    "favorites": "Favoriten",
+    "info": "Info"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden"
+  },
+  "loginPage": {
+    "title": "Anmelden",
+    "invalidCredentials": "Ungültige E-Mail-Adresse oder Passwort.",
+    "noAccount": "Noch kein Konto?",
+    "registerNow": "Jetzt registrieren",
+    "email": "E-Mail-Adresse",
+    "password": "Passwort"
+  },
+  "registerPage": {
+    "title": "Registrieren",
+    "passwordMismatch": "Passwörter stimmen nicht überein.",
+    "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+    "registerFailed": "Registrierung fehlgeschlagen. Diese E-Mail-Adresse wird möglicherweise bereits verwendet.",
+    "passwordHelper": "Mindestens 6 Zeichen",
+    "alreadyRegistered": "Bereits registriert?",
+    "loginNow": "Jetzt anmelden"
+  },
+  "loading": "Laden...",
+  "logo": {
+    "part1": "Gemeinde",
+    "part2": "kalender"
+  }
+  ,
+  "error": {
+    "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+  }
+  ,
+  "event": {
+    "comments": "{{count}} Kommentar",
+    "comments_plural": "{{count}} Kommentare",
+    "favoriteAdd": "Zu Favoriten hinzufügen",
+    "favoriteRemove": "Aus Favoriten entfernen",
+    "details": "Details ansehen →",
+    "loadingEvent": "Lade Veranstaltung...",
+    "notFound": "Veranstaltung nicht gefunden",
+    "backToAll": "Zurück zu allen Veranstaltungen",
+    "description": "Beschreibung",
+    "accessibility": "Barrierefreiheit",
+    "detailsTitle": "Veranstaltungsdetails",
+    "dateTime": "Datum & Uhrzeit",
+    "location": "Ort",
+    "spotsAvailable": "Verfügbare Plätze",
+    "full": "Ausgebucht",
+    "register": "Anmeldung",
+    "registeredSuccess": "Erfolgreich angemeldet!",
+    "registerConfirm": "Sie erhalten eine Bestätigung per E-Mail.",
+    "pleaseLoginToRegister": "Bitte melden Sie sich an, um sich für diese Veranstaltung anzumelden.",
+    "pleaseLoginToRegisterPrefix": "Bitte",
+    "pleaseLoginToRegisterSuffix": ", um sich für diese Veranstaltung anzumelden.",
+    "registerNow": "Jetzt anmelden",
+    "mark": "Merken",
+    "marked": "Gemerkt",
+    "loadingFavorites": "Lade Favoriten...",
+    "myFavorites": "Meine Favoriten",
+    "noFavoritesMessage": "Sie haben noch keine Favoriten gespeichert.",
+    "discoverEvents": "Veranstaltungen entdecken →",
+    "timeUnit": "Uhr",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail"
+    }
+  }
+  ,
+  "comment": {
+    "yourComment": "Ihr Kommentar",
+    "placeholder": "Schreiben Sie Ihren Kommentar...",
+    "tip": "Tipp: Melden Sie sich an, um Ihren Kommentar später bearbeiten zu können.",
+    "submit": "Kommentar abschicken",
+    "loading": "Lade Kommentare...",
+    "loadError": "Kommentare konnten nicht geladen werden.",
+    "noComments": "Noch keine Kommentare vorhanden.",
+    "beFirst": "Seien Sie der Erste, der einen Kommentar hinterlässt!",
+    "deleteConfirm": "Möchten Sie diesen Kommentar wirklich löschen?",
+    "deleteAria": "Kommentar löschen",
+    "guest": "Gast",
+    "registered": "(registriert)",
+    "charCount": "{{count}}/2000 Zeichen"
+  }
+  ,
+  "home": {
+    "heroTitle": "Gemeindekalender",
+    "heroText": "Entdecken Sie lokale Veranstaltungen in Ihrer Gemeinde. Barrierefrei und für alle zugänglich.",
+    "toCalendar": "Zum Kalender",
+    "categories": "Kategorien",
+    "eventsCount": "{{count}} Veranstaltungen",
+    "upcoming": "Kommende Veranstaltungen",
+    "viewAll": "Alle ansehen →",
+    "noUpcoming": "Keine kommenden Veranstaltungen gefunden.",
+    "accessibility": "Barrierefreiheit",
+    "accessibilityIntro": "Unser Kalender ist für alle zugänglich. Filtern Sie Veranstaltungen nach Barrierefreiheits-Kriterien.",
+    "accessLabels": {
+      "wheelchair": "Rollstuhlgerecht",
+      "hearingLoop": "Induktionsschleife",
+      "signLanguage": "Gebärdensprache",
+      "easyLanguage": "Leichte Sprache"
+    }
+  }
+  ,
+  "eventsPage": {
+    "title": "Veranstaltungen",
+    "view": {
+      "calendar": "Kalender",
+      "grid": "Kacheln",
+      "list": "Liste"
+    },
+    "loading": "Lade Veranstaltungen...",
+    "noResults": "Keine Veranstaltungen gefunden.",
+    "resetFilters": "Filter zurücksetzen",
+    "results": "{{count}} Veranstaltung",
+    "results_plural": "{{count}} Veranstaltungen",
+    "paginationPrev": "Zurück",
+    "paginationNext": "Weiter"
+  },
+  "footer": {
+    "title": "Gemeindekalender",
+    "description": "Ihr Portal für lokale Veranstaltungen. Barrierefrei und für alle zugänglich.",
+    "contact": {
+      "title": "Kontakt",
+      "street": "Musterstraße 1",
+      "city": "12345 Musterstadt",
+      "phone": "Tel.",
+      "email": "E-Mail"
+    },
+    "legal": {
+      "title": "Rechtliches",
+      "ariaLabel": "Footer-Navigation",
+      "imprint": "Impressum",
+      "privacy": "Datenschutz",
+      "accessibility": "Barrierefreiheit",
+      "reportBarrier": "Barriere melden"
+    },
+    "copyright": "© {{year}} Gemeindekalender. Alle Rechte vorbehalten."
+  },
+  "calendar": {
+    "allDay": "Ganztägig",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "today": "Heute",
+    "month": "Monat",
+    "week": "Woche",
+    "day": "Tag",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "event": "Veranstaltung",
+    "noEventsInRange": "Keine Veranstaltungen in diesem Zeitraum.",
+    "showMore": "+{{count}} weitere",
+    "clickForDetails": "Klicken Sie auf eine Veranstaltung, um Details anzuzeigen."
+  }
+}

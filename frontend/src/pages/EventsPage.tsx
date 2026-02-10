@@ -8,6 +8,7 @@ import EventFilter from '../components/events/EventFilter';
 import CalendarView from '../components/events/CalendarView';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Button from '../components/common/Button';
+import { useTranslation } from 'react-i18next';
 
 // Icons for view mode toggle
 const GridIcon = () => (
@@ -29,6 +30,7 @@ const CalendarIcon = () => (
 );
 
 export default function EventsPage() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'calendar'>('calendar');
 
@@ -86,7 +88,7 @@ export default function EventsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Veranstaltungen
+          {t('eventsPage.title')}
         </h1>
 
         {/* View Mode Toggle */}
@@ -98,7 +100,7 @@ export default function EventsPage() {
             aria-pressed={viewMode === 'calendar'}
           >
             <CalendarIcon />
-            <span className="ml-2 hidden sm:inline">Kalender</span>
+            <span className="ml-2 hidden sm:inline">{t('eventsPage.view.calendar')}</span>
           </Button>
           <Button
             variant={viewMode === 'grid' ? 'primary' : 'ghost'}
@@ -107,7 +109,7 @@ export default function EventsPage() {
             aria-pressed={viewMode === 'grid'}
           >
             <GridIcon />
-            <span className="ml-2 hidden sm:inline">Kacheln</span>
+            <span className="ml-2 hidden sm:inline">{t('eventsPage.view.grid')}</span>
           </Button>
           <Button
             variant={viewMode === 'list' ? 'primary' : 'ghost'}
@@ -116,7 +118,7 @@ export default function EventsPage() {
             aria-pressed={viewMode === 'list'}
           >
             <ListIcon />
-            <span className="ml-2 hidden sm:inline">Liste</span>
+            <span className="ml-2 hidden sm:inline">{t('eventsPage.view.list')}</span>
           </Button>
         </div>
       </div>
@@ -138,26 +140,25 @@ export default function EventsPage() {
         /* Results - Grid/List View */
         <>
           {isLoading ? (
-            <LoadingSpinner label="Lade Veranstaltungen..." />
+            <LoadingSpinner label={t('eventsPage.loading')} />
           ) : eventsData?.data.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400 text-lg">
-                Keine Veranstaltungen gefunden.
+                {t('eventsPage.noResults')}
               </p>
               <Button
                 variant="outline"
                 onClick={() => setSearchParams(new URLSearchParams())}
                 className="mt-4"
               >
-                Filter zurücksetzen
+                {t('eventsPage.resetFilters')}
               </Button>
             </div>
           ) : (
             <>
               {/* Results count */}
               <p className="text-gray-600 dark:text-gray-400" aria-live="polite">
-                {eventsData?.meta.total} Veranstaltung
-                {eventsData?.meta.total !== 1 && 'en'} gefunden
+                {t('eventsPage.results', { count: eventsData?.meta.total || 0 })}
               </p>
 
               {/* Events Grid/List */}
@@ -188,7 +189,7 @@ export default function EventsPage() {
                     onClick={() => handlePageChange(eventsData.meta.page - 1)}
                     disabled={eventsData.meta.page <= 1}
                   >
-                    Zurück
+                    {t('eventsPage.paginationPrev')}
                   </Button>
 
                   <span className="px-4 text-gray-600 dark:text-gray-400">
@@ -200,7 +201,7 @@ export default function EventsPage() {
                     onClick={() => handlePageChange(eventsData.meta.page + 1)}
                     disabled={eventsData.meta.page >= eventsData.meta.totalPages}
                   >
-                    Weiter
+                    {t('eventsPage.paginationNext')}
                   </Button>
                 </nav>
               )}
