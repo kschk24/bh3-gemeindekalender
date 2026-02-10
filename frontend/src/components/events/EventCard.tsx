@@ -95,6 +95,13 @@ export default function EventCard({
           </div>
         )}
 
+        {/* Comments Count */}
+        {event._count?.comments !== undefined && event._count.comments > 0 && (
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            💬 {event._count.comments} {event._count.comments === 1 ? 'Kommentar' : 'Kommentare'}
+          </p>
+        )}
+
         {/* Actions */}
         <div className="mt-4 flex items-center justify-between">
           <Link

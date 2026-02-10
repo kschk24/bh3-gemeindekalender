@@ -72,7 +72,7 @@ export class EventsService {
           category: true,
           accessibility: true,
           _count: {
-            select: { registrations: true },
+            select: { registrations: true, comments: true },
           },
         },
       }),
@@ -97,7 +97,7 @@ export class EventsService {
         category: true,
         accessibility: true,
         _count: {
-          select: { registrations: true },
+          select: { registrations: true, comments: true },
         },
       },
     });

@@ -7,6 +7,8 @@ import {
   AuthResponse,
   Registration,
   ApiError,
+  Comment,
+  CreateCommentInput,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
@@ -127,6 +129,23 @@ export const favoritesService = {
 
   remove: async (eventId: string): Promise<void> => {
     await api.delete(`/users/me/favorites/${eventId}`);
+  },
+};
+
+// Comments Service
+export const commentsService = {
+  getByEventId: async (eventId: string): Promise<Comment[]> => {
+    const response = await api.get<Comment[]>(`/events/${eventId}/comments`);
+    return response.data;
+  },
+
+  create: async (eventId: string, data: CreateCommentInput): Promise<Comment> => {
+    const response = await api.post<Comment>(`/events/${eventId}/comments`, data);
+    return response.data;
+  },
+
+  delete: async (commentId: string): Promise<void> => {
+    await api.delete(`/comments/${commentId}`);
   },
 };
 

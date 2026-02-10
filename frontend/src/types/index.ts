@@ -31,6 +31,7 @@ export interface Event {
   updatedAt: string;
   _count?: {
     registrations: number;
+    comments: number;
   };
 }
 
@@ -93,4 +94,24 @@ export interface AuthResponse {
 export interface ApiError {
   message: string;
   errors?: Array<{ field: string; message: string }>;
+}
+
+// Comment types
+export interface Comment {
+  id: string;
+  content: string;
+  eventId: string;
+  userId?: string;
+  guestName?: string;
+  user?: {
+    id: string;
+    email: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateCommentInput {
+  content: string;
+  guestName?: string;
 }

@@ -9,6 +9,7 @@ import Button from '../components/common/Button';
 import Input from '../components/common/Input';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import AccessibilityBadges from '../components/events/AccessibilityBadges';
+import CommentSection from '../components/comments/CommentSection';
 
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -154,6 +155,9 @@ export default function EventDetailPage() {
               <AccessibilityBadges accessibility={event.accessibility} />
             </section>
           )}
+
+          {/* Comments */}
+          <CommentSection eventId={id!} />
         </div>
 
         {/* Right: Info Card + Registration */}

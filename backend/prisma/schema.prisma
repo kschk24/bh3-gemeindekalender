@@ -16,6 +16,7 @@ model User {
   role          Role           @default(USER)
   favorites     Favorite[]
   registrations Registration[]
+  comments      Comment[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -38,6 +39,7 @@ model Event {
   accessibility   AccessibilityInfo?
   registrations   Registration[]
   favorites       Favorite[]
+  comments        Comment[]
   createdBy       String
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
@@ -93,6 +95,21 @@ model Favorite {
 
   @@unique([userId, eventId])
   @@map("favorites")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  eventId   String
+  userId    String?
+  guestName String?
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([eventId])
+  @@map("comments")
 }
 
 enum Role {

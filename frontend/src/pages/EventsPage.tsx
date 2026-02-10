@@ -5,6 +5,7 @@ import { eventsService, categoriesService } from '../services/api';
 import { EventFilters } from '../types';
 import EventCard from '../components/events/EventCard';
 import EventFilter from '../components/events/EventFilter';
+import CalendarView from '../components/events/CalendarView';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Button from '../components/common/Button';
 
@@ -129,25 +130,10 @@ export default function EventsPage() {
 
       {/* Calendar View */}
       {viewMode === 'calendar' ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-          <iframe
-            src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FBerlin&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0&mode=MONTH&hl=de"
-            className="w-full h-[600px] border-0"
-            title="Veranstaltungskalender"
-            loading="lazy"
-          />
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-              Kalender wird von Google Calendar bereitgestellt. 
-              <button 
-                onClick={() => setViewMode('grid')} 
-                className="ml-2 text-primary-600 dark:text-primary-400 hover:underline"
-              >
-                Zur Kachelansicht wechseln
-              </button>
-            </p>
-          </div>
-        </div>
+        <CalendarView 
+          events={eventsData?.data || []} 
+          isLoading={isLoading} 
+        />
       ) : (
         /* Results - Grid/List View */
         <>
