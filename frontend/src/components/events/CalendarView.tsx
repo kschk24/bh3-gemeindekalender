@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Event } from '../../types';
+import { favoritesService } from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 // Setup date-fns localizer for German
@@ -52,8 +55,68 @@ const messages = {
 
 export default function CalendarView({ events, isLoading }: CalendarViewProps) {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const queryClient = useQueryClient();
 
-  // Transform events to calendar format
+  // Fetch favorites
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: favoritesService.getAll,
+    enabled: isAuthenticated,
+  });
+
+  // Toggle favorite mutation
+  const favoriteMutation = useMutation({
+    mutationFn: ({ eventId, add }: { eventId: string; add: boolean }) =>
+      add ? favoritesService.add(eventId) : favoritesService.remove(eventId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['favorites'] });
+    },
+  });
+
+  // Check if event is favorited
+  const isFavorited = (eventId: string) => {
+    return !!favorites?.some((f) => f.id === eventId);
+  };
+
+  // Custom event component for week/day views
+  const EventComponent = useCallback(
+    ({ event }: { event: CalendarEvent }) => {
+      const favorited = isFavorited(event.id);
+      return (
+        <div className="h-full flex flex-col px-2 py-1 gap-1 group">
+          <div className="text-sm font-medium leading-tight truncate">
+            {event.title}
+          </div>
+          {isAuthenticated && (
+            <div className="flex justify-end">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  favoriteMutation.mutate({ eventId: event.id, add: !favorited });
+                }}
+                disabled={favoriteMutation.isPending}
+                className="text-yellow-300 hover:text-yellow-400 focus:outline-none transition-colors opacity-0 group-hover:opacity-100"
+                aria-label={favorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+                title={favorited ? 'Aus Favoriten entfernen' : 'Zu Favoriten hinzufügen'}
+              >
+                {favorited ? (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                ) : (
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    },
+    [isAuthenticated, favoriteMutation, favorites]
+  );
   const calendarEvents: CalendarEvent[] = useMemo(() => {
     return events.map((event) => ({
       id: event.id,
@@ -125,6 +188,9 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
           popup
           selectable={false}
           tooltipAccessor={(event) => event.title}
+          components={{
+            event: EventComponent,
+          }}
         />
       </div>
       
