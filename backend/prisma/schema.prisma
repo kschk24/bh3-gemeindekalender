@@ -1,0 +1,101 @@
+// Prisma Schema for Gemeindekalender
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  role          Role           @default(USER)
+  favorites     Favorite[]
+  registrations Registration[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("users")
+}
+
+model Event {
+  id              String             @id @default(uuid())
+  title           String
+  description     String
+  location        String
+  address         String
+  startDate       DateTime
+  endDate         DateTime
+  category        Category           @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  imageUrl        String?
+  requiresAccount Boolean            @default(false)
+  maxParticipants Int?
+  accessibility   AccessibilityInfo?
+  registrations   Registration[]
+  favorites       Favorite[]
+  createdBy       String
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([startDate])
+  @@index([categoryId])
+  @@map("events")
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String  @unique
+  color  String
+  events Event[]
+
+  @@map("categories")
+}
+
+model AccessibilityInfo {
+  id                   String  @id @default(uuid())
+  eventId              String  @unique
+  event                Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  wheelchairAccessible Boolean @default(false)
+  hearingLoop          Boolean @default(false)
+  signLanguage         Boolean @default(false)
+  easyLanguage         Boolean @default(false)
+
+  @@map("accessibility_info")
+}
+
+model Registration {
+  id         String   @id @default(uuid())
+  userId     String?
+  eventId    String
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  guestName  String?
+  guestEmail String?
+  createdAt  DateTime @default(now())
+
+  @@index([eventId])
+  @@index([userId])
+  @@map("registrations")
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  eventId   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, eventId])
+  @@map("favorites")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
