@@ -43,7 +43,6 @@ const messages = {
   month: 'Monat',
   week: 'Woche',
   day: 'Tag',
-  agenda: 'Agenda',
   date: 'Datum',
   time: 'Uhrzeit',
   event: 'Veranstaltung',
@@ -121,7 +120,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
           messages={messages}
           formats={formats}
           culture="de"
-          views={[Views.MONTH, Views.WEEK, Views.DAY, Views.AGENDA]}
+          views={[Views.MONTH, Views.WEEK, Views.DAY]}
           defaultView={Views.MONTH}
           popup
           selectable={false}
