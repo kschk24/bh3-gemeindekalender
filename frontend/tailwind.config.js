@@ -9,16 +9,16 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+          50: '#f0f7ef',
+          100: '#d9ebd7',
+          200: '#b3d7af',
+          300: '#8dc387',
+          400: '#5fa757',
+          500: '#3b7d34',  // Hauptfarbe Seevetal
+          600: '#326a2c',
+          700: '#295724',
+          800: '#20441c',
+          900: '#173114',
         },
       },
       // Barrierefreiheit: Fokus-Stile

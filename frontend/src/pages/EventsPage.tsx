@@ -8,9 +8,28 @@ import EventFilter from '../components/events/EventFilter';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Button from '../components/common/Button';
 
+// Icons for view mode toggle
+const GridIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+  </svg>
+);
+
+const ListIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+  </svg>
+);
+
+const CalendarIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+);
+
 export default function EventsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'calendar'>('calendar');
 
   // Build filters from URL params
   const filters: EventFilters = {
@@ -70,17 +89,24 @@ export default function EventsPage() {
         </h1>
 
         {/* View Mode Toggle */}
-        <div className="flex items-center space-x-2" role="group" aria-label="Ansicht wählen">
+        <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1" role="group" aria-label="Ansicht wählen">
+          <Button
+            variant={viewMode === 'calendar' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setViewMode('calendar')}
+            aria-pressed={viewMode === 'calendar'}
+          >
+            <CalendarIcon />
+            <span className="ml-2 hidden sm:inline">Kalender</span>
+          </Button>
           <Button
             variant={viewMode === 'grid' ? 'primary' : 'ghost'}
             size="sm"
             onClick={() => setViewMode('grid')}
             aria-pressed={viewMode === 'grid'}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg>
-            <span className="sr-only">Kachelansicht</span>
+            <GridIcon />
+            <span className="ml-2 hidden sm:inline">Kacheln</span>
           </Button>
           <Button
             variant={viewMode === 'list' ? 'primary' : 'ghost'}
@@ -88,10 +114,8 @@ export default function EventsPage() {
             onClick={() => setViewMode('list')}
             aria-pressed={viewMode === 'list'}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-            </svg>
-            <span className="sr-only">Listenansicht</span>
+            <ListIcon />
+            <span className="ml-2 hidden sm:inline">Liste</span>
           </Button>
         </div>
       </div>
@@ -103,73 +127,98 @@ export default function EventsPage() {
         onFilterChange={updateFilters}
       />
 
-      {/* Results */}
-      {isLoading ? (
-        <LoadingSpinner label="Lade Veranstaltungen..." />
-      ) : eventsData?.data.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Keine Veranstaltungen gefunden.
-          </p>
-          <Button
-            variant="outline"
-            onClick={() => setSearchParams(new URLSearchParams())}
-            className="mt-4"
-          >
-            Filter zurücksetzen
-          </Button>
+      {/* Calendar View */}
+      {viewMode === 'calendar' ? (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <iframe
+            src="https://calendar.google.com/calendar/embed?height=600&wkst=2&ctz=Europe%2FBerlin&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&showTz=0&mode=MONTH&hl=de"
+            className="w-full h-[600px] border-0"
+            title="Veranstaltungskalender"
+            loading="lazy"
+          />
+          <div className="p-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+              Kalender wird von Google Calendar bereitgestellt. 
+              <button 
+                onClick={() => setViewMode('grid')} 
+                className="ml-2 text-primary-600 dark:text-primary-400 hover:underline"
+              >
+                Zur Kachelansicht wechseln
+              </button>
+            </p>
+          </div>
         </div>
       ) : (
+        /* Results - Grid/List View */
         <>
-          {/* Results count */}
-          <p className="text-gray-600 dark:text-gray-400" aria-live="polite">
-            {eventsData?.meta.total} Veranstaltung
-            {eventsData?.meta.total !== 1 && 'en'} gefunden
-          </p>
-
-          {/* Events Grid/List */}
-          <div
-            className={
-              viewMode === 'grid'
-                ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6'
-                : 'space-y-4'
-            }
-          >
-            {eventsData?.data.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                variant={viewMode === 'list' ? 'horizontal' : 'vertical'}
-              />
-            ))}
-          </div>
-
-          {/* Pagination */}
-          {eventsData && eventsData.meta.totalPages > 1 && (
-            <nav
-              className="flex justify-center items-center space-x-2 pt-8"
-              aria-label="Seitennavigation"
-            >
+          {isLoading ? (
+            <LoadingSpinner label="Lade Veranstaltungen..." />
+          ) : eventsData?.data.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                Keine Veranstaltungen gefunden.
+              </p>
               <Button
                 variant="outline"
-                onClick={() => handlePageChange(eventsData.meta.page - 1)}
-                disabled={eventsData.meta.page <= 1}
+                onClick={() => setSearchParams(new URLSearchParams())}
+                className="mt-4"
               >
-                Zurück
+                Filter zurücksetzen
               </Button>
+            </div>
+          ) : (
+            <>
+              {/* Results count */}
+              <p className="text-gray-600 dark:text-gray-400" aria-live="polite">
+                {eventsData?.meta.total} Veranstaltung
+                {eventsData?.meta.total !== 1 && 'en'} gefunden
+              </p>
 
-              <span className="px-4 text-gray-600 dark:text-gray-400">
-                Seite {eventsData.meta.page} von {eventsData.meta.totalPages}
-              </span>
-
-              <Button
-                variant="outline"
-                onClick={() => handlePageChange(eventsData.meta.page + 1)}
-                disabled={eventsData.meta.page >= eventsData.meta.totalPages}
+              {/* Events Grid/List */}
+              <div
+                className={
+                  viewMode === 'grid'
+                    ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6'
+                    : 'space-y-4'
+                }
               >
-                Weiter
-              </Button>
-            </nav>
+                {eventsData?.data.map((event) => (
+                  <EventCard
+                    key={event.id}
+                    event={event}
+                    variant={viewMode === 'list' ? 'horizontal' : 'vertical'}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {eventsData && eventsData.meta.totalPages > 1 && (
+                <nav
+                  className="flex justify-center items-center space-x-2 pt-8"
+                  aria-label="Seitennavigation"
+                >
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(eventsData.meta.page - 1)}
+                    disabled={eventsData.meta.page <= 1}
+                  >
+                    Zurück
+                  </Button>
+
+                  <span className="px-4 text-gray-600 dark:text-gray-400">
+                    Seite {eventsData.meta.page} von {eventsData.meta.totalPages}
+                  </span>
+
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(eventsData.meta.page + 1)}
+                    disabled={eventsData.meta.page >= eventsData.meta.totalPages}
+                  >
+                    Weiter
+                  </Button>
+                </nav>
+              )}
+            </>
           )}
         </>
       )}
