@@ -102,27 +102,34 @@ function SidebarButton({ onClick, href, icon, label, variant = 'default' }: Side
 }
 
 export default function Sidebar() {
-  const { theme, setTheme } = useTheme();
+  const { theme, effectiveTheme, setTheme } = useTheme();
   const { fontScale, setFontScale } = useAccessibility();
   const { i18n } = useTranslation();
   const [showFontMenu, setShowFontMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
-  const cycleFontSize = () => {
-    const scales = ['100', '110', '125', '150'] as const;
+  const scales = ['100', '110', '125', '150'] as const;
+
+  const increaseFontSize = () => {
     const currentIndex = scales.indexOf(fontScale);
-    const nextIndex = (currentIndex + 1) % scales.length;
-    setFontScale(scales[nextIndex]);
+    if (currentIndex < scales.length - 1) {
+      setFontScale(scales[currentIndex + 1]);
+    }
+  };
+
+  const decreaseFontSize = () => {
+    const currentIndex = scales.indexOf(fontScale);
+    if (currentIndex > 0) {
+      setFontScale(scales[currentIndex - 1]);
+    }
+  };
+
+  const resetFontSize = () => {
+    setFontScale('100');
   };
 
   const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
-    } else {
-      setTheme('light');
-    }
+    setTheme(effectiveTheme === 'dark' ? 'light' : 'dark');
   };
 
   return (
@@ -184,36 +191,54 @@ export default function Sidebar() {
       {/* Font Size */}
       <div className="relative">
         <SidebarButton
-          onClick={cycleFontSize}
+          onClick={() => setShowFontMenu(!showFontMenu)}
           icon={<TextSizeIcon />}
           label={`Schriftgröße: ${fontScale}%`}
           variant="primary"
         />
         {showFontMenu && (
-          <div className="absolute right-12 top-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-2 min-w-[100px]">
-            {['100', '110', '125', '150'].map((size) => (
+          <>
+            <div
+              className="fixed inset-0 z-30"
+              onClick={() => setShowFontMenu(false)}
+              aria-hidden="true"
+            />
+            <div className="absolute right-12 top-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[140px] z-40">
               <button
-                key={size}
-                onClick={() => {
-                  setFontScale(size as typeof fontScale);
-                  setShowFontMenu(false);
-                }}
-                className={`block w-full text-left px-3 py-1 rounded ${
-                  fontScale === size ? 'bg-primary-100 text-primary-700' : 'hover:bg-gray-100'
+                onClick={increaseFontSize}
+                disabled={fontScale === '150'}
+                className="flex items-center justify-between w-full px-3 py-2 rounded text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+              >
+                <span>Größer</span>
+                <span className="text-lg font-bold">A+</span>
+              </button>
+              <button
+                onClick={resetFontSize}
+                className={`flex items-center justify-between w-full px-3 py-2 rounded text-gray-900 dark:text-white ${
+                  fontScale === '100' ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                 }`}
               >
-                {size}%
+                <span>Standard</span>
+                <span className="text-base font-bold">A</span>
               </button>
-            ))}
-          </div>
+              <button
+                onClick={decreaseFontSize}
+                disabled={fontScale === '100'}
+                className="flex items-center justify-between w-full px-3 py-2 rounded text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+              >
+                <span>Kleiner</span>
+                <span className="text-sm font-bold">A-</span>
+              </button>
+            </div>
+          </>
         )}
       </div>
 
       {/* Theme Toggle */}
       <SidebarButton
         onClick={toggleTheme}
-        icon={theme === 'dark' ? <MoonIcon /> : <SunIcon />}
-        label={`Theme: ${theme === 'dark' ? 'Dunkel' : theme === 'light' ? 'Hell' : 'System'}`}
+        icon={effectiveTheme === 'dark' ? <MoonIcon /> : <SunIcon />}
+        label={`Theme: ${effectiveTheme === 'dark' ? 'Dunkel' : 'Hell'}`}
         variant="default"
       />
 

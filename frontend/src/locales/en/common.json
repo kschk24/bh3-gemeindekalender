@@ -128,18 +128,18 @@
     "description": "Your portal for local events. Accessible and available for everyone.",
     "contact": {
       "title": "Contact",
-      "street": "Sample Street 1",
-      "city": "12345 Sample City",
+      "street": "Musterstraße 1",
+      "city": "12345 Musterstadt",
       "phone": "Phone",
       "email": "Email"
     },
     "legal": {
       "title": "Legal",
       "ariaLabel": "Footer Navigation",
-      "imprint": "Imprint",
+      "imprint": "Legal Notice",
       "privacy": "Privacy Policy",
       "accessibility": "Accessibility",
-      "reportBarrier": "Report Barrier"
+      "reportBarrier": "Report accessibility issue"
     },
     "copyright": "© {{year}} Community Calendar. All rights reserved."
   },

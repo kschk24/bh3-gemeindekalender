@@ -42,7 +42,7 @@ function NavItem({ to, icon, label, highlighted }: NavItemProps) {
       className={({ isActive }) =>
         `flex flex-col items-center px-4 py-2 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-white ${
           highlighted
-            ? 'bg-yellow-400 text-primary-800 border-2 border-yellow-500'
+            ? 'bg-yellow-400 text-primary-800'
             : isActive
             ? 'bg-primary-600 text-white'
             : 'bg-primary-500 text-white hover:bg-primary-600'
