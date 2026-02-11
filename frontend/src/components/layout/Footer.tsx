@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 export default function Footer() {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -10,51 +13,50 @@ export default function Footer() {
         <div className="grid md:grid-cols-3 gap-8">
           {/* Logo & Description */}
           <div>
-            <h3 className="text-lg font-bold mb-2">Gemeindekalender</h3>
+            <h3 className="text-lg font-bold mb-2">{t('footer.title')}</h3>
             <p className="text-primary-100 text-sm">
-              Ihr Portal für lokale Veranstaltungen.
-              Barrierefrei und für alle zugänglich.
+              {t('footer.description')}
             </p>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold mb-2">Kontakt</h4>
+            <h4 className="font-semibold mb-2">{t('footer.contact.title')}</h4>
             <address className="text-primary-100 text-sm not-italic">
-              <p>Musterstraße 1</p>
-              <p>12345 Musterstadt</p>
+              <p>{t('footer.contact.street')}</p>
+              <p>{t('footer.contact.city')}</p>
               <p className="mt-2">
-                Tel.: <a href="tel:+4912345678" className="hover:text-white">+49 123 456-78</a>
+                {t('footer.contact.phone')}: <a href="tel:+4912345678" className="hover:text-white">+49 123 456-78</a>
               </p>
               <p>
-                E-Mail: <a href="mailto:info@gemeinde.de" className="hover:text-white">info@gemeinde.de</a>
+                {t('footer.contact.email')}: <a href="mailto:info@gemeinde.de" className="hover:text-white">info@gemeinde.de</a>
               </p>
             </address>
           </div>
 
           {/* Links */}
           <div>
-            <h4 className="font-semibold mb-2">Rechtliches</h4>
-            <nav aria-label="Footer-Navigation">
+            <h4 className="font-semibold mb-2">{t('footer.legal.title')}</h4>
+            <nav aria-label={t('footer.legal.ariaLabel')}>
               <ul className="text-sm space-y-1">
                 <li>
                   <a href="#" className="text-primary-100 hover:text-white transition-colors">
-                    Impressum
+                    {t('footer.legal.imprint')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-primary-100 hover:text-white transition-colors">
-                    Datenschutz
+                    {t('footer.legal.privacy')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-primary-100 hover:text-white transition-colors">
-                    Barrierefreiheit
+                    {t('footer.legal.accessibility')}
                   </a>
                 </li>
                 <li>
                   <a href="#" className="text-primary-100 hover:text-white transition-colors">
-                    Barriere melden
+                    {t('footer.legal.reportBarrier')}
                   </a>
                 </li>
               </ul>
@@ -63,7 +65,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-primary-500 text-center text-sm text-primary-200">
-          &copy; {currentYear} Gemeindekalender. Alle Rechte vorbehalten.
+          {t('footer.copyright', { year: currentYear })}
         </div>
       </div>
     </footer>

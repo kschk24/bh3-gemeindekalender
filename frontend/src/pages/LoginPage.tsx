@@ -3,11 +3,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const { t } = useTranslation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +27,7 @@ export default function LoginPage() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch {
-      setError('Ungültige E-Mail-Adresse oder Passwort.');
+      setError(t('loginPage.invalidCredentials'));
     } finally {
       setIsLoading(false);
     }
@@ -35,7 +37,7 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto">
       <div className="card">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-6">
-          Anmelden
+          {t('loginPage.title')}
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -49,7 +51,7 @@ export default function LoginPage() {
           )}
 
           <Input
-            label="E-Mail-Adresse"
+            label={t('loginPage.email')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -58,7 +60,7 @@ export default function LoginPage() {
           />
 
           <Input
-            label="Passwort"
+            label={t('loginPage.password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -67,17 +69,17 @@ export default function LoginPage() {
           />
 
           <Button type="submit" className="w-full" isLoading={isLoading}>
-            Anmelden
+            {t('auth.login')}
           </Button>
         </form>
 
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-          Noch kein Konto?{' '}
+          {t('loginPage.noAccount')}{' '}
           <Link
             to="/register"
             className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
           >
-            Jetzt registrieren
+            {t('loginPage.registerNow')}
           </Link>
         </p>
       </div>

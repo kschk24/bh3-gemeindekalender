@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { de, enUS } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -10,20 +11,32 @@ import AccessibilityBadges from './AccessibilityBadges';
 interface EventCardProps {
   event: Event;
   variant?: 'vertical' | 'horizontal';
-  showFavoriteButton?: boolean;
 }
 
 export default function EventCard({
   event,
   variant = 'vertical',
-  showFavoriteButton = false,
 }: EventCardProps) {
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const startDate = new Date(event.startDate);
 
-  const removeFavoriteMutation = useMutation({
-    mutationFn: () => favoritesService.remove(event.id),
+  const locale = i18n.language === 'de' ? de : enUS;
+
+  // Fetch favorites to check if this event is favorited
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: favoritesService.getAll,
+    enabled: isAuthenticated,
+  });
+
+  const isFavorited = !!favorites?.some((f) => f.id === event.id);
+
+  // Toggle favorite mutation (add or remove based on current state)
+  const favoriteMutation = useMutation({
+    mutationFn: ({ add }: { add: boolean }) =>
+      add ? favoritesService.add(event.id) : favoritesService.remove(event.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
     },
@@ -77,9 +90,9 @@ export default function EventCard({
         {/* Date & Time */}
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
           <time dateTime={event.startDate}>
-            {format(startDate, 'EEEE, d. MMM yyyy', { locale: de })}
+            {format(startDate, 'EEEE, d. MMM yyyy', { locale })}
             {' · '}
-            {format(startDate, 'HH:mm', { locale: de })} Uhr
+            {format(startDate, 'HH:mm', { locale })}{' '}{t('event.timeUnit')}
           </time>
         </p>
 
@@ -98,7 +111,7 @@ export default function EventCard({
         {/* Comments Count */}
         {event._count?.comments !== undefined && event._count.comments > 0 && (
           <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            💬 {event._count.comments} {event._count.comments === 1 ? 'Kommentar' : 'Kommentare'}
+            💬 {t('event.comments', { count: event._count.comments })}
           </p>
         )}
 
@@ -108,17 +121,26 @@ export default function EventCard({
             to={`/events/${event.id}`}
             className="text-primary-600 dark:text-primary-400 font-medium hover:underline focus:outline-none focus:underline"
           >
-            Details ansehen →
+            {t('event.details')}
           </Link>
 
-          {showFavoriteButton && isAuthenticated && (
+          {isAuthenticated && (
             <button
-              onClick={() => removeFavoriteMutation.mutate()}
-              disabled={removeFavoriteMutation.isPending}
-              className="text-red-500 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 rounded p-1"
-              aria-label={`${event.title} aus Favoriten entfernen`}
+              onClick={() => favoriteMutation.mutate({ add: !isFavorited })}
+              disabled={favoriteMutation.isPending}
+              className="text-yellow-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded p-1 transition-colors"
+              aria-label={isFavorited ? t('event.favoriteRemove', { title: event.title }) : t('event.favoriteAdd', { title: event.title })}
+              title={isFavorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
             >
-              ❤️
+              {isFavorited ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+              )}
             </button>
           )}
         </div>

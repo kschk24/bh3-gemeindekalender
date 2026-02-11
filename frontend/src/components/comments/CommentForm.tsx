@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { useTranslation } from 'react-i18next';
 
 interface CommentFormProps {
   onSubmit: (data: { content: string; guestName?: string }) => void;
@@ -11,6 +12,7 @@ interface CommentFormProps {
 
 export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFormProps) {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const [content, setContent] = useState('');
   const [guestName, setGuestName] = useState('');
 
@@ -34,10 +36,10 @@ export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFo
     <form onSubmit={handleSubmit} className="space-y-4">
       {!isAuthenticated && (
         <Input
-          label="Ihr Name"
+          label={t('comment.guest') === 'Gast' ? 'Ihr Name' : t('event.form.name')}
           value={guestName}
           onChange={(e) => setGuestName(e.target.value)}
-          placeholder="Max Mustermann"
+          placeholder={t('comment.guest') === 'Gast' ? 'Max Mustermann' : ''}
           required
           disabled={isSubmitting}
         />
@@ -48,13 +50,13 @@ export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFo
           htmlFor="comment-content" 
           className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
         >
-          Ihr Kommentar
+          {t('comment.yourComment')}
         </label>
         <textarea
           id="comment-content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="Schreiben Sie Ihren Kommentar..."
+          placeholder={t('comment.placeholder')}
           rows={4}
           maxLength={2000}
           required
@@ -67,7 +69,7 @@ export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFo
                      resize-none transition-colors"
         />
         <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 text-right">
-          {content.length}/2000 Zeichen
+          {t('comment.charCount', { count: content.length })}
         </p>
       </div>
 
@@ -80,7 +82,7 @@ export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFo
       <div className="flex items-center justify-between">
         {!isAuthenticated && (
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            Tipp: Melden Sie sich an, um Ihren Kommentar später bearbeiten zu können.
+            {t('comment.tip')}
           </p>
         )}
         <Button
@@ -89,7 +91,7 @@ export default function CommentForm({ onSubmit, isSubmitting, error }: CommentFo
           isLoading={isSubmitting}
           className="ml-auto"
         >
-          Kommentar abschicken
+          {t('comment.submit')}
         </Button>
       </div>
     </form>

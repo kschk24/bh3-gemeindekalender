@@ -1,8 +1,9 @@
 import { format } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import { Comment } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
+import { useTranslation } from 'react-i18next';
 
 interface CommentItemProps {
   comment: Comment;
@@ -12,9 +13,10 @@ interface CommentItemProps {
 
 export default function CommentItem({ comment, onDelete, isDeleting }: CommentItemProps) {
   const { user, isAuthenticated } = useAuth();
+  const { t, i18n } = useTranslation();
 
   // Determine display name
-  const displayName = comment.user?.email || comment.guestName || 'Gast';
+  const displayName = comment.user?.email || comment.guestName || t('comment.guest');
   
   // Check if current user can delete this comment
   const canDelete = isAuthenticated && (
@@ -22,8 +24,9 @@ export default function CommentItem({ comment, onDelete, isDeleting }: CommentIt
     user?.role === 'ADMIN'
   );
 
+  const locale = i18n.language === 'de' ? de : enUS;
   const formattedDate = format(new Date(comment.createdAt), "d. MMMM yyyy 'um' HH:mm 'Uhr'", {
-    locale: de,
+    locale,
   });
 
   return (
@@ -40,11 +43,11 @@ export default function CommentItem({ comment, onDelete, isDeleting }: CommentIt
           <div>
             <p className="font-medium text-gray-900 dark:text-white text-sm">
               {displayName}
-              {comment.userId && (
-                <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
-                  (registriert)
-                </span>
-              )}
+                {comment.userId && (
+                  <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+                    {t('comment.registered')}
+                  </span>
+                )}
             </p>
             <time 
               dateTime={comment.createdAt} 
@@ -61,7 +64,7 @@ export default function CommentItem({ comment, onDelete, isDeleting }: CommentIt
             size="sm"
             onClick={() => onDelete(comment.id)}
             disabled={isDeleting}
-            aria-label="Kommentar löschen"
+            aria-label={t('comment.deleteAria')}
             className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
           >
             <svg 

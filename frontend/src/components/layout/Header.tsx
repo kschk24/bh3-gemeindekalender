@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 // Icon components for navigation
 const CalendarIcon = () => (
@@ -41,7 +42,7 @@ function NavItem({ to, icon, label, highlighted }: NavItemProps) {
       className={({ isActive }) =>
         `flex flex-col items-center px-4 py-2 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-white ${
           highlighted
-            ? 'bg-yellow-400 text-primary-800 border-2 border-yellow-500'
+            ? 'bg-yellow-400 text-primary-800'
             : isActive
             ? 'bg-primary-600 text-white'
             : 'bg-primary-500 text-white hover:bg-primary-600'
@@ -56,6 +57,7 @@ function NavItem({ to, icon, label, highlighted }: NavItemProps) {
 
 export default function Header() {
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-sm" role="banner">
@@ -80,12 +82,12 @@ export default function Header() {
               role="navigation"
               aria-label="Hauptnavigation"
             >
-              <NavItem to="/events" icon={<CalendarIcon />} label="Veranstaltungen" />
-              <NavItem to="/" icon={<HomeIcon />} label="Startseite" />
+              <NavItem to="/events" icon={<CalendarIcon />} label={t('nav.events')} />
+              <NavItem to="/" icon={<HomeIcon />} label={t('nav.home')} />
               {isAuthenticated && (
-                <NavItem to="/favorites" icon={<StarIcon />} label="Favoriten" highlighted />
+                <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} highlighted />
               )}
-              <NavItem to="/info" icon={<InfoIcon />} label="Info" />
+              <NavItem to="/info" icon={<InfoIcon />} label={t('nav.info')} />
             </nav>
 
             {/* Auth buttons */}
@@ -100,7 +102,7 @@ export default function Header() {
                     className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
                     aria-label="Abmelden"
                   >
-                    Abmelden
+                    {t('auth.logout')}
                   </button>
                 </>
               ) : (
@@ -109,13 +111,13 @@ export default function Header() {
                     to="/login"
                     className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
                   >
-                    Anmelden
+                    {t('auth.login')}
                   </Link>
                   <Link
                     to="/register"
                     className="px-4 py-2 text-sm font-medium text-white bg-primary-500 rounded hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   >
-                    Registrieren
+                    {t('auth.register')}
                   </Link>
                 </>
               )}
@@ -130,13 +132,13 @@ export default function Header() {
         role="navigation"
         aria-label="Mobile Navigation"
       >
-        <div className="flex items-center justify-around">
-          <NavItem to="/events" icon={<CalendarIcon />} label="Termine" />
-          <NavItem to="/" icon={<HomeIcon />} label="Start" />
+          <div className="flex items-center justify-around">
+          <NavItem to="/events" icon={<CalendarIcon />} label={t('nav.events')} />
+          <NavItem to="/" icon={<HomeIcon />} label={t('nav.home')} />
           {isAuthenticated && (
-            <NavItem to="/favorites" icon={<StarIcon />} label="Favoriten" />
+            <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} />
           )}
-          <NavItem to="/info" icon={<InfoIcon />} label="Info" />
+          <NavItem to="/info" icon={<InfoIcon />} label={t('nav.info')} />
         </div>
       </nav>
     </header>
