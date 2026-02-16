@@ -215,3 +215,4 @@ MIT
 Entwickelt als Schulprojekt mit Fokus auf Digital Inclusion und Green IT.
 
 <!-- Test PR: CI/CD and test pipeline verification -->
+<!-- Test-Push main 2026-02-16 -->
