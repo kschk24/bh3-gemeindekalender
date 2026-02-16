@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '../common/LoadingSpinner';
 
 export default function LanguageSwitcher() {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
 
   const change = (lng: string) => {
     void i18n.changeLanguage(lng);

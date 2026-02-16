@@ -68,6 +68,6 @@ export class AuthService {
     const secret = process.env.JWT_SECRET || 'default-secret';
     const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
 
-    return jwt.sign({ userId }, secret, { expiresIn });
+    return jwt.sign({ userId }, secret, { expiresIn } as jwt.SignOptions);
   }
 }

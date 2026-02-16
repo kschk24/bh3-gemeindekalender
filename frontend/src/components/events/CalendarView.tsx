@@ -81,9 +81,10 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
   });
 
   // Check if event is favorited
-  const isFavorited = (eventId: string) => {
-    return !!favorites?.some((f) => f.id === eventId);
-  };
+  const isFavorited = useCallback(
+    (eventId: string) => !!favorites?.some((f) => f.id === eventId),
+    [favorites]
+  );
 
   // Custom event component for week/day views
   const EventComponent = useCallback(
@@ -121,7 +122,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
         </div>
       );
     },
-    [isAuthenticated, favoriteMutation, favorites]
+    [isAuthenticated, favoriteMutation, isFavorited, t]
   );
   const calendarEvents: CalendarEvent[] = useMemo(() => {
     return events.map((event) => ({

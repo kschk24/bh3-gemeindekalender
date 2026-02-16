@@ -102,7 +102,7 @@ function SidebarButton({ onClick, href, icon, label, variant = 'default' }: Side
 }
 
 export default function Sidebar() {
-  const { theme, effectiveTheme, setTheme } = useTheme();
+  const { effectiveTheme, setTheme } = useTheme();
   const { fontScale, setFontScale } = useAccessibility();
   const { i18n } = useTranslation();
   const [showFontMenu, setShowFontMenu] = useState(false);
