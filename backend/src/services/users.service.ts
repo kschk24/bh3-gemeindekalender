@@ -42,7 +42,7 @@ export class UsersService {
       orderBy: { createdAt: 'desc' },
     });
 
-    return favorites.map((f) => f.event);
+    return favorites.map((f: (typeof favorites)[number]) => f.event);
   }
 
   async addFavorite(userId: string, eventId: string) {
