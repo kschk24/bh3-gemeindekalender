@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
@@ -18,8 +18,6 @@ export default function EventDetailModal() {
   const queryClient = useQueryClient();
   const { t, i18n } = useTranslation();
 
-  const modalRef = useRef<HTMLDivElement>(null);
-
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
@@ -35,23 +33,15 @@ export default function EventDetailModal() {
     }
   }, [isOpen]);
 
-  // Escape key + outside click
+  // Escape key
   useEffect(() => {
-    const handleKeyOrClick = (e: KeyboardEvent | MouseEvent) => {
+    const handleKey = (e: KeyboardEvent) => {
       if (!isOpen) return;
-      if (e instanceof KeyboardEvent) {
-        if (e.key === 'Escape') closeEvent();
-      } else {
-        if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-          closeEvent();
-        }
-      }
+      if (e.key === 'Escape') closeEvent();
     };
-    document.addEventListener('keydown', handleKeyOrClick as EventListener);
-    document.addEventListener('mousedown', handleKeyOrClick as EventListener);
+    document.addEventListener('keydown', handleKey);
     return () => {
-      document.removeEventListener('keydown', handleKeyOrClick as EventListener);
-      document.removeEventListener('mousedown', handleKeyOrClick as EventListener);
+      document.removeEventListener('keydown', handleKey);
     };
   }, [isOpen, closeEvent]);
 
@@ -97,22 +87,22 @@ export default function EventDetailModal() {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop – closes modal on click */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 pointer-events-none transition-opacity"
+        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity cursor-pointer"
         aria-hidden="true"
+        onClick={closeEvent}
       />
 
-      {/* Modal */}
+      {/* Modal wrapper – pointer-events-none so sidebar remains accessible */}
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
         role="dialog"
         aria-modal="true"
         aria-labelledby="event-detail-modal-title"
       >
         <div
-          ref={modalRef}
-          className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 w-full max-w-4xl max-h-[90vh] flex flex-col"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 w-full max-w-4xl max-h-[90vh] flex flex-col pointer-events-auto"
         >
           {/* Modal Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
