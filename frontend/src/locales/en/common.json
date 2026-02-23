@@ -5,6 +5,9 @@
     "favorites": "Favorites",
     "info": "Info"
   },
+  "common": {
+    "close": "Close"
+  },
   "auth": {
     "login": "Login",
     "register": "Register",
@@ -24,6 +27,7 @@
     "passwordTooShort": "Password must be at least 6 characters.",
     "registerFailed": "Registration failed. This email may already be in use.",
     "passwordHelper": "At least 6 characters",
+    "confirmPassword": "Confirm Password",
     "alreadyRegistered": "Already registered?",
     "loginNow": "Login now"
   },
@@ -52,6 +56,7 @@
     "dateTime": "Date & time",
     "location": "Location",
     "spotsAvailable": "Available spots",
+    "spotsOf": "{{available}} of {{total}}",
     "full": "Full",
     "register": "Register",
     "registeredSuccess": "Successfully registered!",
@@ -74,6 +79,8 @@
   }
   ,
   "comment": {
+    "heading": "Comments",
+    "write": "Write a comment",
     "yourComment": "Your comment",
     "placeholder": "Write your comment...",
     "tip": "Tip: Log in to be able to edit your comment later.",

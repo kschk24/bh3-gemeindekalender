@@ -134,7 +134,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="fixed right-4 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col space-y-2"
+      className="fixed right-4 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col space-y-2"
       aria-label="Schnellzugriff"
     >
       {/* Contact */}

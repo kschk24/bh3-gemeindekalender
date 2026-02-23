@@ -5,6 +5,9 @@
     "favorites": "Favoriten",
     "info": "Info"
   },
+  "common": {
+    "close": "Schließen"
+  },
   "auth": {
     "login": "Anmelden",
     "register": "Registrieren",
@@ -24,6 +27,7 @@
     "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
     "registerFailed": "Registrierung fehlgeschlagen. Diese E-Mail-Adresse wird möglicherweise bereits verwendet.",
     "passwordHelper": "Mindestens 6 Zeichen",
+    "confirmPassword": "Passwort bestätigen",
     "alreadyRegistered": "Bereits registriert?",
     "loginNow": "Jetzt anmelden"
   },
@@ -52,6 +56,7 @@
     "dateTime": "Datum & Uhrzeit",
     "location": "Ort",
     "spotsAvailable": "Verfügbare Plätze",
+    "spotsOf": "{{available}} von {{total}}",
     "full": "Ausgebucht",
     "register": "Anmeldung",
     "registeredSuccess": "Erfolgreich angemeldet!",
@@ -74,6 +79,8 @@
   }
   ,
   "comment": {
+    "heading": "Kommentare",
+    "write": "Kommentar schreiben",
     "yourComment": "Ihr Kommentar",
     "placeholder": "Schreiben Sie Ihren Kommentar...",
     "tip": "Tipp: Melden Sie sich an, um Ihren Kommentar später bearbeiten zu können.",
