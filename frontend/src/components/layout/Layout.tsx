@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Sidebar from './Sidebar';
+import EventDetailModal from '../events/EventDetailModal';
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,6 +24,7 @@ export default function Layout({ children }: LayoutProps) {
         <Sidebar />
       </div>
       <Footer />
+      <EventDetailModal />
     </div>
   );
 }

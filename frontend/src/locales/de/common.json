@@ -5,6 +5,9 @@
     "favorites": "Favoriten",
     "info": "Info"
   },
+  "common": {
+    "close": "Schließen"
+  },
   "auth": {
     "login": "Anmelden",
     "register": "Registrieren",
@@ -53,6 +56,7 @@
     "dateTime": "Datum & Uhrzeit",
     "location": "Ort",
     "spotsAvailable": "Verfügbare Plätze",
+    "spotsOf": "{{available}} von {{total}}",
     "full": "Ausgebucht",
     "register": "Anmeldung",
     "registeredSuccess": "Erfolgreich angemeldet!",
@@ -75,6 +79,8 @@
   }
   ,
   "comment": {
+    "heading": "Kommentare",
+    "write": "Kommentar schreiben",
     "yourComment": "Ihr Kommentar",
     "placeholder": "Schreiben Sie Ihren Kommentar...",
     "tip": "Tipp: Melden Sie sich an, um Ihren Kommentar später bearbeiten zu können.",

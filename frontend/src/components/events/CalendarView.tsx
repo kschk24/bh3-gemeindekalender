@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEventDetail } from '../../context/EventDetailContext';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
@@ -40,7 +40,7 @@ interface CalendarViewProps {
 }
 
 export default function CalendarView({ events, isLoading }: CalendarViewProps) {
-  const navigate = useNavigate();
+  const { openEvent } = useEventDetail();
   const { isAuthenticated } = useAuth();
   const queryClient = useQueryClient();
   const { t, i18n } = useTranslation();
@@ -135,12 +135,12 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
     }));
   }, [events]);
 
-  // Handle event click - navigate to detail page
+  // Handle event click - open detail modal
   const handleSelectEvent = useCallback(
     (event: CalendarEvent) => {
-      navigate(`/events/${event.id}`);
+      openEvent(event.id);
     },
-    [navigate]
+    [openEvent]
   );
 
   // Custom event styling based on category color

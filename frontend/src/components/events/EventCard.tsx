@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { useEventDetail } from '../../context/EventDetailContext';
 import AccessibilityBadges from './AccessibilityBadges';
 
 interface EventCardProps {
@@ -19,6 +19,7 @@ export default function EventCard({
 }: EventCardProps) {
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
+  const { openEvent } = useEventDetail();
   const queryClient = useQueryClient();
   const startDate = new Date(event.startDate);
 
@@ -79,12 +80,12 @@ export default function EventCard({
 
         {/* Title */}
         <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
-          <Link
-            to={`/events/${event.id}`}
-            className="hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:underline"
+          <button
+            onClick={() => openEvent(event.id)}
+            className="hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:underline text-left"
           >
             {event.title}
-          </Link>
+          </button>
         </h3>
 
         {/* Date & Time */}
@@ -117,12 +118,12 @@ export default function EventCard({
 
         {/* Actions */}
         <div className="mt-4 flex items-center justify-between">
-          <Link
-            to={`/events/${event.id}`}
+          <button
+            onClick={() => openEvent(event.id)}
             className="text-primary-600 dark:text-primary-400 font-medium hover:underline focus:outline-none focus:underline"
           >
             {t('event.details')}
-          </Link>
+          </button>
 
           {isAuthenticated && (
             <button
