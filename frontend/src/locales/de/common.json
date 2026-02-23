@@ -24,6 +24,7 @@
     "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
     "registerFailed": "Registrierung fehlgeschlagen. Diese E-Mail-Adresse wird möglicherweise bereits verwendet.",
     "passwordHelper": "Mindestens 6 Zeichen",
+    "confirmPassword": "Passwort bestätigen",
     "alreadyRegistered": "Bereits registriert?",
     "loginNow": "Jetzt anmelden"
   },

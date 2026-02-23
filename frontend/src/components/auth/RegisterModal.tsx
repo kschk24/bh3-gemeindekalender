@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { useTranslation } from 'react-i18next';
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface RegisterModalProps {
 
 export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToLogin }: RegisterModalProps) {
   const { register } = useAuth();
+  const { t } = useTranslation();
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -60,12 +62,12 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Passwörter stimmen nicht überein.');
+      setError(t('registerPage.passwordMismatch'));
       return;
     }
 
     if (password.length < 6) {
-      setError('Das Passwort muss mindestens 6 Zeichen lang sein.');
+      setError(t('registerPage.passwordTooShort'));
       return;
     }
 
@@ -75,7 +77,7 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
       await register(email, password);
       onClose();
     } catch {
-      setError('Registrierung fehlgeschlagen. Diese E-Mail-Adresse wird möglicherweise bereits verwendet.');
+      setError(t('registerPage.registerFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +108,7 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
               id="register-modal-title"
               className="text-xl font-bold text-gray-900 dark:text-white"
             >
-              Registrieren
+              {t('registerPage.title')}
             </h2>
             <button
               onClick={onClose}
@@ -139,7 +141,7 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
               )}
 
               <Input
-                label="E-Mail-Adresse"
+                label={t('loginPage.email')}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -148,17 +150,17 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
               />
 
               <Input
-                label="Passwort"
+                label={t('loginPage.password')}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="new-password"
-                helperText="Mindestens 6 Zeichen"
+                helperText={t('registerPage.passwordHelper')}
               />
 
               <Input
-                label="Passwort bestätigen"
+                label={t('registerPage.confirmPassword')}
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -167,18 +169,18 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
               />
 
               <Button type="submit" className="w-full" isLoading={isLoading}>
-                Registrieren
+                {t('registerPage.title')}
               </Button>
             </form>
 
             <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-              Bereits registriert?{' '}
+              {t('registerPage.alreadyRegistered')}{' '}
               <button
                 type="button"
                 onClick={() => { onClose(); onSwitchToLogin?.(); }}
                 className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
               >
-                Jetzt anmelden
+                {t('registerPage.loginNow')}
               </button>
             </p>
           </div>

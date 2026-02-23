@@ -24,6 +24,7 @@
     "passwordTooShort": "Password must be at least 6 characters.",
     "registerFailed": "Registration failed. This email may already be in use.",
     "passwordHelper": "At least 6 characters",
+    "confirmPassword": "Confirm Password",
     "alreadyRegistered": "Already registered?",
     "loginNow": "Login now"
   },
