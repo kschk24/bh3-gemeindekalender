@@ -2,8 +2,7 @@
   "nav": {
     "events": "Veranstaltungen",
     "home": "Startseite",
-    "favorites": "Favoriten",
-    "info": "Info"
+    "favorites": "Favoriten"
   },
   "common": {
     "close": "Schließen"

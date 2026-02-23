@@ -2,8 +2,7 @@
   "nav": {
     "events": "Events",
     "home": "Home",
-    "favorites": "Favorites",
-    "info": "Info"
+    "favorites": "Favorites"
   },
   "common": {
     "close": "Close"

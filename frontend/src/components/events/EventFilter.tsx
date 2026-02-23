@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { EventFilters, Category } from '../../types';
+import { ACCESSIBILITY_OPTIONS } from '../../constants/accessibility';
 import Input from '../common/Input';
 import Button from '../common/Button';
 
@@ -16,12 +17,7 @@ export default function EventFilter({
 }: EventFilterProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const accessibilityOptions = [
-    { key: 'wheelchairAccessible', label: 'Rollstuhlgerecht', icon: '♿' },
-    { key: 'hearingLoop', label: 'Induktionsschleife', icon: '🦻' },
-    { key: 'signLanguage', label: 'Gebärdensprache', icon: '🤟' },
-    { key: 'easyLanguage', label: 'Leichte Sprache', icon: '📖' },
-  ] as const;
+  const accessibilityOptions = ACCESSIBILITY_OPTIONS;
 
   const hasActiveFilters =
     filters.search ||

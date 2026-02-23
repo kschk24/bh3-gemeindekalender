@@ -4,31 +4,7 @@ import { eventsService, categoriesService } from '../services/api';
 import EventCard from '../components/events/EventCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
-
-// Accessibility icons as SVG
-const WheelchairIcon = () => (
-  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-2.5 6a1.5 1.5 0 0 0-1.5 1.5V13H5v2h4.5a1.5 1.5 0 0 0 1.5-1.5V11h2v4.5a1.5 1.5 0 0 0 1.5 1.5h3a3.5 3.5 0 1 0 0-7h-2V9.5A1.5 1.5 0 0 0 14 8H9.5zm8 4a1.5 1.5 0 1 1 0 3h-2v-3h2z"/>
-  </svg>
-);
-
-const HearingIcon = () => (
-  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M17 20c-.29 0-.56-.06-.76-.15-.71-.37-1.21-.88-1.71-2.38-.51-1.56-1.47-2.29-2.39-3-.79-.61-1.61-1.24-2.32-2.53C9.29 10.98 9 9.93 9 9c0-2.8 2.2-5 5-5s5 2.2 5 5h2c0-3.93-3.07-7-7-7S7 5.07 7 9c0 1.26.38 2.65 1.07 3.9.91 1.65 1.98 2.48 2.85 3.15.81.62 1.39 1.07 1.71 2.05.6 1.82 1.37 2.84 2.73 3.55A3.999 3.999 0 0 0 21 18h-2c0 1.1-.9 2-2 2zM7.64 2.64L6.22 1.22C4.23 3.21 3 5.96 3 9s1.23 5.79 3.22 7.78l1.41-1.41C6.01 13.74 5 11.49 5 9s1.01-4.74 2.64-6.36zM11.5 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-5 0z"/>
-  </svg>
-);
-
-const SignLanguageIcon = () => (
-  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M12.5 2c-1.93 0-3.5 1.57-3.5 3.5v3c0 .28.22.5.5.5s.5-.22.5-.5v-3c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v3c0 .28.22.5.5.5s.5-.22.5-.5v-3c0-1.93-1.57-3.5-3.5-3.5zm-5 5c-1.1 0-2 .9-2 2v4c0 3.31 2.69 6 6 6h3c3.31 0 6-2.69 6-6V9c0-1.1-.9-2-2-2s-2 .9-2 2v2c0 .28-.22.5-.5.5s-.5-.22-.5-.5V9c0-1.1-.9-2-2-2s-2 .9-2 2v2c0 .28-.22.5-.5.5s-.5-.22-.5-.5V9c0-1.1-.9-2-2-2z"/>
-  </svg>
-);
-
-const EasyLanguageIcon = () => (
-  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
-  </svg>
-);
+import { ACCESSIBILITY_OPTIONS } from '../constants/accessibility';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -148,22 +124,15 @@ export default function HomePage() {
           {t('home.accessibilityIntro')}
         </p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {[
-            { Icon: WheelchairIcon, key: 'wheelchair' },
-            { Icon: HearingIcon, key: 'hearingLoop' },
-            { Icon: SignLanguageIcon, key: 'signLanguage' },
-            { Icon: EasyLanguageIcon, key: 'easyLanguage' },
-          ].map(({ Icon, key }) => (
+          {ACCESSIBILITY_OPTIONS.map(({ key, label, icon }) => (
             <Link
               key={key}
-              to={`/events?${key === 'wheelchair' ? 'wheelchairAccessible' : key === 'hearingLoop' ? 'hearingLoop' : key === 'signLanguage' ? 'signLanguage' : 'easyLanguage'}=true`}
+              to={`/events?${key}=true`}
               className="flex items-center space-x-3 bg-white dark:bg-gray-700 p-3 rounded border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
             >
-              <span className="text-primary-600 dark:text-primary-400" aria-hidden="true">
-                <Icon />
-              </span>
+              <span className="text-2xl" aria-hidden="true">{icon}</span>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                {t(`home.accessLabels.${key}`)}
+                {label}
               </span>
             </Link>
           ))}
