@@ -55,7 +55,7 @@ export default function RegisterModal({ isOpen, onClose, triggerRef, onSwitchToL
       document.removeEventListener('keydown', handleKeyOrClick as EventListener);
       document.removeEventListener('mousedown', handleKeyOrClick as EventListener);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, triggerRef]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

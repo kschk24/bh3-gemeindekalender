@@ -53,7 +53,7 @@ export default function LoginModal({ isOpen, onClose, triggerRef, onSwitchToRegi
       document.removeEventListener('keydown', handleKeyOrClick as EventListener);
       document.removeEventListener('mousedown', handleKeyOrClick as EventListener);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, triggerRef]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
