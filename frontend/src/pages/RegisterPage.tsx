@@ -93,7 +93,7 @@ export default function RegisterPage() {
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
           Bereits registriert?{' '}
           <Link
-            to="/login"
+            to="/"
             className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
           >
             Jetzt anmelden

@@ -18,7 +18,7 @@ export default function FavoritesPage() {
 
   // Redirect if not authenticated
   if (!authLoading && !isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (authLoading || isLoading) {

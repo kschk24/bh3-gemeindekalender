@@ -1,6 +1,9 @@
+import { useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import LoginModal from '../auth/LoginModal';
+import RegisterModal from '../auth/RegisterModal';
 
 // Icon components for navigation
 const CalendarIcon = () => (
@@ -58,6 +61,10 @@ function NavItem({ to, icon, label, highlighted }: NavItemProps) {
 export default function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const { t } = useTranslation();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const loginButtonRef = useRef<HTMLButtonElement>(null);
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const registerButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-sm" role="banner">
@@ -107,18 +114,20 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <Link
-                    to="/login"
+                  <button
+                    ref={loginButtonRef}
+                    onClick={() => setIsLoginModalOpen(prev => !prev)}
                     className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 rounded"
                   >
                     {t('auth.login')}
-                  </Link>
-                  <Link
-                    to="/register"
+                  </button>
+                  <button
+                    ref={registerButtonRef}
+                    onClick={() => setIsRegisterModalOpen(prev => !prev)}
                     className="px-4 py-2 text-sm font-medium text-white bg-primary-500 rounded hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                   >
                     {t('auth.register')}
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
@@ -141,6 +150,22 @@ export default function Header() {
           <NavItem to="/info" icon={<InfoIcon />} label={t('nav.info')} />
         </div>
       </nav>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        triggerRef={loginButtonRef}
+        onSwitchToRegister={() => setIsRegisterModalOpen(true)}
+      />
+
+      {/* Register Modal */}
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        triggerRef={registerButtonRef}
+        onSwitchToLogin={() => setIsLoginModalOpen(true)}
+      />
     </header>
   );
 }

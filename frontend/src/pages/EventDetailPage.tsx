@@ -256,7 +256,7 @@ export default function EventDetailPage() {
                 {event.requiresAccount && !isAuthenticated ? (
                   <p className="text-gray-600 dark:text-gray-400">
                     {t('event.pleaseLoginToRegisterPrefix')}{' '}
-                    <Link to="/login" className="text-primary-600 hover:underline">
+                    <Link to="/" className="text-primary-600 hover:underline">
                       {t('auth.login')}
                     </Link>
                     {t('event.pleaseLoginToRegisterSuffix')}
