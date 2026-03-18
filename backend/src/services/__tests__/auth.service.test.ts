@@ -1,9 +1,10 @@
 import { AuthService } from '../auth.service';
 import { AppError } from '../../middleware/errorHandler';
-
 // PrismaClient is auto-mocked via jest.config.ts moduleNameMapper
-const { PrismaClient } = require('@prisma/client');
-const prismaInstance = new PrismaClient();
+import { PrismaClient } from '@prisma/client';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const prismaInstance = new PrismaClient() as any;
 
 describe('AuthService', () => {
   let authService: AuthService;
