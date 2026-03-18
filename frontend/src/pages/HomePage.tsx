@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
 import { eventsService, categoriesService, favoritesService } from '../services/api';
 import EventCard from '../components/events/EventCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -8,13 +9,40 @@ import { ACCESSIBILITY_OPTIONS } from '../constants/accessibility';
 import { CATEGORY_ICONS } from '../constants/categories';
 import { useAuth } from '../context/AuthContext';
 
+const PAGE_SIZE = 6;
+
 export default function HomePage() {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth();
-  const { data: eventsData, isLoading: eventsLoading } = useQuery({
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const {
+    data: eventsData,
+    isLoading: eventsLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ['events', 'upcoming'],
-    queryFn: () => eventsService.getAll({ limit: 6 }),
+    queryFn: ({ pageParam = 1 }) => eventsService.getAll({ limit: PAGE_SIZE, page: pageParam as number }),
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.page < lastPage.meta.totalPages ? lastPage.meta.page + 1 : undefined,
+    initialPageParam: 1,
   });
+
+  // Trigger next page when sentinel enters viewport
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) fetchNextPage(); },
+      { rootMargin: '200px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const allEvents = eventsData?.pages.flatMap((p) => p.data) ?? [];
 
   const { data: categories } = useQuery({
     queryKey: ['categories'],
@@ -112,20 +140,35 @@ export default function HomePage() {
 
         {eventsLoading ? (
           <LoadingSpinner label={t('home.loading') || t('loading')} />
-        ) : eventsData?.data.length === 0 ? (
+        ) : allEvents.length === 0 ? (
           <p className="text-center text-gray-600 dark:text-gray-400 py-12">
             {t('home.noUpcoming')}
           </p>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {eventsData?.data.map((event) => (
-              <EventCard
-                key={event.id}
-                event={event}
-                isFavorited={favorites?.some((f) => f.id === event.id) ?? false}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {allEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  isFavorited={favorites?.some((f) => f.id === event.id) ?? false}
+                />
+              ))}
+            </div>
+
+            {/* Sentinel for IntersectionObserver */}
+            <div ref={sentinelRef} />
+
+            {isFetchingNextPage && (
+              <LoadingSpinner label={t('home.loading') || t('loading')} />
+            )}
+
+            {!hasNextPage && allEvents.length > 0 && (
+              <p className="text-center text-sm text-gray-400 dark:text-gray-500 py-4">
+                {t('home.allEventsLoaded')}
+              </p>
+            )}
+          </>
         )}
       </section>
 

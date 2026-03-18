@@ -111,6 +111,8 @@
     "upcoming": "Kommende Veranstaltungen",
     "viewAll": "Alle ansehen →",
     "noUpcoming": "Keine kommenden Veranstaltungen gefunden.",
+    "loading": "Lade Veranstaltungen...",
+    "allEventsLoaded": "Alle Veranstaltungen geladen.",
     "accessibility": "Barrierefreiheit",
     "accessibilityIntro": "Unser Kalender ist für alle zugänglich. Filtern Sie Veranstaltungen nach Barrierefreiheits-Kriterien.",
     "accessLabels": {
