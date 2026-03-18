@@ -41,7 +41,7 @@ export class EventsController {
     try {
       const { id } = req.params;
       const data: UpdateEventInput = req.body;
-      const event = await eventsService.update(id, data);
+      const event = await eventsService.update(id, data, req.user);
       res.json(event);
     } catch (error) {
       next(error);
@@ -51,7 +51,7 @@ export class EventsController {
   delete = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      await eventsService.delete(id);
+      await eventsService.delete(id, req.user);
       res.status(204).send();
     } catch (error) {
       next(error);

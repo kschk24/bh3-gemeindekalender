@@ -9,6 +9,7 @@ export interface User {
 export enum Role {
   USER = 'USER',
   ADMIN = 'ADMIN',
+  EVENT_MANAGER = 'EVENT_MANAGER',
 }
 
 // Event types
@@ -102,7 +103,28 @@ export interface ApiError {
 
 export type ApiResult<T> = { success: true; data: T } | { success: false; error: ApiError };
 
-export type CreateEventData = Omit<Event, 'id' | 'createdAt' | 'updatedAt' | '_count' | 'category'>;
+export interface AccessibilityInput {
+  wheelchairAccessible?: boolean;
+  hearingLoop?: boolean;
+  signLanguage?: boolean;
+  easyLanguage?: boolean;
+}
+
+export interface CreateEventData {
+  title: string;
+  description: string;
+  location: string;
+  address: string;
+  startDate: string;
+  endDate: string;
+  categoryId: string;
+  imageUrl?: string;
+  requiresAccount?: boolean;
+  maxParticipants?: number;
+  createdBy?: string;
+  accessibility?: AccessibilityInput;
+}
+
 export type UpdateEventData = Partial<CreateEventData>;
 export type UserProfile = Pick<User, 'id' | 'email' | 'role' | 'createdAt'>;
 
@@ -124,4 +146,22 @@ export interface Comment {
 export interface CreateCommentInput {
   content: string;
   guestName?: string;
+}
+
+// Admin types
+export interface AdminUser {
+  id: string;
+  email: string;
+  role: Role;
+  createdAt: string;
+  _count: { comments: number; favorites: number };
+}
+
+export interface AdminEvent {
+  id: string;
+  title: string;
+  startDate: string;
+  createdBy: string;
+  category: Category;
+  _count: { registrations: number };
 }

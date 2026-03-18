@@ -95,3 +95,15 @@ export const requireAdmin = (
   }
   next();
 };
+
+// Allows ADMIN and EVENT_MANAGER
+export const requireEventManager = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user || (req.user.role !== Role.ADMIN && req.user.role !== Role.EVENT_MANAGER)) {
+    return res.status(403).json({ message: 'Keine Berechtigung' });
+  }
+  next();
+};

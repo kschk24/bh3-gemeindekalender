@@ -2,7 +2,9 @@
   "nav": {
     "events": "Veranstaltungen",
     "home": "Startseite",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "createEvent": "Erstellen",
+    "admin": "Admin"
   },
   "common": {
     "close": "Schließen"
@@ -134,6 +136,51 @@
     "paginationPrev": "Zurück",
     "paginationNext": "Weiter",
     "paginationPage": "Seite {{page}} von {{total}}"
+  },
+  "admin": {
+    "title": "Admin-Dashboard",
+    "tabs": {
+      "users": "Benutzer",
+      "events": "Veranstaltungen"
+    },
+    "users": {
+      "email": "E-Mail",
+      "role": "Rolle",
+      "joined": "Registriert",
+      "actions": "Aktionen",
+      "deleteSuccess": "Benutzer gelöscht",
+      "roleChanged": "Rolle geändert"
+    },
+    "events": {
+      "title": "Titel",
+      "category": "Kategorie",
+      "date": "Datum",
+      "registrations": "Anmeldungen",
+      "deleteSuccess": "Veranstaltung gelöscht"
+    }
+  },
+  "eventForm": {
+    "createTitle": "Veranstaltung erstellen",
+    "editTitle": "Veranstaltung bearbeiten",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "location": "Ort",
+    "address": "Adresse",
+    "startDate": "Startdatum & -uhrzeit",
+    "endDate": "Enddatum & -uhrzeit",
+    "category": "Kategorie",
+    "imageUrl": "Bild-URL (optional)",
+    "maxParticipants": "Max. Teilnehmer (optional)",
+    "requiresAccount": "Konto erforderlich für Anmeldung",
+    "accessibility": "Barrierefreiheit",
+    "wheelchairAccessible": "Rollstuhlgerecht",
+    "hearingLoop": "Induktionsschleife",
+    "signLanguage": "Gebärdensprache",
+    "easyLanguage": "Leichte Sprache",
+    "submit": "Speichern",
+    "cancel": "Abbrechen",
+    "createSuccess": "Veranstaltung erfolgreich erstellt",
+    "editSuccess": "Veranstaltung erfolgreich aktualisiert"
   },
   "footer": {
     "title": "Gemeindekalender",

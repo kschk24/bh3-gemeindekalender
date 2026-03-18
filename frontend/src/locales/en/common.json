@@ -2,7 +2,9 @@
   "nav": {
     "events": "Events",
     "home": "Home",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "createEvent": "Create",
+    "admin": "Admin"
   },
   "common": {
     "close": "Close"
@@ -134,6 +136,51 @@
     "paginationPrev": "Previous",
     "paginationNext": "Next",
     "paginationPage": "Page {{page}} of {{total}}"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "tabs": {
+      "users": "Users",
+      "events": "Events"
+    },
+    "users": {
+      "email": "Email",
+      "role": "Role",
+      "joined": "Joined",
+      "actions": "Actions",
+      "deleteSuccess": "User deleted",
+      "roleChanged": "Role updated"
+    },
+    "events": {
+      "title": "Title",
+      "category": "Category",
+      "date": "Date",
+      "registrations": "Registrations",
+      "deleteSuccess": "Event deleted"
+    }
+  },
+  "eventForm": {
+    "createTitle": "Create event",
+    "editTitle": "Edit event",
+    "title": "Title",
+    "description": "Description",
+    "location": "Location",
+    "address": "Address",
+    "startDate": "Start date & time",
+    "endDate": "End date & time",
+    "category": "Category",
+    "imageUrl": "Image URL (optional)",
+    "maxParticipants": "Max. participants (optional)",
+    "requiresAccount": "Account required for registration",
+    "accessibility": "Accessibility",
+    "wheelchairAccessible": "Wheelchair accessible",
+    "hearingLoop": "Hearing loop",
+    "signLanguage": "Sign language",
+    "easyLanguage": "Easy language",
+    "submit": "Save",
+    "cancel": "Cancel",
+    "createSuccess": "Event created successfully",
+    "editSuccess": "Event updated successfully"
   },
   "footer": {
     "title": "Community Calendar",

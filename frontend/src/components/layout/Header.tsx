@@ -1,9 +1,12 @@
 import { useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { Plus, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Role } from '../../types';
 import LoginModal from '../auth/LoginModal';
 import RegisterModal from '../auth/RegisterModal';
+import EventFormModal from '../events/EventFormModal';
 
 // Icon components for navigation
 const CalendarIcon = () => (
@@ -59,6 +62,10 @@ export default function Header() {
   const loginButtonRef = useRef<HTMLButtonElement>(null);
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const registerButtonRef = useRef<HTMLButtonElement>(null);
+  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+
+  const canManageEvents = user?.role === Role.ADMIN || user?.role === Role.EVENT_MANAGER;
+  const isAdmin = user?.role === Role.ADMIN;
 
   return (
     <header className="bg-white dark:bg-gray-900 shadow-sm" role="banner">
@@ -88,12 +95,25 @@ export default function Header() {
               {isAuthenticated && (
                 <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} highlighted />
               )}
+              {isAdmin && (
+                <NavItem to="/admin" icon={<ShieldCheck className="w-8 h-8" aria-hidden="true" />} label={t('nav.admin')} />
+              )}
             </nav>
 
             {/* Auth buttons */}
             <div className="flex items-center space-x-3">
               {isAuthenticated ? (
                 <>
+                  {canManageEvents && (
+                    <button
+                      onClick={() => setIsEventFormOpen(true)}
+                      className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-primary-500 rounded hover:bg-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                      aria-label={t('nav.createEvent')}
+                    >
+                      <Plus className="w-4 h-4" aria-hidden="true" />
+                      <span className="hidden sm:inline">{t('nav.createEvent')}</span>
+                    </button>
+                  )}
                   <span className="text-sm text-gray-600 dark:text-gray-400 hidden lg:inline">
                     {user?.email}
                   </span>
@@ -140,6 +160,9 @@ export default function Header() {
           {isAuthenticated && (
             <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} />
           )}
+          {isAdmin && (
+            <NavItem to="/admin" icon={<ShieldCheck className="w-8 h-8" aria-hidden="true" />} label={t('nav.admin')} />
+          )}
         </div>
       </nav>
 
@@ -158,6 +181,14 @@ export default function Header() {
         triggerRef={registerButtonRef}
         onSwitchToLogin={() => setIsLoginModalOpen(true)}
       />
+
+      {/* Event Form Modal */}
+      {canManageEvents && (
+        <EventFormModal
+          isOpen={isEventFormOpen}
+          onClose={() => setIsEventFormOpen(false)}
+        />
+      )}
     </header>
   );
 }

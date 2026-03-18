@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, Role } from '@prisma/client';
 import { AppError } from '../middleware/errorHandler';
 import { CreateEventInput, UpdateEventInput, EventFiltersInput, RegistrationInput } from '../validators/events.validators';
 
@@ -131,11 +131,15 @@ export class EventsService {
     return event;
   }
 
-  async update(id: string, data: UpdateEventInput) {
+  async update(id: string, data: UpdateEventInput, requester?: { id: string; role: Role }) {
     const existing = await prisma.event.findUnique({ where: { id } });
-    
+
     if (!existing) {
       throw new AppError('Veranstaltung nicht gefunden', 404);
+    }
+
+    if (requester?.role === Role.EVENT_MANAGER && existing.createdBy !== requester.id) {
+      throw new AppError('Keine Berechtigung', 403);
     }
 
     const { accessibility, ...eventData } = data;
@@ -167,11 +171,15 @@ export class EventsService {
     return event;
   }
 
-  async delete(id: string) {
+  async delete(id: string, requester?: { id: string; role: Role }) {
     const existing = await prisma.event.findUnique({ where: { id } });
-    
+
     if (!existing) {
       throw new AppError('Veranstaltung nicht gefunden', 404);
+    }
+
+    if (requester?.role === Role.EVENT_MANAGER && existing.createdBy !== requester.id) {
+      throw new AppError('Keine Berechtigung', 403);
     }
 
     await prisma.event.delete({ where: { id } });

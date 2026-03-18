@@ -11,6 +11,9 @@ import type {
   CreateCommentInput,
   CreateEventData,
   UpdateEventData,
+  AdminUser,
+  AdminEvent,
+  Role,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
@@ -222,6 +225,32 @@ export const usersService = {
 
   deleteAccount: async (): Promise<void> => {
     await api.delete('/users/me');
+  },
+};
+
+// Admin Service
+export const adminService = {
+  getUsers: async (page = 1, limit = 20): Promise<PaginatedResponse<AdminUser>> => {
+    const response = await api.get<PaginatedResponse<AdminUser>>(`/admin/users?page=${page}&limit=${limit}`);
+    return response.data;
+  },
+
+  changeUserRole: async (userId: string, role: Role): Promise<AdminUser> => {
+    const response = await api.patch<AdminUser>(`/admin/users/${userId}/role`, { role });
+    return response.data;
+  },
+
+  deleteUser: async (userId: string): Promise<void> => {
+    await api.delete(`/admin/users/${userId}`);
+  },
+
+  getEvents: async (page = 1, limit = 20): Promise<PaginatedResponse<AdminEvent>> => {
+    const response = await api.get<PaginatedResponse<AdminEvent>>(`/admin/events?page=${page}&limit=${limit}`);
+    return response.data;
+  },
+
+  deleteEvent: async (eventId: string): Promise<void> => {
+    await api.delete(`/admin/events/${eventId}`);
   },
 };
 

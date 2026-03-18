@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { EventsController } from '../controllers/events.controller';
-import { authenticate, requireAdmin, optionalAuth } from '../middleware/auth';
+import { authenticate, requireAdmin, requireEventManager, optionalAuth } from '../middleware/auth';
 import { validateRequest } from '../middleware/validateRequest';
 import { createEventSchema, updateEventSchema, eventFiltersSchema, registrationSchema } from '../validators/events.validators';
 
@@ -11,10 +11,10 @@ const eventsController = new EventsController();
 router.get('/', validateRequest(eventFiltersSchema, 'query'), eventsController.getAll);
 router.get('/:id', eventsController.getById);
 
-// Protected routes (Admin only)
-router.post('/', authenticate, requireAdmin, validateRequest(createEventSchema), eventsController.create);
-router.put('/:id', authenticate, requireAdmin, validateRequest(updateEventSchema), eventsController.update);
-router.delete('/:id', authenticate, requireAdmin, eventsController.delete);
+// Protected routes (Admin or EventManager)
+router.post('/', authenticate, requireEventManager, validateRequest(createEventSchema), eventsController.create);
+router.put('/:id', authenticate, requireEventManager, validateRequest(updateEventSchema), eventsController.update);
+router.delete('/:id', authenticate, requireEventManager, eventsController.delete);
 
 // Event registrations
 router.post('/:id/register', optionalAuth, validateRequest(registrationSchema), eventsController.register);
