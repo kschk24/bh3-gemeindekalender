@@ -6,7 +6,6 @@ import { eventsService, categoriesService } from '../../services/api';
 import { Event } from '../../types';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
-import Input from '../common/Input';
 
 interface EventFormModalProps {
   isOpen: boolean;
@@ -136,8 +135,9 @@ export default function EventFormModal({ isOpen, onClose, initialEvent }: EventF
     mutation.mutate();
   };
 
-  const inputClass = 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm';
-  const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+  const fieldClass = 'w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm transition-colors';
+  const labelClass = 'block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1.5';
+  const sectionClass = 'bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 space-y-4';
 
   return (
     <Modal
@@ -148,93 +148,90 @@ export default function EventFormModal({ isOpen, onClose, initialEvent }: EventF
       size="xl"
     >
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Title */}
-        <div>
-          <label htmlFor="ef-title" className={labelClass}>{t('eventForm.title')} *</label>
-          <Input id="ef-title" value={form.title} onChange={set('title')} required />
-        </div>
 
-        {/* Description */}
-        <div>
-          <label htmlFor="ef-desc" className={labelClass}>{t('eventForm.description')} *</label>
-          <textarea
-            id="ef-desc"
-            value={form.description}
-            onChange={set('description')}
-            required
-            rows={3}
-            className={inputClass}
-          />
-        </div>
-
-        {/* Location + Address */}
-        <div className="grid grid-cols-2 gap-3">
+        {/* Basic info */}
+        <div className={sectionClass}>
           <div>
-            <label htmlFor="ef-location" className={labelClass}>{t('eventForm.location')} *</label>
-            <Input id="ef-location" value={form.location} onChange={set('location')} required />
+            <label htmlFor="ef-title" className={labelClass}>{t('eventForm.title')} <span className="text-red-500">*</span></label>
+            <input id="ef-title" value={form.title} onChange={set('title')} required className={fieldClass} placeholder="z.B. Gemeindefest 2026" />
           </div>
           <div>
-            <label htmlFor="ef-address" className={labelClass}>{t('eventForm.address')} *</label>
-            <Input id="ef-address" value={form.address} onChange={set('address')} required />
+            <label htmlFor="ef-desc" className={labelClass}>{t('eventForm.description')} <span className="text-red-500">*</span></label>
+            <textarea id="ef-desc" value={form.description} onChange={set('description')} required rows={3} className={fieldClass} placeholder="Beschreiben Sie die Veranstaltung..." />
+          </div>
+          <div>
+            <label htmlFor="ef-category" className={labelClass}>{t('eventForm.category')} <span className="text-red-500">*</span></label>
+            <select id="ef-category" value={form.categoryId} onChange={set('categoryId')} required className={fieldClass}>
+              <option value="">– Kategorie wählen –</option>
+              {categories?.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
           </div>
         </div>
 
-        {/* Dates */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label htmlFor="ef-start" className={labelClass}>{t('eventForm.startDate')} *</label>
-            <input id="ef-start" type="datetime-local" value={form.startDate} onChange={set('startDate')} required className={inputClass} />
-          </div>
-          <div>
-            <label htmlFor="ef-end" className={labelClass}>{t('eventForm.endDate')} *</label>
-            <input id="ef-end" type="datetime-local" value={form.endDate} onChange={set('endDate')} required className={inputClass} />
-          </div>
-        </div>
-
-        {/* Category */}
-        <div>
-          <label htmlFor="ef-category" className={labelClass}>{t('eventForm.category')} *</label>
-          <select id="ef-category" value={form.categoryId} onChange={set('categoryId')} required className={inputClass}>
-            <option value="">– {t('eventForm.category')} wählen –</option>
-            {categories?.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Image URL + Max Participants */}
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label htmlFor="ef-image" className={labelClass}>{t('eventForm.imageUrl')}</label>
-            <Input id="ef-image" value={form.imageUrl} onChange={set('imageUrl')} placeholder="https://..." />
-          </div>
-          <div>
-            <label htmlFor="ef-max" className={labelClass}>{t('eventForm.maxParticipants')}</label>
-            <Input id="ef-max" type="number" min="1" value={form.maxParticipants} onChange={set('maxParticipants')} />
+        {/* Location */}
+        <div className={sectionClass}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ef-location" className={labelClass}>{t('eventForm.location')} <span className="text-red-500">*</span></label>
+              <input id="ef-location" value={form.location} onChange={set('location')} required className={fieldClass} placeholder="z.B. Bürgerhaus" />
+            </div>
+            <div>
+              <label htmlFor="ef-address" className={labelClass}>{t('eventForm.address')} <span className="text-red-500">*</span></label>
+              <input id="ef-address" value={form.address} onChange={set('address')} required className={fieldClass} placeholder="z.B. Hauptstraße 1" />
+            </div>
           </div>
         </div>
 
-        {/* Requires Account */}
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked={form.requiresAccount} onChange={set('requiresAccount')} className="w-4 h-4 rounded text-primary-600" />
-          <span className="text-sm text-gray-700 dark:text-gray-300">{t('eventForm.requiresAccount')}</span>
-        </label>
+        {/* Date & Time */}
+        <div className={sectionClass}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ef-start" className={labelClass}>{t('eventForm.startDate')} <span className="text-red-500">*</span></label>
+              <input id="ef-start" type="datetime-local" value={form.startDate} onChange={set('startDate')} required className={fieldClass} />
+            </div>
+            <div>
+              <label htmlFor="ef-end" className={labelClass}>{t('eventForm.endDate')} <span className="text-red-500">*</span></label>
+              <input id="ef-end" type="datetime-local" value={form.endDate} onChange={set('endDate')} required className={fieldClass} />
+            </div>
+          </div>
+        </div>
+
+        {/* Optional settings */}
+        <div className={sectionClass}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="ef-image" className={labelClass}>{t('eventForm.imageUrl')}</label>
+              <input id="ef-image" value={form.imageUrl} onChange={set('imageUrl')} className={fieldClass} placeholder="https://..." />
+            </div>
+            <div>
+              <label htmlFor="ef-max" className={labelClass}>{t('eventForm.maxParticipants')}</label>
+              <input id="ef-max" type="number" min="1" value={form.maxParticipants} onChange={set('maxParticipants')} className={fieldClass} placeholder="Unbegrenzt" />
+            </div>
+          </div>
+
+          <label className="flex items-center gap-3 cursor-pointer py-1">
+            <input type="checkbox" checked={form.requiresAccount} onChange={set('requiresAccount')} className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+            <span className="text-sm text-gray-700 dark:text-gray-300">{t('eventForm.requiresAccount')}</span>
+          </label>
+        </div>
 
         {/* Accessibility */}
-        <fieldset className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-          <legend className="text-sm font-medium text-gray-700 dark:text-gray-300 px-1">{t('eventForm.accessibility')}</legend>
-          <div className="grid grid-cols-2 gap-2 mt-2">
+        <div className={sectionClass}>
+          <p className={labelClass}>{t('eventForm.accessibility')}</p>
+          <div className="grid grid-cols-2 gap-3">
             {(['wheelchairAccessible', 'hearingLoop', 'signLanguage', 'easyLanguage'] as const).map((key) => (
-              <label key={key} className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" checked={form[key] as boolean} onChange={set(key)} className="w-4 h-4 rounded text-primary-600" />
+              <label key={key} className="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <input type="checkbox" checked={form[key] as boolean} onChange={set(key)} className="w-4 h-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
                 <span className="text-sm text-gray-700 dark:text-gray-300">{t(`eventForm.${key}`)}</span>
               </label>
             ))}
           </div>
-        </fieldset>
+        </div>
 
         {/* Actions */}
-        <div className="flex justify-end gap-3 pt-2">
+        <div className="flex justify-end gap-3 pt-1 pb-1">
           <Button variant="outline" type="button" onClick={onClose}>{t('eventForm.cancel')}</Button>
           <Button variant="primary" type="submit" disabled={mutation.isPending}>
             {mutation.isPending ? t('loading') : t('eventForm.submit')}

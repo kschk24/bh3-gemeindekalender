@@ -57,7 +57,7 @@ export default function Modal({ isOpen, onClose, title, titleId, children, size 
             </div>
 
             {/* Scrollable body */}
-            <div className="overflow-y-auto flex-1">
+            <div className="overflow-y-auto flex-1 p-6">
               {children}
             </div>
           </div>
