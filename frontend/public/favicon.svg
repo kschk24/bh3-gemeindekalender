@@ -1,4 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#3b82f6"/>
-  <text x="50" y="70" font-size="60" text-anchor="middle" fill="white">=�</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="#3b7d34"/>
+
+  <!-- Calendar body -->
+  <rect x="5" y="9" width="22" height="18" rx="2.5" fill="white" opacity="0.95"/>
+
+  <!-- Calendar top bar -->
+  <rect x="5" y="9" width="22" height="7" rx="2.5" fill="#295724"/>
+  <!-- Fix bottom corners of top bar (make bottom flat) -->
+  <rect x="5" y="13" width="22" height="3" fill="#295724"/>
+
+  <!-- Binding pegs -->
+  <rect x="10" y="6" width="3" height="6" rx="1.5" fill="white"/>
+  <rect x="19" y="6" width="3" height="6" rx="1.5" fill="white"/>
+
+  <!-- Calendar grid dots (3x2) -->
+  <rect x="8"  y="20" width="3" height="2.5" rx="0.5" fill="#3b7d34" opacity="0.7"/>
+  <rect x="14.5" y="20" width="3" height="2.5" rx="0.5" fill="#3b7d34" opacity="0.7"/>
+  <rect x="21" y="20" width="3" height="2.5" rx="0.5" fill="#3b7d34" opacity="0.7"/>
+  <rect x="8"  y="24" width="3" height="2.5" rx="0.5" fill="#3b7d34" opacity="0.4"/>
+  <rect x="14.5" y="24" width="3" height="2.5" rx="0.5" fill="#3b7d34" opacity="0.4"/>
 </svg>
