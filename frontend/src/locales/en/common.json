@@ -218,6 +218,7 @@
     "event": "Event",
     "noEventsInRange": "No events in this range.",
     "showMore": "+{{count}} more",
-    "clickForDetails": "Click on an event to view details."
+    "clickForDetails": "Click on an event to view details.",
+    "pressEnterForDetails": "Press Enter to view details"
   }
 }

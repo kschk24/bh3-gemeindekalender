@@ -218,6 +218,7 @@
     "event": "Veranstaltung",
     "noEventsInRange": "Keine Veranstaltungen in diesem Zeitraum.",
     "showMore": "+{{count}} weitere",
-    "clickForDetails": "Klicken Sie auf eine Veranstaltung, um Details anzuzeigen."
+    "clickForDetails": "Klicken Sie auf eine Veranstaltung, um Details anzuzeigen.",
+    "pressEnterForDetails": "Drücken Sie Enter, um Details anzuzeigen"
   }
 }

@@ -90,8 +90,23 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
   const EventComponent = useCallback(
     ({ event }: { event: CalendarEvent }) => {
       const favorited = isFavorited(event.id);
+      
+      const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEvent(event.id);
+        }
+      };
+      
       return (
-        <div className="h-full flex flex-col px-2 py-1 gap-1 group">
+        <div 
+          className="h-full flex flex-col px-2 py-1 gap-1 group cursor-pointer"
+          tabIndex={0}
+          role="button"
+          aria-label={`${event.title}. ${t('calendar.pressEnterForDetails')}`}
+          onKeyDown={handleKeyDown}
+          onClick={() => openEvent(event.id)}
+        >
           <div className="text-sm font-medium leading-tight truncate">
             {event.title}
           </div>
@@ -103,7 +118,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
                   favoriteMutation.mutate({ eventId: event.id, add: !favorited });
                 }}
                 disabled={favoriteMutation.isPending}
-                className="text-yellow-300 hover:text-yellow-400 focus:outline-none transition-colors opacity-0 group-hover:opacity-100"
+                className="text-yellow-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1 rounded transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                 aria-label={favorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
                 title={favorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
               >
@@ -122,7 +137,7 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
         </div>
       );
     },
-    [isAuthenticated, favoriteMutation, isFavorited, t]
+    [isAuthenticated, favoriteMutation, isFavorited, t, openEvent]
   );
   const calendarEvents: CalendarEvent[] = useMemo(() => {
     return events.map((event) => ({
@@ -260,7 +275,14 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
           font-size: 12px;
         }
         
-        .calendar-container .rbc-event:focus {
+        .calendar-container .rbc-event:focus,
+        .calendar-container .rbc-event:focus-within {
+          outline: 2px solid #3b82f6;
+          outline-offset: 2px;
+          z-index: 10;
+        }
+        
+        .calendar-container .rbc-event > div:focus {
           outline: 2px solid #3b82f6;
           outline-offset: 2px;
         }
@@ -294,6 +316,13 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
         .dark .calendar-container .rbc-header {
           color: #e5e7eb;
           border-color: #4b5563;
+        }
+        
+        .dark .calendar-container .rbc-event:focus,
+        .dark .calendar-container .rbc-event:focus-within,
+        .dark .calendar-container .rbc-event > div:focus {
+          outline: 2px solid #60a5fa;
+          outline-offset: 2px;
         }
         
         .dark .calendar-container .rbc-month-view,
