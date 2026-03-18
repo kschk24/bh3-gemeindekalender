@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { MapPin, MessageCircle } from 'lucide-react';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -92,8 +93,9 @@ export default function EventCard({
         </p>
 
         {/* Location */}
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          📍 {event.location}
+        <p className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+          <MapPin className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+          {event.location}
         </p>
 
         {/* Accessibility Badges */}
@@ -105,8 +107,9 @@ export default function EventCard({
 
         {/* Comments Count */}
         {event._count?.comments !== undefined && event._count.comments > 0 && (
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            💬 {t('event.comments', { count: event._count.comments })}
+          <p className="mt-2 flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+            <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
+            {t('event.comments', { count: event._count.comments })}
           </p>
         )}
 

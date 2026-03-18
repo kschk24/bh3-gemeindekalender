@@ -129,7 +129,7 @@ export default function EventFilter({
               Barrierefreiheit
             </legend>
             <div className="flex flex-wrap gap-2">
-              {accessibilityOptions.map(({ key, label, icon }) => (
+              {accessibilityOptions.map(({ key, label, Icon }) => (
                 <label
                   key={key}
                   className={`inline-flex items-center px-3 py-2 rounded-lg border cursor-pointer transition-colors ${
@@ -144,9 +144,7 @@ export default function EventFilter({
                     onChange={(e) => onFilterChange({ [key]: e.target.checked || undefined })}
                     className="sr-only"
                   />
-                  <span aria-hidden="true" className="mr-2">
-                    {icon}
-                  </span>
+                  <Icon className="w-4 h-4 mr-2 flex-shrink-0" aria-hidden="true" />
                   {label}
                 </label>
               ))}
