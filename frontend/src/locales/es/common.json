@@ -74,6 +74,8 @@
     "timeUnit": "Reloj",
     "exportIcal": "Calendario",
     "exportIcalAria": "Exportar al calendario (.ics)",
+    "exportAllIcal": "Exportar todo al calendario",
+    "exportAllIcalAria": "Exportar todos los favoritos como archivo .ics",
     "exportPdf": "PDF",
     "exportPdfAria": "Guardar como PDF",
     "form": {

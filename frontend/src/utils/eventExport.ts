@@ -69,6 +69,45 @@ export function exportEventToIcal(event: Event): void {
   URL.revokeObjectURL(url);
 }
 
+export function exportEventsToIcal(events: Event[]): void {
+  if (events.length === 0) return;
+
+  const now = new Date();
+  const lines = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Gemeindekalender//DE',
+    'CALSCALE:GREGORIAN',
+    'METHOD:PUBLISH',
+  ];
+
+  for (const event of events) {
+    const start = new Date(event.startDate);
+    const end = new Date(event.endDate);
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:${event.id}@gemeindekalender`,
+      `DTSTAMP:${toIcalDate(now)}`,
+      `DTSTART:${toIcalDate(start)}`,
+      `DTEND:${toIcalDate(end)}`,
+      `SUMMARY:${escapeIcal(event.title)}`,
+      `DESCRIPTION:${escapeIcal(event.description)}`,
+      `LOCATION:${escapeIcal([event.location, event.address].filter(Boolean).join(', '))}`,
+      'END:VEVENT',
+    );
+  }
+
+  lines.push('END:VCALENDAR');
+
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'favoriten.ics';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export function exportEventToPdf(
   event: Event,
   dateStr: string,

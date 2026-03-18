@@ -77,6 +77,8 @@
     "pressEnterForDetails": "Press Enter to view details",
     "exportIcal": "Calendar",
     "exportIcalAria": "Export to calendar (.ics)",
+    "exportAllIcal": "Export all to calendar",
+    "exportAllIcalAria": "Export all favorites as .ics file",
     "exportPdf": "PDF",
     "exportPdfAria": "Save as PDF",
     "form": {
