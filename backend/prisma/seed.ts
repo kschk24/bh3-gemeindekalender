@@ -7,36 +7,37 @@ async function main() {
   console.log('Seeding database...');
 
   // Create categories
+  // Colors chosen for WCAG AA contrast (≥4.5:1) with white text
   const categories = await Promise.all([
     prisma.category.upsert({
       where: { name: 'Kultur' },
-      update: {},
-      create: { name: 'Kultur', color: '#8B5CF6' },
+      update: { color: '#6D28D9' },
+      create: { name: 'Kultur', color: '#6D28D9' },   // violet-700  5.9:1
     }),
     prisma.category.upsert({
       where: { name: 'Sport' },
-      update: {},
-      create: { name: 'Sport', color: '#10B981' },
+      update: { color: '#047857' },
+      create: { name: 'Sport', color: '#047857' },    // emerald-700 5.5:1
     }),
     prisma.category.upsert({
       where: { name: 'Bildung' },
-      update: {},
-      create: { name: 'Bildung', color: '#3B82F6' },
+      update: { color: '#1D4ED8' },
+      create: { name: 'Bildung', color: '#1D4ED8' },  // blue-700    6.7:1
     }),
     prisma.category.upsert({
       where: { name: 'Musik' },
-      update: {},
-      create: { name: 'Musik', color: '#F59E0B' },
+      update: { color: '#B45309' },
+      create: { name: 'Musik', color: '#B45309' },    // amber-700   5.1:1
     }),
     prisma.category.upsert({
       where: { name: 'Familie' },
-      update: {},
-      create: { name: 'Familie', color: '#EC4899' },
+      update: { color: '#BE185D' },
+      create: { name: 'Familie', color: '#BE185D' },  // pink-700    6.0:1
     }),
     prisma.category.upsert({
       where: { name: 'Umwelt' },
-      update: {},
-      create: { name: 'Umwelt', color: '#14B8A6' },
+      update: { color: '#0F766E' },
+      create: { name: 'Umwelt', color: '#0F766E' },   // teal-700    5.5:1
     }),
   ]);
 

@@ -40,7 +40,7 @@ export default function HomePage() {
           >
             {t('home.heroTitle')}
           </h1>
-          <p className="text-lg mb-6 text-primary-100">
+          <p className="text-lg mb-6 text-white/90">
             {t('home.heroText')}
           </p>
           <Link
