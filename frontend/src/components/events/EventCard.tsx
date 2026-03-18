@@ -42,14 +42,14 @@ export default function EventCard({
   return (
     <article
       className={`card hover:shadow-lg transition-shadow overflow-hidden ${
-        isHorizontal ? 'flex gap-4' : ''
+        isHorizontal ? 'flex gap-4' : 'h-full flex flex-col'
       }`}
     >
       {/* Image */}
       {event.imageUrl && (
         <div
           className={
-            isHorizontal ? 'w-48 flex-shrink-0' : 'mb-4 -mx-5 -mt-5'
+            isHorizontal ? 'w-48 flex-shrink-0' : 'flex-shrink-0 -mx-5 -mt-5'
           }
         >
           <img
@@ -64,14 +64,19 @@ export default function EventCard({
         </div>
       )}
 
-      <div className="flex-1">
-        {/* Category Badge */}
-        <span
-          className="inline-block px-2 py-1 rounded text-xs font-medium text-white"
-          style={{ backgroundColor: event.category?.color }}
-        >
-          {event.category?.name}
-        </span>
+      <div className="flex-1 flex flex-col">
+        {/* Spacer to push content to bottom */}
+        <div className="flex-1"></div>
+        
+        {/* Content Container - aligned to bottom */}
+        <div className={`flex-shrink-0 ${event.imageUrl ? 'mt-4' : ''}`}>
+          {/* Category Badge */}
+          <span
+            className="inline-block px-2 py-1 rounded text-xs font-medium text-white"
+            style={{ backgroundColor: event.category?.color }}
+          >
+            {event.category?.name}
+          </span>
 
         {/* Title */}
         <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
@@ -141,6 +146,7 @@ export default function EventCard({
               )}
             </button>
           )}
+        </div>
         </div>
       </div>
     </article>
