@@ -117,6 +117,11 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
                   e.stopPropagation();
                   favoriteMutation.mutate({ eventId: event.id, add: !favorited });
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.stopPropagation();
+                  }
+                }}
                 disabled={favoriteMutation.isPending}
                 className="text-yellow-300 hover:text-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-1 rounded transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                 aria-label={favorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}

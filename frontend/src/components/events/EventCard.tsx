@@ -99,6 +99,11 @@ export default function EventCard({
               e.stopPropagation();
               favoriteMutation.mutate({ add: !isFavorited });
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.stopPropagation();
+              }
+            }}
             disabled={favoriteMutation.isPending}
             className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-white/80 dark:bg-gray-900/70 backdrop-blur-sm text-yellow-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             aria-label={isFavorited ? t('event.favoriteRemove', { title: event.title }) : t('event.favoriteAdd', { title: event.title })}
