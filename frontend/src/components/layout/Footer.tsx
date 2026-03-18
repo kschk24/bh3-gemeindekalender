@@ -64,7 +64,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-primary-500 text-center text-sm text-primary-200">
+        <div className="mt-8 pt-6 border-t border-primary-500 text-center text-sm text-white">
           {t('footer.copyright', { year: currentYear })}
         </div>
       </div>
