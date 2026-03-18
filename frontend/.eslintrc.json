@@ -31,6 +31,13 @@
       "rules": {
         "react-refresh/only-export-components": "off"
       }
+    },
+    {
+      "files": ["src/test/**/*", "src/**/__tests__/**/*"],
+      "env": { "node": true },
+      "rules": {
+        "react-refresh/only-export-components": "off"
+      }
     }
   ]
 }
