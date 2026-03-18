@@ -25,6 +25,22 @@ export default {
       ringWidth: {
         DEFAULT: '3px',
       },
+      // Semantic spacing tokens
+      spacing: {
+        section: '2rem',
+        card: '1.25rem',
+      },
+      // Typography scale
+      fontSize: {
+        h1: ['2rem', { lineHeight: '1.25', fontWeight: '700' }],
+        h2: ['1.5rem', { lineHeight: '1.3', fontWeight: '700' }],
+        h3: ['1.25rem', { lineHeight: '1.4', fontWeight: '600' }],
+        body: ['1rem', { lineHeight: '1.6', fontWeight: '400' }],
+      },
+      // Consistent transition duration
+      transitionDuration: {
+        DEFAULT: '150ms',
+      },
       // Green IT: Reduzierte Animationen
       animation: {
         'fade-in': 'fadeIn 0.2s ease-in-out',

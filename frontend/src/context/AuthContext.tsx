@@ -1,68 +1,69 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthResponse } from '../types';
-import { authService } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { User } from '../types';
+import { authService, authEvents } from '../services/api';
 import { useQueryClient } from '@tanstack/react-query';
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored auth on mount
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+    // Restore session via cookie-based refresh on mount
+    authService.refresh()
+      .then((response) => setUser(response.user))
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
   }, []);
 
-  const handleAuthResponse = (response: AuthResponse) => {
-    setUser(response.user);
-    setToken(response.token);
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
-  };
+  useEffect(() => {
+    // Listen for unauthorized events from the API interceptor
+    const handleUnauthorized = () => {
+      setUser(null);
+      queryClient.clear();
+      navigate('/');
+    };
+    authEvents.addEventListener('unauthorized', handleUnauthorized);
+    return () => authEvents.removeEventListener('unauthorized', handleUnauthorized);
+  }, [navigate, queryClient]);
 
   const login = async (email: string, password: string) => {
     const response = await authService.login(email, password);
-    handleAuthResponse(response);
+    setUser(response.user);
   };
 
   const register = async (email: string, password: string) => {
     const response = await authService.register(email, password);
-    handleAuthResponse(response);
+    setUser(response.user);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch {
+      // Proceed with local logout even if server request fails
+    }
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    queryClient.clear(); // Clear all cached queries
+    queryClient.clear();
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
         isLoading,
         isAuthenticated: !!user,
         login,

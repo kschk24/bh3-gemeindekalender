@@ -4,12 +4,26 @@ import { PrismaClient, Role } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export type AuthUser = {
+  id: string;
+  email: string;
+  role: Role;
+};
+
 export interface AuthRequest extends Request {
-  user?: {
-    id: string;
-    email: string;
-    role: Role;
-  };
+  user?: AuthUser;
+}
+
+function extractToken(req: Request): string | null {
+  // Prefer HttpOnly cookie; fall back to Authorization header (for tests/tools)
+  if (req.cookies?.access_token) {
+    return req.cookies.access_token as string;
+  }
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.split(' ')[1];
+  }
+  return null;
 }
 
 export const authenticate = async (
@@ -18,17 +32,15 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const token = extractToken(req);
+
+    if (!token) {
       return res.status(401).json({ message: 'Authentifizierung erforderlich' });
     }
 
-    const token = authHeader.split(' ')[1];
     const secret = process.env.JWT_SECRET || 'default-secret';
-    
     const decoded = jwt.verify(token, secret) as { userId: string };
-    
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
       select: { id: true, email: true, role: true },
@@ -51,14 +63,12 @@ export const optionalAuth = async (
   next: NextFunction
 ) => {
   try {
-    const authHeader = req.headers.authorization;
-    
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split(' ')[1];
+    const token = extractToken(req);
+
+    if (token) {
       const secret = process.env.JWT_SECRET || 'default-secret';
-      
       const decoded = jwt.verify(token, secret) as { userId: string };
-      
+
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
         select: { id: true, email: true, role: true },

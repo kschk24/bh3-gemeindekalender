@@ -1,7 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import { Toaster } from 'sonner';
 import Layout from './components/layout/Layout';
 import LoadingSpinner from './components/common/LoadingSpinner';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import CookieConsent from './components/gdpr/CookieConsent';
 import { EventDetailProvider } from './context/EventDetailContext';
 
 // Lazy loading für Green IT - Code Splitting
@@ -12,15 +15,21 @@ const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
 function App() {
   return (
     <EventDetailProvider>
-      <Layout>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-          </Routes>
-        </Suspense>
-      </Layout>
+      <ErrorBoundary>
+        <Layout>
+          <Suspense fallback={<LoadingSpinner />}>
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+                <Route path="/events" element={<ErrorBoundary><EventsPage /></ErrorBoundary>} />
+                <Route path="/favorites" element={<ErrorBoundary><FavoritesPage /></ErrorBoundary>} />
+              </Routes>
+            </ErrorBoundary>
+          </Suspense>
+        </Layout>
+      </ErrorBoundary>
+      <Toaster richColors closeButton position="bottom-right" />
+      <CookieConsent />
     </EventDetailProvider>
   );
 }

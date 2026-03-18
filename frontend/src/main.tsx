@@ -8,6 +8,8 @@ import LoadingSpinner from './components/common/LoadingSpinner';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AccessibilityProvider } from './context/AccessibilityContext';
+import { ConsentProvider } from './context/ConsentContext';
+import { setCsrfToken } from './services/api';
 import './styles/index.css';
 
 const queryClient = new QueryClient({
@@ -19,10 +21,20 @@ const queryClient = new QueryClient({
   },
 });
 
+// Fetch CSRF token on boot
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+fetch(`${API_URL}/csrf-token`, { credentials: 'include' })
+  .then((r) => r.json())
+  .then((data: { csrfToken?: string }) => {
+    if (data.csrfToken) setCsrfToken(data.csrfToken);
+  })
+  .catch(() => {/* CSRF fetch failed — proceed anyway */});
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ConsentProvider>
         <ThemeProvider>
           <AccessibilityProvider>
             <AuthProvider>
@@ -32,6 +44,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             </AuthProvider>
           </AccessibilityProvider>
         </ThemeProvider>
+        </ConsentProvider>
       </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>

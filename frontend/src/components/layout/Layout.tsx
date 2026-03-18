@@ -11,6 +11,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+      <a href="#main-content" className="skip-link">Zum Hauptinhalt springen</a>
       <Header />
       <div className="flex-1 flex">
         <main

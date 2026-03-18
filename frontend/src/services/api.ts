@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import {
+import type {
   Event,
   Category,
   PaginatedResponse,
@@ -9,35 +9,84 @@ import {
   ApiError,
   Comment,
   CreateCommentInput,
+  CreateEventData,
+  UpdateEventData,
 } from '../types';
 
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// In-memory CSRF token store
+let csrfToken: string | null = null;
+
+export function setCsrfToken(token: string) {
+  csrfToken = token;
+}
+
 const api = axios.create({
   baseURL: API_URL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add auth token to requests
+// Add CSRF token to mutating requests
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const method = config.method?.toUpperCase();
+  if (method && !['GET', 'HEAD', 'OPTIONS'].includes(method) && csrfToken) {
+    config.headers['X-CSRF-Token'] = csrfToken;
   }
   return config;
 });
 
-// Handle errors
+// EventTarget for auth events
+export const authEvents = new EventTarget();
+
+let isRefreshing = false;
+let refreshSubscribers: Array<() => void> = [];
+
+function onRefreshed() {
+  refreshSubscribers.forEach((cb) => cb());
+  refreshSubscribers = [];
+}
+
+// Handle 401 — attempt token refresh, then retry
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiError>) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      // Could redirect to login here
+  async (error: AxiosError<ApiError>) => {
+    const originalRequest = error.config as typeof error.config & { _retry?: boolean };
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest?._retry &&
+      originalRequest?.url !== '/auth/refresh'
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          refreshSubscribers.push(() => resolve(api(originalRequest!)));
+        });
+      }
+
+      originalRequest!._retry = true;
+      isRefreshing = true;
+
+      try {
+        const { data } = await api.post<AuthResponse>('/auth/refresh');
+        isRefreshing = false;
+        onRefreshed();
+        // Update CSRF token if returned
+        if ((data as { csrfToken?: string }).csrfToken) {
+          setCsrfToken((data as { csrfToken?: string }).csrfToken!);
+        }
+        return api(originalRequest!);
+      } catch {
+        isRefreshing = false;
+        refreshSubscribers = [];
+        authEvents.dispatchEvent(new Event('unauthorized'));
+        return Promise.reject(error);
+      }
     }
+
     return Promise.reject(error);
   }
 );
@@ -53,13 +102,22 @@ export const authService = {
     const response = await api.post<AuthResponse>('/auth/register', { email, password });
     return response.data;
   },
+
+  refresh: async (): Promise<AuthResponse> => {
+    const response = await api.post<AuthResponse>('/auth/refresh');
+    return response.data;
+  },
+
+  logout: async (): Promise<void> => {
+    await api.post('/auth/logout');
+  },
 };
 
 // Events Service
 export const eventsService = {
   getAll: async (filters: EventFilters = {}): Promise<PaginatedResponse<Event>> => {
     const params = new URLSearchParams();
-    
+
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         params.append(key, String(value));
@@ -75,12 +133,12 @@ export const eventsService = {
     return response.data;
   },
 
-  create: async (data: Partial<Event>): Promise<Event> => {
+  create: async (data: CreateEventData): Promise<Event> => {
     const response = await api.post<Event>('/events', data);
     return response.data;
   },
 
-  update: async (id: string, data: Partial<Event>): Promise<Event> => {
+  update: async (id: string, data: UpdateEventData): Promise<Event> => {
     const response = await api.put<Event>(`/events/${id}`, data);
     return response.data;
   },
@@ -134,8 +192,9 @@ export const favoritesService = {
 
 // Comments Service
 export const commentsService = {
-  getByEventId: async (eventId: string): Promise<Comment[]> => {
-    const response = await api.get<Comment[]>(`/events/${eventId}/comments`);
+  getByEventId: async (eventId: string, page?: number): Promise<Comment[]> => {
+    const params = page ? `?page=${page}` : '';
+    const response = await api.get<Comment[]>(`/events/${eventId}/comments${params}`);
     return response.data;
   },
 
@@ -146,6 +205,23 @@ export const commentsService = {
 
   delete: async (commentId: string): Promise<void> => {
     await api.delete(`/comments/${commentId}`);
+  },
+};
+
+// Users Service (GDPR)
+export const usersService = {
+  exportData: async (): Promise<void> => {
+    const response = await api.get('/users/me/export', { responseType: 'blob' });
+    const url = URL.createObjectURL(response.data as Blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'my-data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  deleteAccount: async (): Promise<void> => {
+    await api.delete('/users/me');
   },
 };
 

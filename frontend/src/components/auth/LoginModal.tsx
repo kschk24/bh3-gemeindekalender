@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import FocusTrap from 'focus-trap-react';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
 import Input from '../common/Input';
@@ -73,7 +74,8 @@ export default function LoginModal({ isOpen, onClose, triggerRef, onSwitchToRegi
   if (!isOpen) return null;
 
   return (
-    <>
+    <FocusTrap active={isOpen} focusTrapOptions={{ returnFocusOnDeactivate: true, escapeDeactivates: false }}>
+      <div>
       {/* Backdrop - pointer-events: none so cursors still react to elements beneath */}
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity pointer-events-none"
@@ -163,6 +165,7 @@ export default function LoginModal({ isOpen, onClose, triggerRef, onSwitchToRegi
           </div>
         </div>
       </div>
-    </>
+      </div>
+    </FocusTrap>
   );
 }

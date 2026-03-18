@@ -1,10 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { AppError } from '../middleware/errorHandler';
 import { RegisterInput, LoginInput } from '../validators/auth.validators';
 
 const prisma = new PrismaClient();
+
+const JWT_SECRET = () => process.env.JWT_SECRET || 'default-secret';
+const ACCESS_TOKEN_EXPIRY = '15m';
+const REFRESH_TOKEN_EXPIRY_DAYS = 7;
 
 export class AuthService {
   async register(data: RegisterInput) {
@@ -31,9 +36,10 @@ export class AuthService {
       },
     });
 
-    const token = this.generateToken(user.id);
+    const accessToken = this.generateAccessToken(user.id);
+    const refreshToken = await this.generateRefreshToken(user.id);
 
-    return { user, token };
+    return { user, accessToken, refreshToken };
   }
 
   async login(data: LoginInput) {
@@ -51,7 +57,8 @@ export class AuthService {
       throw new AppError('Ungültige Anmeldedaten', 401);
     }
 
-    const token = this.generateToken(user.id);
+    const accessToken = this.generateAccessToken(user.id);
+    const refreshToken = await this.generateRefreshToken(user.id);
 
     return {
       user: {
@@ -60,14 +67,50 @@ export class AuthService {
         role: user.role,
         createdAt: user.createdAt,
       },
-      token,
+      accessToken,
+      refreshToken,
     };
   }
 
-  private generateToken(userId: string): string {
-    const secret = process.env.JWT_SECRET || 'default-secret';
-    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+  async refreshAccessToken(token: string) {
+    const existing = await prisma.refreshToken.findUnique({
+      where: { token },
+      include: { user: { select: { id: true, email: true, role: true, createdAt: true } } },
+    });
 
-    return jwt.sign({ userId }, secret, { expiresIn } as jwt.SignOptions);
+    if (!existing || existing.expiresAt < new Date()) {
+      if (existing) {
+        await prisma.refreshToken.delete({ where: { id: existing.id } });
+      }
+      throw new AppError('Ungültiger oder abgelaufener Refresh-Token', 401);
+    }
+
+    // Rotate: delete old, create new
+    await prisma.refreshToken.delete({ where: { id: existing.id } });
+
+    const accessToken = this.generateAccessToken(existing.userId);
+    const refreshToken = await this.generateRefreshToken(existing.userId);
+
+    return { user: existing.user, accessToken, refreshToken };
+  }
+
+  async logout(token: string) {
+    await prisma.refreshToken.deleteMany({ where: { token } });
+  }
+
+  generateAccessToken(userId: string): string {
+    return jwt.sign({ userId }, JWT_SECRET(), { expiresIn: ACCESS_TOKEN_EXPIRY } as jwt.SignOptions);
+  }
+
+  private async generateRefreshToken(userId: string): Promise<string> {
+    const token = crypto.randomBytes(64).toString('hex');
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + REFRESH_TOKEN_EXPIRY_DAYS);
+
+    await prisma.refreshToken.create({
+      data: { token, userId, expiresAt },
+    });
+
+    return token;
   }
 }

@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import FocusTrap from 'focus-trap-react';
 import { eventsService, favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useEventDetail } from '../../context/EventDetailContext';
@@ -63,7 +64,20 @@ export default function EventDetailModal() {
   const favoriteMutation = useMutation({
     mutationFn: ({ add }: { add: boolean }) =>
       add ? favoritesService.add(eventId!) : favoritesService.remove(eventId!),
-    onSuccess: () => {
+    onMutate: async ({ add }) => {
+      await queryClient.cancelQueries({ queryKey: ['favorites'] });
+      const previousFavorites = queryClient.getQueryData<import('../../types').Event[]>(['favorites']);
+      queryClient.setQueryData<import('../../types').Event[]>(['favorites'], (old = []) =>
+        add ? [...old, event!] : old.filter((f) => f.id !== eventId)
+      );
+      return { previousFavorites };
+    },
+    onError: (_err, _vars, context) => {
+      if (context?.previousFavorites !== undefined) {
+        queryClient.setQueryData(['favorites'], context.previousFavorites);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['favorites'] });
     },
   });
@@ -86,7 +100,8 @@ export default function EventDetailModal() {
       : null;
 
   return (
-    <>
+    <FocusTrap active={isOpen} focusTrapOptions={{ returnFocusOnDeactivate: true, escapeDeactivates: false }}>
+      <div>
       {/* Backdrop – closes modal on click */}
       <div
         className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity cursor-pointer"
@@ -304,6 +319,7 @@ export default function EventDetailModal() {
           </div>
         </div>
       </div>
-    </>
+      </div>
+    </FocusTrap>
   );
 }

@@ -3,10 +3,12 @@ import { ZodError } from 'zod';
 
 export class AppError extends Error {
   statusCode: number;
-  
-  constructor(message: string, statusCode: number = 500) {
+  code?: string;
+
+  constructor(message: string, statusCode: number = 500, code?: string) {
     super(message);
     this.statusCode = statusCode;
+    this.code = code;
     this.name = 'AppError';
   }
 }
@@ -22,6 +24,7 @@ export const errorHandler = (
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       message: err.message,
+      ...(err.code && { code: err.code }),
     });
   }
 

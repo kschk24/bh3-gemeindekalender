@@ -1,8 +1,10 @@
 import { Response, NextFunction } from 'express';
 import { UsersService } from '../services/users.service';
+import { GdprService } from '../services/gdpr.service';
 import { AuthRequest } from '../middleware/auth';
 
 const usersService = new UsersService();
+const gdprService = new GdprService();
 
 export class UsersController {
   getProfile = async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -41,6 +43,30 @@ export class UsersController {
       const userId = req.user!.id;
       const { eventId } = req.params;
       await usersService.removeFavorite(userId, eventId);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  exportData = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user!.id;
+      const data = await gdprService.exportUserData(userId);
+      res.setHeader('Content-Disposition', 'attachment; filename="my-data.json"');
+      res.json(data);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteAccount = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user!.id;
+      await gdprService.deleteAccount(userId);
+      // Clear auth cookies since account is gone
+      res.clearCookie('access_token');
+      res.clearCookie('refresh_token', { path: '/api/auth/refresh' });
       res.status(204).send();
     } catch (error) {
       next(error);

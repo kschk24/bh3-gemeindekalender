@@ -88,13 +88,23 @@ export interface EventFilters {
 
 export interface AuthResponse {
   user: User;
-  token: string;
+}
+
+export interface RefreshResponse {
+  user: User;
 }
 
 export interface ApiError {
   message: string;
+  code?: string;
   errors?: Array<{ field: string; message: string }>;
 }
+
+export type ApiResult<T> = { success: true; data: T } | { success: false; error: ApiError };
+
+export type CreateEventData = Omit<Event, 'id' | 'createdAt' | 'updatedAt' | '_count' | 'category'>;
+export type UpdateEventData = Partial<CreateEventData>;
+export type UserProfile = Pick<User, 'id' | 'email' | 'role' | 'createdAt'>;
 
 // Comment types
 export interface Comment {

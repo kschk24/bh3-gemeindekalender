@@ -12,5 +12,7 @@ router.get('/me', usersController.getProfile);
 router.get('/me/favorites', usersController.getFavorites);
 router.post('/me/favorites/:eventId', usersController.addFavorite);
 router.delete('/me/favorites/:eventId', usersController.removeFavorite);
+router.get('/me/export', usersController.exportData);
+router.delete('/me', usersController.deleteAccount);
 
 export default router;

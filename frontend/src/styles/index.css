@@ -104,6 +104,16 @@ body {
 
 /* Utility classes */
 @layer components {
+  /* Accessibility badge (for category/accessibility indicators) */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Screen-reader only, but visible on focus */
+  .sr-only-focusable {
+    @apply sr-only focus:not-sr-only focus:absolute focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900;
+  }
+
   .btn {
     @apply px-4 py-2 rounded font-medium transition-colors focus:ring-2 focus:ring-offset-2;
   }
