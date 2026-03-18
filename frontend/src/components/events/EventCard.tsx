@@ -2,26 +2,34 @@ import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, MessageCircle } from 'lucide-react';
+import { MapPin, MessageCircle, Palette, Activity, BookOpen, Music, Heart, Leaf, type LucideIcon } from 'lucide-react';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useEventDetail } from '../../context/EventDetailContext';
 import AccessibilityBadges from './AccessibilityBadges';
 
-const CATEGORY_IMAGES: Record<string, string> = {
-  'kultur':  'https://images.unsplash.com/photo-1561839561-b13bcfe7c0a2?w=800&auto=format&fit=crop',
-  'sport':   'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop',
-  'bildung': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&auto=format&fit=crop',
-  'musik':   'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&auto=format&fit=crop',
-  'familie': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop',
-  'umwelt':  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&auto=format&fit=crop',
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  'kultur':  Palette,
+  'sport':   Activity,
+  'bildung': BookOpen,
+  'musik':   Music,
+  'familie': Heart,
+  'umwelt':  Leaf,
 };
 
-function getEventImage(event: Event): string | undefined {
-  if (event.imageUrl) return event.imageUrl;
-  const key = event.category?.name?.toLowerCase() ?? '';
-  return CATEGORY_IMAGES[key];
+function CategoryPlaceholder({ event, className }: { event: Event; className: string }) {
+  const color = event.category?.color ?? '#6b7280';
+  const Icon = CATEGORY_ICONS[event.category?.name?.toLowerCase() ?? ''];
+  return (
+    <div
+      className={`flex items-center justify-center ${className}`}
+      style={{ background: `linear-gradient(135deg, ${color}18, ${color}35)` }}
+      aria-hidden="true"
+    >
+      {Icon && <Icon className="w-12 h-12" style={{ color, opacity: 0.35 }} />}
+    </div>
+  );
 }
 
 interface EventCardProps {
@@ -60,24 +68,23 @@ export default function EventCard({
         isHorizontal ? 'flex gap-4' : 'h-full flex flex-col'
       }`}
     >
-      {/* Image — falls back to category default if no imageUrl */}
-      {getEventImage(event) && (
-        <div
-          className={
-            isHorizontal ? 'w-48 flex-shrink-0' : 'flex-shrink-0 -mx-5 -mt-5'
-          }
-        >
+      {/* Image or category placeholder */}
+      <div className={isHorizontal ? 'w-48 flex-shrink-0' : 'flex-shrink-0 -mx-5 -mt-5'}>
+        {event.imageUrl ? (
           <img
-            src={getEventImage(event)}
+            src={event.imageUrl}
             alt=""
-            className={`object-cover ${
-              isHorizontal ? 'w-full h-full' : 'w-full h-44'
-            }`}
+            className={`object-cover ${isHorizontal ? 'w-full h-full' : 'w-full h-44'}`}
             loading="lazy"
             sizes={isHorizontal ? '192px' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}
           />
-        </div>
-      )}
+        ) : (
+          <CategoryPlaceholder
+            event={event}
+            className={isHorizontal ? 'w-full h-full' : 'w-full h-44'}
+          />
+        )}
+      </div>
 
       <div className="flex-1 flex flex-col">
         {/* Spacer to push content to bottom */}
