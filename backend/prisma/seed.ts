@@ -171,6 +171,33 @@ async function main() {
     },
   ];
 
+  // TestFest – Demo-Event für alle Entwickler
+  await prisma.event.upsert({
+    where: { id: 'seed-testfest-2026' },
+    update: {},
+    create: {
+      id: 'seed-testfest-2026',
+      title: 'TestFest',
+      description: 'Ein großes Gemeindefest auf der Großen Wiese mit Musik, Essen und Unterhaltung für die ganze Familie. Eintritt frei!',
+      location: 'Große Wiese',
+      address: 'Große Wiese 1, 12345 Musterstadt',
+      startDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000),
+      endDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000),
+      categoryId: categories[0].id, // Kultur
+      requiresAccount: false,
+      imageUrl: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&auto=format&fit=crop',
+      createdBy: admin.id,
+      accessibility: {
+        create: {
+          wheelchairAccessible: true,
+          hearingLoop: false,
+          signLanguage: true,
+          easyLanguage: true,
+        },
+      },
+    },
+  });
+
   for (const eventData of events) {
     const { accessibility, ...rest } = eventData;
     await prisma.event.create({
@@ -181,7 +208,7 @@ async function main() {
     });
   }
 
-  console.log(`Created ${events.length} sample events`);
+  console.log(`Created ${events.length + 1} sample events (incl. TestFest)`);
   console.log('Seeding complete!');
 }
 
