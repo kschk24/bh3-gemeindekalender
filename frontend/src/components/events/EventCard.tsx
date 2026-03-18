@@ -2,21 +2,13 @@ import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, MessageCircle, Palette, Dumbbell, BookOpen, Music, Users, Leaf, type LucideIcon } from 'lucide-react';
+import { MapPin, MessageCircle } from 'lucide-react';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useEventDetail } from '../../context/EventDetailContext';
 import AccessibilityBadges from './AccessibilityBadges';
-
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  'kultur':  Palette,
-  'sport':   Dumbbell,
-  'bildung': BookOpen,
-  'musik':   Music,
-  'familie': Users,
-  'umwelt':  Leaf,
-};
+import { CATEGORY_ICONS } from '../../constants/categories';
 
 function CategoryPlaceholder({ event, className }: { event: Event; className: string }) {
   const color = event.category?.color ?? '#6b7280';

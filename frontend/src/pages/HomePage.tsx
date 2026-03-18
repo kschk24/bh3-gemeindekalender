@@ -5,6 +5,7 @@ import EventCard from '../components/events/EventCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { ACCESSIBILITY_OPTIONS } from '../constants/accessibility';
+import { CATEGORY_ICONS } from '../constants/categories';
 import { useAuth } from '../context/AuthContext';
 
 export default function HomePage() {
@@ -68,11 +69,18 @@ export default function HomePage() {
                 to={`/events?categoryId=${category.id}`}
                 className="card text-center hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
-                <div
-                  className="w-12 h-12 mx-auto mb-3 rounded-full"
-                  style={{ backgroundColor: category.color }}
-                  aria-hidden="true"
-                />
+                {(() => {
+                  const Icon = CATEGORY_ICONS[category.name.toLowerCase()];
+                  return (
+                    <div
+                      className="w-14 h-14 mx-auto mb-3 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: category.color }}
+                      aria-hidden="true"
+                    >
+                      {Icon && <Icon className="w-7 h-7 text-white" />}
+                    </div>
+                  );
+                })()}
                 <h3 className="font-medium text-gray-900 dark:text-white">
                   {category.name}
                 </h3>
