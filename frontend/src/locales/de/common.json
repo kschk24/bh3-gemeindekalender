@@ -69,6 +69,7 @@
     "loadingFavorites": "Lade Favoriten...",
     "myFavorites": "Meine Favoriten",
     "noFavoritesMessage": "Sie haben noch keine Favoriten gespeichert.",
+    "noFavoritesHint": "Klicken Sie auf den Stern bei einer Veranstaltung, um sie zu merken.",
     "discoverEvents": "Veranstaltungen entdecken →",
     "timeUnit": "Uhr",
     "form": {
@@ -90,6 +91,10 @@
     "beFirst": "Seien Sie der Erste, der einen Kommentar hinterlässt!",
     "deleteConfirm": "Möchten Sie diesen Kommentar wirklich löschen?",
     "deleteAria": "Kommentar löschen",
+    "confirmYes": "Ja, löschen",
+    "confirmNo": "Abbrechen",
+    "deleted": "Kommentar wurde gelöscht",
+    "created": "Kommentar wurde hinzugefügt",
     "guest": "Gast",
     "registered": "(registriert)",
     "charCount": "{{count}}/2000 Zeichen"
@@ -127,7 +132,8 @@
     "results": "{{count}} Veranstaltung",
     "results_plural": "{{count}} Veranstaltungen",
     "paginationPrev": "Zurück",
-    "paginationNext": "Weiter"
+    "paginationNext": "Weiter",
+    "paginationPage": "Seite {{page}} von {{total}}"
   },
   "footer": {
     "title": "Gemeindekalender",

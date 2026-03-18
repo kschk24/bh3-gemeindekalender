@@ -6,6 +6,7 @@ import CommentItem from './CommentItem';
 import CommentForm from './CommentForm';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { useAccessibility } from '../../context/AccessibilityContext';
 
 interface CommentSectionProps {
   eventId: string;
@@ -14,8 +15,10 @@ interface CommentSectionProps {
 export default function CommentSection({ eventId }: CommentSectionProps) {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const { announceMessage } = useAccessibility();
   const [submitError, setSubmitError] = useState<string | undefined>();
   const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   // Fetch comments
   const { data: comments, isLoading, error } = useQuery({
@@ -29,6 +32,7 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', eventId] });
       setSubmitError(undefined);
+      announceMessage(t('comment.created'));
     },
     onError: () => {
       setSubmitError(t('error.generic'));
@@ -41,9 +45,12 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', eventId] });
       setDeletingCommentId(null);
+      setConfirmDeleteId(null);
+      announceMessage(t('comment.deleted'));
     },
     onError: () => {
       setDeletingCommentId(null);
+      setConfirmDeleteId(null);
     },
   });
 
@@ -52,10 +59,16 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
   };
 
   const handleDelete = (commentId: string) => {
-    if (window.confirm(t('comment.deleteConfirm'))) {
-      setDeletingCommentId(commentId);
-      deleteMutation.mutate(commentId);
-    }
+    setConfirmDeleteId(commentId);
+  };
+
+  const handleDeleteConfirm = (commentId: string) => {
+    setDeletingCommentId(commentId);
+    deleteMutation.mutate(commentId);
+  };
+
+  const handleDeleteCancel = () => {
+    setConfirmDeleteId(null);
   };
 
   return (
@@ -138,6 +151,9 @@ export default function CommentSection({ eventId }: CommentSectionProps) {
               comment={comment}
               onDelete={handleDelete}
               isDeleting={deletingCommentId === comment.id}
+              showDeleteConfirm={confirmDeleteId === comment.id}
+              onConfirmDelete={() => handleDeleteConfirm(comment.id)}
+              onCancelDelete={handleDeleteCancel}
             />
           ))
         )}

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { eventsService, categoriesService } from '../services/api';
+import { eventsService, categoriesService, favoritesService } from '../services/api';
 import EventCard from '../components/events/EventCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { ACCESSIBILITY_OPTIONS } from '../constants/accessibility';
+import { useAuth } from '../context/AuthContext';
 
 export default function HomePage() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
   const { data: eventsData, isLoading: eventsLoading } = useQuery({
     queryKey: ['events', 'upcoming'],
     queryFn: () => eventsService.getAll({ limit: 6 }),
@@ -16,6 +18,12 @@ export default function HomePage() {
   const { data: categories } = useQuery({
     queryKey: ['categories'],
     queryFn: categoriesService.getAll,
+  });
+
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: favoritesService.getAll,
+    enabled: isAuthenticated,
   });
 
   return (
@@ -103,7 +111,11 @@ export default function HomePage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eventsData?.data.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <EventCard
+                key={event.id}
+                event={event}
+                isFavorited={favorites?.some((f) => f.id === event.id) ?? false}
+              />
             ))}
           </div>
         )}

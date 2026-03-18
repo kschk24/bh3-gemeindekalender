@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { eventsService, categoriesService } from '../services/api';
+import { eventsService, categoriesService, favoritesService } from '../services/api';
 import { EventFilters } from '../types';
 import EventCard from '../components/events/EventCard';
 import EventFilter from '../components/events/EventFilter';
@@ -9,6 +9,8 @@ import CalendarView from '../components/events/CalendarView';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Button from '../components/common/Button';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { useAccessibility } from '../context/AccessibilityContext';
 
 // Icons for view mode toggle
 const GridIcon = () => (
@@ -31,6 +33,8 @@ const CalendarIcon = () => (
 
 export default function EventsPage() {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth();
+  const { announceMessage } = useAccessibility();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'calendar'>('calendar');
 
@@ -58,6 +62,12 @@ export default function EventsPage() {
     queryFn: categoriesService.getAll,
   });
 
+  const { data: favorites } = useQuery({
+    queryKey: ['favorites'],
+    queryFn: favoritesService.getAll,
+    enabled: isAuthenticated,
+  });
+
   const updateFilters = (newFilters: Partial<EventFilters>) => {
     const params = new URLSearchParams(searchParams);
 
@@ -78,6 +88,7 @@ export default function EventsPage() {
   };
 
   const handlePageChange = (newPage: number) => {
+    announceMessage(t('eventsPage.paginationPage', { page: newPage, total: eventsData?.meta.totalPages }));
     updateFilters({ page: newPage });
     // Scroll to top and focus main content
     document.getElementById('main-content')?.focus();
@@ -143,7 +154,7 @@ export default function EventsPage() {
             <LoadingSpinner label={t('eventsPage.loading')} />
           ) : eventsData?.data.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
+              <p className="text-gray-600 dark:text-gray-400 text-lg" aria-live="polite">
                 {t('eventsPage.noResults')}
               </p>
               <Button
@@ -174,6 +185,7 @@ export default function EventsPage() {
                     key={event.id}
                     event={event}
                     variant={viewMode === 'list' ? 'horizontal' : 'vertical'}
+                    isFavorited={favorites?.some((f) => f.id === event.id) ?? false}
                   />
                 ))}
               </div>
@@ -187,19 +199,19 @@ export default function EventsPage() {
                   <Button
                     variant="outline"
                     onClick={() => handlePageChange(eventsData.meta.page - 1)}
-                    disabled={eventsData.meta.page <= 1}
+                    disabled={eventsData.meta.page <= 1 || isLoading}
                   >
                     {t('eventsPage.paginationPrev')}
                   </Button>
 
-                  <span className="px-4 text-gray-600 dark:text-gray-400">
-                    Seite {eventsData.meta.page} von {eventsData.meta.totalPages}
+                  <span className="px-4 text-gray-600 dark:text-gray-400" aria-live="polite" aria-atomic="true">
+                    {t('eventsPage.paginationPage', { page: eventsData.meta.page, total: eventsData.meta.totalPages })}
                   </span>
 
                   <Button
                     variant="outline"
                     onClick={() => handlePageChange(eventsData.meta.page + 1)}
-                    disabled={eventsData.meta.page >= eventsData.meta.totalPages}
+                    disabled={eventsData.meta.page >= eventsData.meta.totalPages || isLoading}
                   >
                     {t('eventsPage.paginationNext')}
                   </Button>

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -11,11 +11,13 @@ import AccessibilityBadges from './AccessibilityBadges';
 interface EventCardProps {
   event: Event;
   variant?: 'vertical' | 'horizontal';
+  isFavorited?: boolean;
 }
 
 export default function EventCard({
   event,
   variant = 'vertical',
+  isFavorited = false,
 }: EventCardProps) {
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useAuth();
@@ -24,15 +26,6 @@ export default function EventCard({
   const startDate = new Date(event.startDate);
 
   const locale = i18n.language === 'de' ? de : enUS;
-
-  // Fetch favorites to check if this event is favorited
-  const { data: favorites } = useQuery({
-    queryKey: ['favorites'],
-    queryFn: favoritesService.getAll,
-    enabled: isAuthenticated,
-  });
-
-  const isFavorited = !!favorites?.some((f) => f.id === event.id);
 
   // Toggle favorite mutation (add or remove based on current state)
   const favoriteMutation = useMutation({
@@ -65,6 +58,7 @@ export default function EventCard({
               isHorizontal ? 'w-full h-full rounded-l-lg' : 'w-full h-40 rounded-t-lg'
             }`}
             loading="lazy"
+            sizes={isHorizontal ? '192px' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}
           />
         </div>
       )}
@@ -129,7 +123,7 @@ export default function EventCard({
             <button
               onClick={() => favoriteMutation.mutate({ add: !isFavorited })}
               disabled={favoriteMutation.isPending}
-              className="text-yellow-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded p-1 transition-colors"
+              className="text-yellow-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded p-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label={isFavorited ? t('event.favoriteRemove', { title: event.title }) : t('event.favoriteAdd', { title: event.title })}
               title={isFavorited ? t('event.favoriteRemove') : t('event.favoriteAdd')}
             >

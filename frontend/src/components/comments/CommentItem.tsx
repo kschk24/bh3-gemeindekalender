@@ -9,9 +9,12 @@ interface CommentItemProps {
   comment: Comment;
   onDelete?: (commentId: string) => void;
   isDeleting?: boolean;
+  showDeleteConfirm?: boolean;
+  onConfirmDelete?: () => void;
+  onCancelDelete?: () => void;
 }
 
-export default function CommentItem({ comment, onDelete, isDeleting }: CommentItemProps) {
+export default function CommentItem({ comment, onDelete, isDeleting, showDeleteConfirm, onConfirmDelete, onCancelDelete }: CommentItemProps) {
   const { user, isAuthenticated } = useAuth();
   const { t, i18n } = useTranslation();
 
@@ -59,29 +62,51 @@ export default function CommentItem({ comment, onDelete, isDeleting }: CommentIt
         </div>
 
         {canDelete && onDelete && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onDelete(comment.id)}
-            disabled={isDeleting}
-            aria-label={t('comment.deleteAria')}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
-          >
-            <svg 
-              className="w-4 h-4" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          showDeleteConfirm ? (
+            <div className="flex items-center gap-2" role="group" aria-label={t('comment.deleteConfirm')}>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onConfirmDelete}
+                disabled={isDeleting}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 text-xs font-medium"
+              >
+                {t('comment.confirmYes')}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onCancelDelete}
+                className="text-gray-600 hover:text-gray-700 dark:text-gray-400 text-xs"
+              >
+                {t('comment.confirmNo')}
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onDelete(comment.id)}
+              disabled={isDeleting}
+              aria-label={t('comment.deleteAria')}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" 
-              />
-            </svg>
-          </Button>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+            </Button>
+          )
         )}
       </header>
 

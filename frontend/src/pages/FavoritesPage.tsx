@@ -32,13 +32,24 @@ export default function FavoritesPage() {
       </h1>
 
       {favorites?.length === 0 ? (
-        <div className="text-center py-12 card">
-          <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
+        <div className="text-center py-16 card">
+          <svg
+            className="w-16 h-16 mx-auto mb-4 text-yellow-300 dark:text-yellow-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+          </svg>
+          <p className="text-gray-700 dark:text-gray-300 text-xl font-semibold mb-2">
             {t('event.noFavoritesMessage')}
+          </p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+            {t('event.noFavoritesHint')}
           </p>
           <Link
             to="/events"
-            className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+            className="inline-block bg-primary-600 text-white px-6 py-2.5 rounded font-medium hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           >
             {t('event.discoverEvents')}
           </Link>
@@ -46,7 +57,7 @@ export default function FavoritesPage() {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {favorites?.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <EventCard key={event.id} event={event} isFavorited={true} />
           ))}
         </div>
       )}

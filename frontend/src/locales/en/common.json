@@ -69,6 +69,7 @@
     "loadingFavorites": "Loading favorites...",
     "myFavorites": "My favorites",
     "noFavoritesMessage": "You have not saved any favorites yet.",
+    "noFavoritesHint": "Click the star on any event to save it as a favorite.",
     "discoverEvents": "Discover events →",
     "timeUnit": "",
     "form": {
@@ -90,6 +91,10 @@
     "beFirst": "Be the first to leave a comment!",
     "deleteConfirm": "Do you really want to delete this comment?",
     "deleteAria": "Delete comment",
+    "confirmYes": "Yes, delete",
+    "confirmNo": "Cancel",
+    "deleted": "Comment deleted",
+    "created": "Comment added",
     "guest": "Guest",
     "registered": "(registered)",
     "charCount": "{{count}}/2000 characters"
@@ -127,7 +132,8 @@
     "results": "{{count}} event",
     "results_plural": "{{count}} events",
     "paginationPrev": "Previous",
-    "paginationNext": "Next"
+    "paginationNext": "Next",
+    "paginationPage": "Page {{page}} of {{total}}"
   },
   "footer": {
     "title": "Community Calendar",
