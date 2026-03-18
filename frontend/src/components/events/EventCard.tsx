@@ -9,6 +9,21 @@ import { useAuth } from '../../context/AuthContext';
 import { useEventDetail } from '../../context/EventDetailContext';
 import AccessibilityBadges from './AccessibilityBadges';
 
+const CATEGORY_IMAGES: Record<string, string> = {
+  'kultur':  'https://images.unsplash.com/photo-1561839561-b13bcfe7c0a2?w=800&auto=format&fit=crop',
+  'sport':   'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop',
+  'bildung': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&auto=format&fit=crop',
+  'musik':   'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=800&auto=format&fit=crop',
+  'familie': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop',
+  'umwelt':  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&auto=format&fit=crop',
+};
+
+function getEventImage(event: Event): string | undefined {
+  if (event.imageUrl) return event.imageUrl;
+  const key = event.category?.name?.toLowerCase() ?? '';
+  return CATEGORY_IMAGES[key];
+}
+
 interface EventCardProps {
   event: Event;
   variant?: 'vertical' | 'horizontal';
@@ -45,15 +60,15 @@ export default function EventCard({
         isHorizontal ? 'flex gap-4' : 'h-full flex flex-col'
       }`}
     >
-      {/* Image */}
-      {event.imageUrl && (
+      {/* Image — falls back to category default if no imageUrl */}
+      {getEventImage(event) && (
         <div
           className={
             isHorizontal ? 'w-48 flex-shrink-0' : 'flex-shrink-0 -mx-5 -mt-5'
           }
         >
           <img
-            src={event.imageUrl}
+            src={getEventImage(event)}
             alt=""
             className={`object-cover ${
               isHorizontal ? 'w-full h-full' : 'w-full h-44'
