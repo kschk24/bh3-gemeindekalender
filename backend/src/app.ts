@@ -35,12 +35,14 @@ app.use(cookieParser());
 app.use(express.json());
 
 // General rate limit
-const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: { message: 'Zu viele Anfragen, bitte später erneut versuchen' },
-});
-app.use(generalLimiter);
+if (IS_PROD) {
+  const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: { message: 'Zu viele Anfragen, bitte später erneut versuchen' },
+  });
+  app.use(generalLimiter);
+}
 
 // CSRF protection (skip in test environment)
 const { generateCsrfToken, doubleCsrfProtection } = doubleCsrf({

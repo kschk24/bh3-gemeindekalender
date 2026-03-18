@@ -41,7 +41,7 @@ export default function EventCard({
 
   return (
     <article
-      className={`card hover:shadow-lg transition-shadow ${
+      className={`card hover:shadow-lg transition-shadow overflow-hidden ${
         isHorizontal ? 'flex gap-4' : ''
       }`}
     >
@@ -49,14 +49,14 @@ export default function EventCard({
       {event.imageUrl && (
         <div
           className={
-            isHorizontal ? 'w-48 flex-shrink-0' : 'mb-4 -mx-6 -mt-6'
+            isHorizontal ? 'w-48 flex-shrink-0' : 'mb-4 -mx-5 -mt-5'
           }
         >
           <img
             src={event.imageUrl}
             alt=""
             className={`object-cover ${
-              isHorizontal ? 'w-full h-full rounded-l-lg' : 'w-full h-40 rounded-t-lg'
+              isHorizontal ? 'w-full h-full' : 'w-full h-44'
             }`}
             loading="lazy"
             sizes={isHorizontal ? '192px' : '(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw'}

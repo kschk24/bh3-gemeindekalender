@@ -7,9 +7,10 @@ import { loginSchema, registerSchema } from '../validators/auth.validators';
 const router = Router();
 const authController = new AuthController();
 
+const IS_PROD = process.env.NODE_ENV === 'production';
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: IS_PROD ? 10 : 1000,
   skipSuccessfulRequests: true,
   message: { message: 'Zu viele Anfragen, bitte später erneut versuchen' },
 });
