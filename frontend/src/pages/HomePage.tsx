@@ -95,7 +95,7 @@ export default function HomePage() {
               <Link
                 key={category.id}
                 to={`/events?categoryId=${category.id}`}
-                className="card text-center hover:shadow-lg transition-shadow focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="card text-center hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500"
               >
                 {(() => {
                   const Icon = CATEGORY_ICONS[category.name.toLowerCase()];

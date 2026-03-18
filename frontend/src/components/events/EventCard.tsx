@@ -54,9 +54,14 @@ export default function EventCard({
 
   const isHorizontal = variant === 'horizontal';
 
+  const handleCardClick = () => {
+    openEvent(event.id);
+  };
+
   return (
     <article
-      className={`card hover:shadow-lg transition-shadow overflow-hidden ${
+      onClick={handleCardClick}
+      className={`card hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all cursor-pointer overflow-hidden ${
         isHorizontal ? 'flex gap-4' : 'h-full flex flex-col'
       }`}
     >
@@ -94,12 +99,7 @@ export default function EventCard({
 
         {/* Title */}
         <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">
-          <button
-            onClick={() => openEvent(event.id)}
-            className="hover:text-primary-600 dark:hover:text-primary-400 focus:outline-none focus:underline text-left"
-          >
-            {event.title}
-          </button>
+          {event.title}
         </h3>
 
         {/* Date & Time */}
@@ -133,17 +133,13 @@ export default function EventCard({
         )}
 
         {/* Actions */}
-        <div className="mt-4 flex items-center justify-between">
-          <button
-            onClick={() => openEvent(event.id)}
-            className="text-primary-600 dark:text-primary-400 font-medium hover:underline focus:outline-none focus:underline"
-          >
-            {t('event.details')}
-          </button>
-
+        <div className="mt-4 flex items-center justify-end">
           {isAuthenticated && (
             <button
-              onClick={() => favoriteMutation.mutate({ add: !isFavorited })}
+              onClick={(e) => {
+                e.stopPropagation();
+                favoriteMutation.mutate({ add: !isFavorited });
+              }}
               disabled={favoriteMutation.isPending}
               className="text-yellow-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded p-1 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label={isFavorited ? t('event.favoriteRemove', { title: event.title }) : t('event.favoriteAdd', { title: event.title })}
