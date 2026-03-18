@@ -9,6 +9,7 @@ const eventsController = new EventsController();
 
 // Public routes
 router.get('/', validateRequest(eventFiltersSchema, 'query'), eventsController.getAll);
+router.get('/mine', authenticate, requireEventManager, eventsController.getMine);
 router.get('/:id', eventsController.getById);
 
 // Protected routes (Admin or EventManager)

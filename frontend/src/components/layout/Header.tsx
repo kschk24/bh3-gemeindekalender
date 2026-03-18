@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Plus, ShieldCheck } from 'lucide-react';
+import { Plus, ShieldCheck, CalendarDays } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { Role } from '../../types';
@@ -95,6 +95,9 @@ export default function Header() {
               {isAuthenticated && (
                 <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} highlighted />
               )}
+              {canManageEvents && (
+                <NavItem to="/my-events" icon={<CalendarDays className="w-8 h-8" aria-hidden="true" />} label="Meine Events" />
+              )}
               {isAdmin && (
                 <NavItem to="/admin" icon={<ShieldCheck className="w-8 h-8" aria-hidden="true" />} label={t('nav.admin')} />
               )}
@@ -159,6 +162,9 @@ export default function Header() {
           <NavItem to="/" icon={<HomeIcon />} label={t('nav.home')} />
           {isAuthenticated && (
             <NavItem to="/favorites" icon={<StarIcon />} label={t('nav.favorites')} />
+          )}
+          {canManageEvents && (
+            <NavItem to="/my-events" icon={<CalendarDays className="w-8 h-8" aria-hidden="true" />} label="Meine Events" />
           )}
           {isAdmin && (
             <NavItem to="/admin" icon={<ShieldCheck className="w-8 h-8" aria-hidden="true" />} label={t('nav.admin')} />

@@ -26,6 +26,17 @@ export class EventsController {
     }
   };
 
+  getMine = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 20;
+      const result = await eventsService.getMine(req.user!.id, page, limit);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   create = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const data: CreateEventInput = req.body;

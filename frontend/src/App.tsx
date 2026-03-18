@@ -12,6 +12,7 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const EventsPage = lazy(() => import('./pages/EventsPage'));
 const FavoritesPage = lazy(() => import('./pages/FavoritesPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
+const EventManagerPage = lazy(() => import('./pages/EventManagerPage'));
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/events" element={<ErrorBoundary><EventsPage /></ErrorBoundary>} />
                 <Route path="/favorites" element={<ErrorBoundary><FavoritesPage /></ErrorBoundary>} />
                 <Route path="/admin" element={<ErrorBoundary><AdminPage /></ErrorBoundary>} />
+                <Route path="/my-events" element={<EventManagerPage />} />
               </Routes>
             </ErrorBoundary>
           </Suspense>

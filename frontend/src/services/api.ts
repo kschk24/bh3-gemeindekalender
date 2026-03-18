@@ -158,6 +158,11 @@ export const eventsService = {
     return response.data;
   },
 
+  getMine: async (page = 1): Promise<PaginatedResponse<AdminEvent>> => {
+    const response = await api.get<PaginatedResponse<AdminEvent>>('/events/mine', { params: { page } });
+    return response.data;
+  },
+
   getRegistrations: async (eventId: string): Promise<Registration[]> => {
     const response = await api.get<Registration[]>(`/events/${eventId}/registrations`);
     return response.data;

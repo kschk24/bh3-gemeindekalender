@@ -109,6 +109,27 @@ export class EventsService {
     return event;
   }
 
+  async getMine(userId: string, page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const [events, total] = await Promise.all([
+      prisma.event.findMany({
+        where: { createdBy: userId },
+        skip,
+        take: limit,
+        orderBy: { startDate: 'desc' },
+        include: {
+          category: true,
+          _count: { select: { registrations: true } },
+        },
+      }),
+      prisma.event.count({ where: { createdBy: userId } }),
+    ]);
+    return {
+      data: events,
+      meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
+    };
+  }
+
   async create(data: CreateEventInput, userId: string) {
     const { accessibility, ...eventData } = data;
 

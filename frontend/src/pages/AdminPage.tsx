@@ -4,13 +4,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { de } from 'date-fns/locale';
-import { Trash2, ShieldCheck, Users, CalendarDays } from 'lucide-react';
+import { Trash2, Pencil, ShieldCheck, Users, CalendarDays } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { adminService } from '../services/api';
 import { Role, type AdminUser, type AdminEvent } from '../types';
 import Button from '../components/common/Button';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import EditEventModal from '../components/events/EditEventModal';
 
 const ROLE_LABELS: Record<Role, string> = {
   [Role.USER]: 'Benutzer',
@@ -73,7 +74,7 @@ function UserRow({ user, onRoleChange, onDelete }: {
   );
 }
 
-function EventRow({ event, onDelete }: { event: AdminEvent; onDelete: (id: string) => void }) {
+function EventRow({ event, onEdit, onDelete }: { event: AdminEvent; onEdit: (id: string) => void; onDelete: (id: string) => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
@@ -94,26 +95,37 @@ function EventRow({ event, onDelete }: { event: AdminEvent; onDelete: (id: strin
         {event._count.registrations}
       </td>
       <td className="px-4 py-3">
-        {confirmDelete ? (
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => onDelete(event.id)} className="text-red-600 hover:text-red-700 text-xs">
-              Ja
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => setConfirmDelete(false)} className="text-xs">
-              Nein
-            </Button>
-          </div>
-        ) : (
+        <div className="flex items-center gap-1">
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setConfirmDelete(true)}
-            aria-label={`${event.title} löschen`}
-            className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+            onClick={() => onEdit(event.id)}
+            aria-label={`${event.title} bearbeiten`}
+            className="text-primary-500 hover:text-primary-700 hover:bg-primary-50 dark:hover:bg-primary-900/20"
           >
-            <Trash2 className="w-4 h-4" aria-hidden="true" />
+            <Pencil className="w-4 h-4" aria-hidden="true" />
           </Button>
-        )}
+          {confirmDelete ? (
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="sm" onClick={() => onDelete(event.id)} className="text-red-600 hover:text-red-700 text-xs">
+                Ja
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => setConfirmDelete(false)} className="text-xs">
+                Nein
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setConfirmDelete(true)}
+              aria-label={`${event.title} löschen`}
+              className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+            >
+              <Trash2 className="w-4 h-4" aria-hidden="true" />
+            </Button>
+          )}
+        </div>
       </td>
     </tr>
   );
@@ -126,6 +138,7 @@ export default function AdminPage() {
   const [tab, setTab] = useState<'users' | 'events'>('users');
   const [userPage, setUserPage] = useState(1);
   const [eventPage, setEventPage] = useState(1);
+  const [editingEventId, setEditingEventId] = useState<string | null>(null);
 
   // All hooks must come before any early returns
   const { data: usersData, isLoading: usersLoading } = useQuery({
@@ -277,6 +290,7 @@ export default function AdminPage() {
                     <EventRow
                       key={e.id}
                       event={e}
+                      onEdit={(id) => setEditingEventId(id)}
                       onDelete={(id) => deleteEventMutation.mutate(id)}
                     />
                   ))}
@@ -301,6 +315,7 @@ export default function AdminPage() {
         </div>
       )}
 
+      <EditEventModal eventId={editingEventId} onClose={() => setEditingEventId(null)} />
     </div>
   );
 }
