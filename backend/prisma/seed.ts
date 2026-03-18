@@ -66,7 +66,19 @@ async function main() {
     },
   });
 
-  console.log('Created users: admin@gemeinde.de (pw: admin123), user@example.de (pw: user123)');
+  // Create event manager user
+  const eventManagerPassword = await bcrypt.hash('event123', 10);
+  await prisma.user.upsert({
+    where: { email: 'event@manager.de' },
+    update: {},
+    create: {
+      email: 'event@manager.de',
+      passwordHash: eventManagerPassword,
+      role: Role.EVENT_MANAGER,
+    },
+  });
+
+  console.log('Created users: admin@gemeinde.de (pw: admin123), user@example.de (pw: user123), event@manager.de (pw: event123)');
 
   // Create sample events
   const now = new Date();
