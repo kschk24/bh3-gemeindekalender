@@ -40,7 +40,7 @@ function NavItem({ to, icon, label, highlighted }: NavItemProps) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex flex-col items-center px-4 py-2 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-white ${
+        `flex flex-col items-center px-4 py-2 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-primary-700 focus:ring-offset-2 dark:focus:ring-white dark:focus:ring-offset-gray-900 ${
           highlighted
             ? 'bg-yellow-400 text-primary-800'
             : isActive

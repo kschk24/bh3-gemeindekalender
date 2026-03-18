@@ -57,10 +57,21 @@ export default function EventCard({
     openEvent(event.id);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openEvent(event.id);
+    }
+  };
+
   return (
     <article
       onClick={handleCardClick}
-      className={`card hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all cursor-pointer overflow-hidden ${
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${event.title}. ${t('event.pressEnterForDetails')}`}
+      className={`card hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
         isHorizontal ? 'flex gap-4' : 'h-full flex flex-col'
       }`}
     >

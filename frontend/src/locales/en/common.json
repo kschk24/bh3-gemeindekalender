@@ -74,6 +74,7 @@
     "noFavoritesHint": "Click the star on any event to save it as a favorite.",
     "discoverEvents": "Discover events →",
     "timeUnit": "",
+    "pressEnterForDetails": "Press Enter to view details",
     "form": {
       "name": "Name",
       "email": "E-mail"

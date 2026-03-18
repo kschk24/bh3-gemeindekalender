@@ -74,6 +74,7 @@
     "noFavoritesHint": "Klicken Sie auf den Stern bei einer Veranstaltung, um sie zu merken.",
     "discoverEvents": "Veranstaltungen entdecken →",
     "timeUnit": "Uhr",
+    "pressEnterForDetails": "Drücken Sie Enter, um Details anzuzeigen",
     "form": {
       "name": "Name",
       "email": "E-Mail"

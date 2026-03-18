@@ -26,10 +26,10 @@ export default function Footer() {
               <p>{t('footer.contact.street')}</p>
               <p>{t('footer.contact.city')}</p>
               <p className="mt-2">
-                {t('footer.contact.phone')}: <a href="tel:+4912345678" className="hover:text-white">+49 123 456-78</a>
+                {t('footer.contact.phone')}: <a href="tel:+4912345678" className="hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">+49 123 456-78</a>
               </p>
               <p>
-                {t('footer.contact.email')}: <a href="mailto:info@gemeinde.de" className="hover:text-white">info@gemeinde.de</a>
+                {t('footer.contact.email')}: <a href="mailto:info@gemeinde.de" className="hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">info@gemeinde.de</a>
               </p>
             </address>
           </div>
@@ -40,22 +40,22 @@ export default function Footer() {
             <nav aria-label={t('footer.legal.ariaLabel')}>
               <ul className="text-sm space-y-1">
                 <li>
-                  <a href="#" className="text-primary-100 hover:text-white transition-colors">
+                  <a href="#" className="text-primary-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
                     {t('footer.legal.imprint')}
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-primary-100 hover:text-white transition-colors">
+                  <a href="#" className="text-primary-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
                     {t('footer.legal.privacy')}
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-primary-100 hover:text-white transition-colors">
+                  <a href="#" className="text-primary-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
                     {t('footer.legal.accessibility')}
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-primary-100 hover:text-white transition-colors">
+                  <a href="#" className="text-primary-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
                     {t('footer.legal.reportBarrier')}
                   </a>
                 </li>
