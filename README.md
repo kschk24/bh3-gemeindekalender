@@ -171,30 +171,47 @@ npm run dev:frontend  # Frontend auf http://localhost:5173
 | DELETE | `/api/users/me/favorites/:eventId` | Favorit entfernen |
 | POST | `/api/events/:id/register` | Für Event anmelden |
 
+### Event Manager (eigene Events)
+
+| Methode | Endpoint | Beschreibung |
+|---------|----------|--------------|
+| GET | `/api/events/mine` | Eigene Veranstaltungen abrufen |
+| POST | `/api/events` | Veranstaltung erstellen |
+| PUT | `/api/events/:id` | Eigene Veranstaltung bearbeiten |
+| DELETE | `/api/events/:id` | Eigene Veranstaltung löschen |
+
 ### Admin
 
 | Methode | Endpoint | Beschreibung |
 |---------|----------|--------------|
-| POST | `/api/events` | Veranstaltung erstellen |
-| PUT | `/api/events/:id` | Veranstaltung bearbeiten |
-| DELETE | `/api/events/:id` | Veranstaltung löschen |
+| GET | `/api/admin/users` | Alle Nutzer abrufen |
+| PATCH | `/api/admin/users/:id/role` | Nutzer-Rolle ändern |
+| DELETE | `/api/admin/users/:id` | Nutzer löschen |
+| GET | `/api/admin/events` | Alle Events (Admin-Ansicht) |
+| DELETE | `/api/admin/events/:id` | Beliebiges Event löschen |
 | GET | `/api/events/:id/registrations` | Anmeldungen einsehen |
 
 ## Test-Accounts (nach Seed)
 
-| E-Mail | Passwort | Rolle |
-|--------|----------|-------|
-| admin@gemeinde.de | admin123 | Admin |
-| user@example.de | user123 | User |
+| E-Mail | Passwort | Rolle | Zugang |
+|--------|----------|-------|--------|
+| `admin@gemeinde.de` | `admin123` | Admin | Admin-Dashboard, alle Events bearbeiten/löschen, Nutzerverwaltung |
+| `event@manager.de` | `event123` | Event Manager | Eigene Events erstellen/bearbeiten/löschen (unter „Meine Events") |
+| `user@example.de` | `user123` | User | Favoriten, Anmeldungen, Kommentare |
 
-## Barrierefreiheit testen
+## Green IT & Barrierefreiheit testen
 
-1. **Tastatur-Navigation**: Navigiere nur mit Tab, Enter und Pfeiltasten
-2. **Screenreader**: Teste mit VoiceOver (Mac) oder NVDA (Windows)
-3. **Kontrast-Modus**: Aktiviere im Accessibility-Menü
-4. **Schriftgröße**: Erhöhe auf 150% und prüfe Layout
-5. **Lighthouse**: Führe Accessibility Audit in Chrome DevTools aus
-6. **axe DevTools**: Browser-Extension für automatisierte Tests
+Eine ausführliche Dokumentation aller umgesetzten Maßnahmen und Schritt-für-Schritt-Testanleitungen findet sich in:
+
+**[docs/GREEN_IT_AND_INCLUSION.md](docs/GREEN_IT_AND_INCLUSION.md)**
+
+Kurzübersicht:
+- **Dark Mode**: Mond-Symbol oben rechts
+- **Schriftgröße / Kontrast**: Aa-Symbol oben rechts
+- **Tastaturnavigation**: Nur `Tab`, `Enter`, `Escape` verwenden
+- **Screenreader**: VoiceOver (`Cmd + F5` auf Mac) oder NVDA (Windows)
+- **Lighthouse Audit**: Chrome DevTools → Lighthouse → nur Accessibility → Ziel ≥ 90 Punkte
+- **axe DevTools**: [Browser-Extension](https://www.deque.com/axe/devtools/) für automatisierte Tests
 
 ## Aufgabenverteilung (Team)
 
