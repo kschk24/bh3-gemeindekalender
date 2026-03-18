@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide the Google Translate top banner — we use our own trigger */
+.goog-te-banner-frame,
+.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+div#goog-gt- {
+  display: none !important;
+  height: 0 !important;
+}
+body {
+  top: 0 !important;
+  position: static !important;
+}
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+.goog-te-gadget select,
+#gt-inline-slot select {
+  font-size: 0.875rem !important;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  padding: 4px 6px;
+  min-width: 180px;
+  max-height: 220px;
+  background: white;
+  color: #111827;
+  cursor: pointer;
+  display: block;
+}
+
 /* CSS Custom Properties für Barrierefreiheit und Themes */
 :root {
   --color-primary: #3b7d34;

@@ -4,6 +4,34 @@ import { useAccessibility } from '../../context/AccessibilityContext';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES } from '../../locales/index';
 
+
+const GT_LANGUAGES = [
+  { code: 'ar', name: 'العربية' },
+  { code: 'zh-CN', name: '中文 (简体)' },
+  { code: 'zh-TW', name: '中文 (繁體)' },
+  { code: 'cs', name: 'Čeština' },
+  { code: 'da', name: 'Dansk' },
+  { code: 'nl', name: 'Nederlands' },
+  { code: 'fi', name: 'Suomi' },
+  { code: 'el', name: 'Ελληνικά' },
+  { code: 'iw', name: 'עברית' },
+  { code: 'hi', name: 'हिन्दी' },
+  { code: 'hu', name: 'Magyar' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'ja', name: '日本語' },
+  { code: 'ko', name: '한국어' },
+  { code: 'no', name: 'Norsk' },
+  { code: 'pl', name: 'Polski' },
+  { code: 'pt', name: 'Português' },
+  { code: 'ro', name: 'Română' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'sk', name: 'Slovenčina' },
+  { code: 'sv', name: 'Svenska' },
+  { code: 'tr', name: 'Türkçe' },
+  { code: 'uk', name: 'Українська' },
+  { code: 'vi', name: 'Tiếng Việt' },
+];
+
 // Icon components
 const MailIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -95,6 +123,7 @@ export default function Sidebar() {
   const { i18n } = useTranslation();
   const [showFontMenu, setShowFontMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [showGTList, setShowGTList] = useState(false);
 
   const scales = ['100', '110', '125', '150'] as const;
 
@@ -137,7 +166,7 @@ export default function Sidebar() {
       <div className="relative">
         <SidebarButton
           onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-          icon={<span className="text-sm font-semibold">{i18n.language.toUpperCase()}</span>}
+          icon={<span className="text-sm font-semibold" translate="no">{i18n.language.toUpperCase()}</span>}
           label={`Sprache: ${LANGUAGES.find((l) => l.code === i18n.language)?.nativeName ?? i18n.language}`}
           variant="default"
         />
@@ -155,6 +184,13 @@ export default function Sidebar() {
                   onClick={() => {
                     void i18n.changeLanguage(code);
                     setShowLanguageMenu(false);
+                    // If GT is active, clear its cookie and reload to restore original DOM
+                    const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+                    if (select?.value) {
+                      document.cookie = 'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:01 UTC';
+                      document.cookie = `googtrans=; path=/; domain=${location.hostname}; expires=Thu, 01 Jan 1970 00:00:01 UTC`;
+                      window.location.reload();
+                    }
                   }}
                   className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
                     i18n.language === code
@@ -162,9 +198,44 @@ export default function Sidebar() {
                       : 'hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
-                  {nativeName}
+                  <span translate="no">{nativeName}</span>
                 </button>
               ))}
+
+              {/* Divider */}
+              <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+
+              {/* Google Translate: weitere Sprachen */}
+              <button
+                onClick={() => setShowGTList((v) => !v)}
+                className="flex items-center gap-2 w-full text-left px-3 py-2 rounded text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+              >
+                <span>🌐</span>
+                <span>Weitere Sprachen {showGTList ? '▲' : '▼'}</span>
+              </button>
+
+              {showGTList && (
+                <div className="max-h-48 overflow-y-auto mt-1 space-y-0.5">
+                  {GT_LANGUAGES.map(({ code, name }) => (
+                    <button
+                      key={code}
+                      translate="no"
+                      onClick={() => {
+                        const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
+                        if (select) {
+                          select.value = code;
+                          select.dispatchEvent(new Event('change'));
+                        }
+                        setShowLanguageMenu(false);
+                        setShowGTList(false);
+                      }}
+                      className="block w-full text-left px-3 py-1.5 rounded text-sm text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
