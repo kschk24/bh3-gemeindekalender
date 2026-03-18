@@ -19,9 +19,9 @@ export class EventsService {
       ];
     }
 
-    // Category filter
-    if (categoryId) {
-      where.categoryId = categoryId;
+    // Category filter (supports one or multiple IDs)
+    if (categoryId && categoryId.length > 0) {
+      where.categoryId = categoryId.length === 1 ? categoryId[0] : { in: categoryId };
     }
 
     // Date filters

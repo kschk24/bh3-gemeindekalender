@@ -25,7 +25,10 @@ export const updateEventSchema = createEventSchema.partial();
 
 export const eventFiltersSchema = z.object({
   search: z.string().optional(),
-  categoryId: z.string().uuid().optional(),
+  categoryId: z.preprocess(
+    (v) => (Array.isArray(v) ? v : v ? [v] : undefined),
+    z.array(z.string().uuid()).optional(),
+  ),
   startDate: z.string().datetime().optional(),
   endDate: z.string().datetime().optional(),
   wheelchairAccessible: z.enum(['true', 'false']).transform(v => v === 'true').optional(),

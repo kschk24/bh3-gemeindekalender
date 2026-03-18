@@ -76,7 +76,7 @@ export interface PaginatedResponse<T> {
 
 export interface EventFilters {
   search?: string;
-  categoryId?: string;
+  categoryId?: string | string[];
   startDate?: string;
   endDate?: string;
   wheelchairAccessible?: boolean;

@@ -113,6 +113,7 @@
     "noUpcoming": "No upcoming events found.",
     "loading": "Loading events...",
     "allEventsLoaded": "All events loaded.",
+    "clearFilter": "Clear filter",
     "accessibility": "Accessibility",
     "accessibilityIntro": "Our calendar is accessible to everyone. Filter events by accessibility criteria.",
     "accessLabels": {
