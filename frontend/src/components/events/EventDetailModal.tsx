@@ -3,25 +3,29 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { Pencil } from 'lucide-react';
 import FocusTrap from 'focus-trap-react';
 import { eventsService, favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useEventDetail } from '../../context/EventDetailContext';
+import { Role } from '../../types';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import LoadingSpinner from '../common/LoadingSpinner';
 import AccessibilityBadges from './AccessibilityBadges';
 import CommentSection from '../comments/CommentSection';
+import EventFormModal from './EventFormModal';
 
 export default function EventDetailModal() {
   const { eventId, closeEvent } = useEventDetail();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const queryClient = useQueryClient();
   const { t, i18n } = useTranslation();
 
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const isOpen = !!eventId;
 
@@ -92,6 +96,11 @@ export default function EventDetailModal() {
 
   if (!isOpen) return null;
 
+  const canEdit = user && (
+    user.role === Role.ADMIN ||
+    (user.role === Role.EVENT_MANAGER && event?.createdBy === user.id)
+  );
+
   const startDate = event ? new Date(event.startDate) : null;
   const endDate = event ? new Date(event.endDate) : null;
   const spotsLeft =
@@ -100,6 +109,7 @@ export default function EventDetailModal() {
       : null;
 
   return (
+    <>
     <FocusTrap active={isOpen} focusTrapOptions={{ returnFocusOnDeactivate: true, escapeDeactivates: false }}>
       <div>
       {/* Backdrop – closes modal on click */}
@@ -127,6 +137,15 @@ export default function EventDetailModal() {
             >
               {event?.title ?? ''}
             </h2>
+            {canEdit && event && (
+              <button
+                onClick={() => setEditOpen(true)}
+                className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 flex-shrink-0 mr-1"
+                aria-label={t('eventForm.editTitle')}
+              >
+                <Pencil className="w-5 h-5" aria-hidden="true" />
+              </button>
+            )}
             <button
               onClick={closeEvent}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 flex-shrink-0"
@@ -321,5 +340,14 @@ export default function EventDetailModal() {
       </div>
       </div>
     </FocusTrap>
+
+    {canEdit && event && (
+      <EventFormModal
+        isOpen={editOpen}
+        onClose={() => setEditOpen(false)}
+        initialEvent={event}
+      />
+    )}
+    </>
   );
 }
