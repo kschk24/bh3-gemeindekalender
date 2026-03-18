@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "events": "Événements",
+    "home": "Page d'accueil",
+    "favorites": "Favoris",
+    "createEvent": "Créer",
+    "admin": "Administrateur"
+  },
+  "common": {
+    "close": "Fermer"
+  },
+  "auth": {
+    "login": "Registre",
+    "register": "Registre",
+    "logout": "Se déconnecter"
+  },
+  "loginPage": {
+    "title": "Registre",
+    "invalidCredentials": "Adresse e-mail ou mot de passe invalide.",
+    "noAccount": "Pas encore de compte ?",
+    "registerNow": "Inscrivez-vous maintenant",
+    "email": "Adresse email",
+    "password": "mot de passe"
+  },
+  "registerPage": {
+    "title": "Registre",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "passwordTooShort": "Le mot de passe doit comporter au moins 6 caractères.",
+    "registerFailed": "L'enregistrement a échoué. Cette adresse e-mail est peut-être déjà utilisée.",
+    "passwordHelper": "Au moins 6 caractères",
+    "confirmPassword": "Confirmez le mot de passe",
+    "alreadyRegistered": "Déjà inscrit ?",
+    "loginNow": "Inscrivez-vous maintenant"
+  },
+  "loading": "Charger...",
+  "logo": {
+    "part1": "Communauté",
+    "part2": "calendrier"
+  },
+  "error": {
+    "generic": "Une erreur s'est produite. Veuillez réessayer."
+  },
+  "event": {
+    "comments": "{{count}} Commentaire",
+    "comments_plural": "{{count}} commentaires",
+    "favoriteAdd": "Ajouter aux favoris",
+    "favoriteRemove": "Supprimer des favoris",
+    "details": "Voir les détails →",
+    "loadingEvent": "Chargement de l'événement...",
+    "notFound": "Événement introuvable",
+    "backToAll": "Retour à tous les événements",
+    "description": "Description",
+    "accessibility": "Accessibilité",
+    "detailsTitle": "Détails de l'événement",
+    "dateTime": "Date et heure",
+    "location": "Emplacement",
+    "spotsAvailable": "Places disponibles",
+    "spotsOf": "{{available}} de {{total}}",
+    "full": "Complet",
+    "register": "Inscription",
+    "registeredSuccess": "Inscrit avec succès !",
+    "registerConfirm": "Vous recevrez une confirmation par email.",
+    "pleaseLoginToRegister": "Veuillez vous connecter pour vous inscrire à cet événement.",
+    "pleaseLoginToRegisterPrefix": "S'il te plaît",
+    "pleaseLoginToRegisterSuffix": "pour vous inscrire à cet événement.",
+    "registerNow": "Inscrivez-vous maintenant",
+    "mark": "Souviens-toi",
+    "marked": "Noté",
+    "loadingFavorites": "Charger les favoris...",
+    "myFavorites": "Mes favoris",
+    "noFavoritesMessage": "Vous n'avez pas encore enregistré de favoris.",
+    "noFavoritesHint": "Cliquez sur l'étoile d'un événement pour le mettre en favoris.",
+    "discoverEvents": "Découvrir les événements →",
+    "timeUnit": "Horloge",
+    "form": {
+      "name": "nom",
+      "email": "e-mail"
+    }
+  },
+  "comment": {
+    "heading": "Commentaires",
+    "write": "Écrivez un commentaire",
+    "yourComment": "Votre commentaire",
+    "placeholder": "Écrivez votre commentaire...",
+    "tip": "Astuce : Connectez-vous pour pouvoir modifier votre commentaire ultérieurement.",
+    "submit": "Soumettre un commentaire",
+    "loading": "Chargement des commentaires...",
+    "loadError": "Les commentaires n'ont pas pu être chargés.",
+    "noComments": "Pas encore de commentaires.",
+    "beFirst": "Soyez le premier à laisser un commentaire !",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce commentaire ?",
+    "deleteAria": "Supprimer le commentaire",
+    "confirmYes": "Oui, supprimer",
+    "confirmNo": "Annuler",
+    "deleted": "Le commentaire a été supprimé",
+    "created": "Le commentaire a été ajouté",
+    "guest": "Invité",
+    "registered": "(inscrit)",
+    "charCount": "{{count}}/2000 caractères"
+  },
+  "home": {
+    "heroTitle": "Calendrier communautaire",
+    "heroText": "Découvrez les événements locaux dans votre communauté. Sans obstacle et accessible à tous.",
+    "toCalendar": "Vers le calendrier",
+    "categories": "Catégories",
+    "eventsCount": "Événements {{count}}",
+    "upcoming": "Événements à venir",
+    "viewAll": "Voir tout →",
+    "noUpcoming": "Aucun événement à venir trouvé.",
+    "loading": "Chargement des événements...",
+    "allEventsLoaded": "Tous les événements chargés.",
+    "clearFilter": "Réinitialiser le filtre",
+    "accessibility": "Accessibilité",
+    "accessibilityIntro": "Notre calendrier est accessible à tous. Filtrez les événements selon des critères d'accessibilité.",
+    "accessLabels": {
+      "wheelchair": "Accessible aux personnes en fauteuil roulant",
+      "hearingLoop": "boucle d'induction",
+      "signLanguage": "Langue des signes",
+      "easyLanguage": "Langue facile"
+    }
+  },
+  "eventsPage": {
+    "title": "Événements",
+    "view": {
+      "calendar": "calendrier",
+      "grid": "Carrelage",
+      "list": "liste"
+    },
+    "loading": "Chargement des événements...",
+    "noResults": "Aucun événement trouvé.",
+    "resetFilters": "Réinitialiser le filtre",
+    "results": "Événement {{count}}",
+    "results_plural": "Événements {{count}}",
+    "paginationPrev": "Dos",
+    "paginationNext": "Plus loin",
+    "paginationPage": "Page {{page}} de {{total}}"
+  },
+  "admin": {
+    "title": "Tableau de bord d'administration",
+    "tabs": {
+      "users": "utilisateur",
+      "events": "Événements"
+    },
+    "users": {
+      "email": "e-mail",
+      "role": "rôle",
+      "joined": "Inscrit",
+      "actions": "Actes",
+      "deleteSuccess": "Utilisateur supprimé",
+      "roleChanged": "Rôle modifié"
+    },
+    "events": {
+      "title": "titre",
+      "category": "catégorie",
+      "date": "Date",
+      "registrations": "Inscriptions",
+      "deleteSuccess": "Événement supprimé"
+    }
+  },
+  "eventForm": {
+    "createTitle": "Créer un événement",
+    "editTitle": "Modifier l'événement",
+    "title": "titre",
+    "description": "Description",
+    "location": "Emplacement",
+    "address": "adresse",
+    "startDate": "Date et heure de début",
+    "endDate": "Date et heure de fin",
+    "category": "catégorie",
+    "imageUrl": "URL de l'image (facultatif)",
+    "maxParticipants": "Max. participants (facultatif)",
+    "requiresAccount": "Compte requis pour la connexion",
+    "accessibility": "Accessibilité",
+    "wheelchairAccessible": "Accessible aux personnes en fauteuil roulant",
+    "hearingLoop": "boucle d'induction",
+    "signLanguage": "Langue des signes",
+    "easyLanguage": "Langue facile",
+    "submit": "Sauvegarder",
+    "cancel": "Annuler",
+    "createSuccess": "Événement créé avec succès",
+    "editSuccess": "Événement mis à jour avec succès"
+  },
+  "footer": {
+    "title": "Calendrier communautaire",
+    "description": "Votre portail pour les événements locaux. Sans obstacle et accessible à tous.",
+    "contact": {
+      "title": "contact",
+      "street": "Musterstrasse 1",
+      "city": "12345 Ville modèle",
+      "phone": "Tél.",
+      "email": "e-mail"
+    },
+    "legal": {
+      "title": "Légal",
+      "ariaLabel": "Navigation en pied de page",
+      "imprint": "imprimer",
+      "privacy": "Protection des données",
+      "accessibility": "Accessibilité",
+      "reportBarrier": "Signaler un obstacle"
+    },
+    "copyright": "© {{year}} Calendrier communautaire. Tous droits réservés."
+  },
+  "calendar": {
+    "allDay": "Toute la journée",
+    "previous": "Dos",
+    "next": "Plus loin",
+    "today": "Aujourd'hui",
+    "month": "Mois",
+    "week": "Semaine",
+    "day": "jour",
+    "date": "Date",
+    "time": "temps",
+    "event": "Événement",
+    "noEventsInRange": "Aucun événement pendant cette période.",
+    "showMore": "+{{count}} plus",
+    "clickForDetails": "Cliquez sur un événement pour afficher les détails."
+  }
+}

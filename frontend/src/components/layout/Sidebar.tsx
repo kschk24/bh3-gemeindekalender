@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { useAccessibility } from '../../context/AccessibilityContext';
 import { useTranslation } from 'react-i18next';
+import { LANGUAGES } from '../../locales/index';
 
 // Icon components
 const MailIcon = () => (
@@ -137,7 +138,7 @@ export default function Sidebar() {
         <SidebarButton
           onClick={() => setShowLanguageMenu(!showLanguageMenu)}
           icon={<span className="text-sm font-semibold">{i18n.language.toUpperCase()}</span>}
-          label={`Sprache: ${i18n.language === 'de' ? 'Deutsch' : 'English'}`}
+          label={`Sprache: ${LANGUAGES.find((l) => l.code === i18n.language)?.nativeName ?? i18n.language}`}
           variant="default"
         />
         {showLanguageMenu && (
@@ -148,28 +149,22 @@ export default function Sidebar() {
               aria-hidden="true"
             />
             <div className="absolute right-12 top-0 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-2 min-w-[120px] z-40">
-              <button
-                onClick={() => {
-                  void i18n.changeLanguage('de');
-                  setShowLanguageMenu(false);
-                }}
-                className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
-                  i18n.language === 'de' ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
-              >
-                Deutsch
-              </button>
-              <button
-                onClick={() => {
-                  void i18n.changeLanguage('en');
-                  setShowLanguageMenu(false);
-                }}
-                className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
-                  i18n.language === 'en' ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium' : 'hover:bg-gray-100 dark:hover:bg-gray-700'
-                }`}
-              >
-                English
-              </button>
+              {LANGUAGES.map(({ code, nativeName }) => (
+                <button
+                  key={code}
+                  onClick={() => {
+                    void i18n.changeLanguage(code);
+                    setShowLanguageMenu(false);
+                  }}
+                  className={`block w-full text-left px-3 py-2 rounded text-gray-900 dark:text-white ${
+                    i18n.language === code
+                      ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 font-medium'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {nativeName}
+                </button>
+              ))}
             </div>
           </>
         )}

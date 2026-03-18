@@ -1,13 +1,13 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import deCommon from './locales/de/common.json';
-import enCommon from './locales/en/common.json';
+import { LANGUAGES } from './locales/index';
+
+const resources = Object.fromEntries(
+  LANGUAGES.map(({ code, translations }) => [code, { common: translations }]),
+);
 
 i18n.use(initReactI18next).init({
-  resources: {
-    de: { common: deCommon },
-    en: { common: enCommon },
-  },
+  resources,
   lng: 'de',
   fallbackLng: 'de',
   ns: ['common'],
