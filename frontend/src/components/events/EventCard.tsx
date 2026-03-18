@@ -81,16 +81,6 @@ export default function EventCard({
           />
         )}
 
-        {/* Category chip — bottom-left overlay */}
-        {event.category && (
-          <span
-            className="absolute bottom-3 left-3 px-2.5 py-1 rounded-full text-xs font-semibold text-white shadow-sm"
-            style={{ backgroundColor: event.category.color }}
-          >
-            {event.category.name}
-          </span>
-        )}
-
         {/* Favorite button — top-right overlay */}
         {isAuthenticated && (
           <button
@@ -118,6 +108,16 @@ export default function EventCard({
 
       {/* Content */}
       <div className="flex-1 flex flex-col mt-4">
+        {/* Category chip */}
+        {event.category && (
+          <span
+            className="self-start px-2.5 py-1 rounded-full text-xs font-semibold text-white mb-2"
+            style={{ backgroundColor: event.category.color }}
+          >
+            {event.category.name}
+          </span>
+        )}
+
         {/* Title */}
         <h3 className="text-base font-semibold text-gray-900 dark:text-white leading-snug">
           {event.title}
@@ -159,7 +159,7 @@ export default function EventCard({
         {/* Details link */}
         <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
           <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">
-            {t('event.details')} →
+            {t('event.details')}
           </span>
         </div>
       </div>
