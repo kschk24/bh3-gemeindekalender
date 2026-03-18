@@ -18,6 +18,16 @@
 
     <!-- Google Translate: initialisiert doGTranslate() global -->
     <div id="google_translate_element" style="position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden"></div>
+
+    <!-- GT translation notice (shown after GT activates, translated by GT itself) -->
+    <div id="gt-notice" role="status" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;background:linear-gradient(135deg,#1a5c14,#2d7a27);color:white;border-radius:1rem;padding:1rem 1.25rem;max-width:520px;width:calc(100% - 2rem);align-items:flex-start;gap:1rem;box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 2px rgba(255,255,255,0.15);font-size:0.9rem;line-height:1.5;border:1px solid rgba(255,255,255,0.2);">
+      <span style="font-size:1.5rem;line-height:1;flex-shrink:0;">🌐</span>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.2rem;">Automatic Translation Active</div>
+        <div style="opacity:0.85;font-size:0.85rem;">This page has been automatically translated using Google Translate. The translation may contain errors.</div>
+      </div>
+      <button onclick="document.getElementById('gt-notice').style.display='none'" style="flex-shrink:0;align-self:flex-start;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;border-radius:0.5rem;padding:0.3rem 0.7rem;cursor:pointer;font-size:0.85rem;line-height:1.2;font-weight:600;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">Dismiss</button>
+    </div>
     <script type="text/javascript">
       function googleTranslateElementInit() {
         new google.translate.TranslateElement({

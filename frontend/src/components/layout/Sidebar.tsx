@@ -215,12 +215,21 @@ export default function Sidebar() {
               </button>
 
               {showGTList && (
+                <p className="px-3 pb-1 text-xs text-gray-400 dark:text-gray-500 leading-tight" translate="no">
+                  Automatische Übersetzung via Google Translate. Inhalte können Fehler enthalten.
+                </p>
+              )}
+
+              {showGTList && (
                 <div className="max-h-48 overflow-y-auto mt-1 space-y-0.5">
                   {GT_LANGUAGES.map(({ code, name }) => (
                     <button
                       key={code}
                       translate="no"
                       onClick={() => {
+                        // Show notice BEFORE GT runs so it gets translated into target language
+                        const notice = document.getElementById('gt-notice');
+                        if (notice) notice.style.display = 'flex';
                         const select = document.querySelector<HTMLSelectElement>('.goog-te-combo');
                         if (select) {
                           select.value = code;
