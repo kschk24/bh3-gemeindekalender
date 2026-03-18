@@ -142,7 +142,9 @@ export default function HomePage() {
               to={`/events?${key}=true`}
               className="flex items-center space-x-3 bg-white dark:bg-gray-700 p-3 rounded border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
             >
-              <Icon className="w-5 h-5 flex-shrink-0 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-primary-100 dark:bg-primary-900/50 flex-shrink-0">
+                <Icon className="w-5 h-5 text-primary-600 dark:text-primary-400" aria-hidden="true" />
+              </span>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
                 {label}
               </span>

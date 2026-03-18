@@ -25,15 +25,15 @@ export default function AccessibilityBadges({
 
   if (compact) {
     return (
-      <div className="flex gap-1" aria-label="Barrierefreiheit">
+      <div className="flex gap-1.5" aria-label="Barrierefreiheit">
         {activeBadges.map(({ key, label, Icon }) => (
           <span
             key={key}
-            className="inline-flex items-center justify-center w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full text-primary-600 dark:text-primary-400"
+            className="inline-flex items-center justify-center w-9 h-9 bg-primary-100 dark:bg-primary-900/50 rounded-full text-primary-600 dark:text-primary-400 ring-1 ring-primary-200 dark:ring-primary-700"
             title={label}
             aria-label={label}
           >
-            <Icon className="w-4 h-4" aria-hidden="true" />
+            <Icon className="w-5 h-5" aria-hidden="true" />
           </span>
         ))}
       </div>
