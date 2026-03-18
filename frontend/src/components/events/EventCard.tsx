@@ -2,7 +2,8 @@ import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { MapPin, MessageCircle } from 'lucide-react';
+import { Calendar, FileDown, MapPin, MessageCircle } from 'lucide-react';
+import { exportEventToIcal, exportEventToPdf } from '../../utils/eventExport';
 import { Event } from '../../types';
 import { favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -40,8 +41,32 @@ export default function EventCard({
   const { openEvent } = useEventDetail();
   const queryClient = useQueryClient();
   const startDate = new Date(event.startDate);
+  const endDate = new Date(event.endDate);
 
   const locale = i18n.language === 'de' ? de : enUS;
+
+  const handleIcalExport = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    exportEventToIcal(event);
+  };
+
+  const handlePdfExport = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const dateStr = format(startDate, 'EEEE, d. MMMM yyyy', { locale });
+    const timeStr = `${format(startDate, 'HH:mm')} – ${format(endDate, 'HH:mm')}${t('event.timeUnit') ? ' ' + t('event.timeUnit') : ''}`.trimEnd();
+    exportEventToPdf(event, dateStr, timeStr, {
+      dateTime: t('event.dateTime'),
+      location: t('event.location'),
+      description: t('event.description'),
+      accessibility: t('event.accessibility'),
+      accessLabels: {
+        wheelchair: t('home.accessLabels.wheelchair'),
+        hearingLoop: t('home.accessLabels.hearingLoop'),
+        signLanguage: t('home.accessLabels.signLanguage'),
+        easyLanguage: t('home.accessLabels.easyLanguage'),
+      },
+    }, i18n.language);
+  };
 
   const favoriteMutation = useMutation({
     mutationFn: ({ add }: { add: boolean }) =>
@@ -172,11 +197,31 @@ export default function EventCard({
         {/* Spacer pushes footer to bottom */}
         <div className="flex-1" />
 
-        {/* Details link */}
-        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700">
+        {/* Details link + export actions */}
+        <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
           <span className="text-sm text-primary-600 dark:text-primary-400 font-medium">
             {t('event.details')}
           </span>
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={handleIcalExport}
+              className="p-1.5 rounded text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+              aria-label={t('event.exportIcalAria')}
+              title={t('event.exportIcalAria')}
+            >
+              <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={handlePdfExport}
+              className="p-1.5 rounded text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+              aria-label={t('event.exportPdfAria')}
+              title={t('event.exportPdfAria')}
+            >
+              <FileDown className="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </div>
     </article>

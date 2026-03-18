@@ -75,6 +75,10 @@
     "discoverEvents": "Veranstaltungen entdecken →",
     "timeUnit": "Uhr",
     "pressEnterForDetails": "Drücken Sie Enter, um Details anzuzeigen",
+    "exportIcal": "Kalender",
+    "exportIcalAria": "In Kalender exportieren (.ics)",
+    "exportPdf": "PDF",
+    "exportPdfAria": "Als PDF speichern",
     "form": {
       "name": "Name",
       "email": "E-Mail"

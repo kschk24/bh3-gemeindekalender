@@ -3,7 +3,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { Pencil } from 'lucide-react';
+import { Calendar, FileDown, Pencil } from 'lucide-react';
+import { exportEventToIcal, exportEventToPdf } from '../../utils/eventExport';
 import FocusTrap from 'focus-trap-react';
 import { eventsService, favoritesService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -96,17 +97,40 @@ export default function EventDetailModal() {
 
   if (!isOpen) return null;
 
-  const canEdit = user && (
-    user.role === Role.ADMIN ||
-    (user.role === Role.EVENT_MANAGER && event?.createdBy === user.id)
-  );
-
   const startDate = event ? new Date(event.startDate) : null;
   const endDate = event ? new Date(event.endDate) : null;
   const spotsLeft =
     event?.maxParticipants != null
       ? event.maxParticipants - (event._count?.registrations || 0)
       : null;
+
+  const canEdit = user && (
+    user.role === Role.ADMIN ||
+    (user.role === Role.EVENT_MANAGER && event?.createdBy === user.id)
+  );
+
+  const handleIcalExport = () => {
+    if (event) exportEventToIcal(event);
+  };
+
+  const handlePdfExport = () => {
+    if (!event || !startDate || !endDate) return;
+    const dateFnsLocale = i18n.language === 'de' ? de : enUS;
+    const dateStr = format(startDate, 'EEEE, d. MMMM yyyy', { locale: dateFnsLocale });
+    const timeStr = `${format(startDate, 'HH:mm')} – ${format(endDate, 'HH:mm')}${t('event.timeUnit') ? ' ' + t('event.timeUnit') : ''}`.trimEnd();
+    exportEventToPdf(event, dateStr, timeStr, {
+      dateTime: t('event.dateTime'),
+      location: t('event.location'),
+      description: t('event.description'),
+      accessibility: t('event.accessibility'),
+      accessLabels: {
+        wheelchair: t('home.accessLabels.wheelchair'),
+        hearingLoop: t('home.accessLabels.hearingLoop'),
+        signLanguage: t('home.accessLabels.signLanguage'),
+        easyLanguage: t('home.accessLabels.easyLanguage'),
+      },
+    }, i18n.language);
+  };
 
   return (
     <>
@@ -269,6 +293,26 @@ export default function EventDetailModal() {
                           </div>
                         )}
                       </dl>
+                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex gap-2">
+                        <button
+                          type="button"
+                          onClick={handleIcalExport}
+                          className="flex-1 flex items-center justify-center gap-1.5 text-sm px-3 py-2 rounded-md border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          aria-label={t('event.exportIcalAria')}
+                        >
+                          <Calendar className="w-4 h-4" aria-hidden="true" />
+                          {t('event.exportIcal')}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handlePdfExport}
+                          className="flex-1 flex items-center justify-center gap-1.5 text-sm px-3 py-2 rounded-md border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          aria-label={t('event.exportPdfAria')}
+                        >
+                          <FileDown className="w-4 h-4" aria-hidden="true" />
+                          {t('event.exportPdf')}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Registration */}

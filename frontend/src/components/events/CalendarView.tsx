@@ -1,5 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useEventDetail } from '../../context/EventDetailContext';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { exportEventToIcal } from '../../utils/eventExport';
 import { Calendar, dateFnsLocalizer, Views } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
@@ -110,8 +112,19 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
           <div className="text-sm font-medium leading-tight truncate">
             {event.title}
           </div>
-          {isAuthenticated && (
-            <div className="flex justify-end">
+          <div className="flex justify-end gap-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                exportEventToIcal(event.resource);
+              }}
+              className="text-white/80 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-1 rounded transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+              aria-label={t('event.exportIcalAria')}
+              title={t('event.exportIcalAria')}
+            >
+              <CalendarIcon className="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
+            {isAuthenticated && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -137,8 +150,8 @@ export default function CalendarView({ events, isLoading }: CalendarViewProps) {
                   </svg>
                 )}
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       );
     },

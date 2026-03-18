@@ -72,6 +72,10 @@
     "noFavoritesHint": "Haga clic en la estrella de un evento para marcarlo como favorito.",
     "discoverEvents": "Descubre eventos →",
     "timeUnit": "Reloj",
+    "exportIcal": "Calendario",
+    "exportIcalAria": "Exportar al calendario (.ics)",
+    "exportPdf": "PDF",
+    "exportPdfAria": "Guardar como PDF",
     "form": {
       "name": "nombre",
       "email": "correo electrónico"

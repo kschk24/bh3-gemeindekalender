@@ -75,6 +75,10 @@
     "discoverEvents": "Discover events →",
     "timeUnit": "",
     "pressEnterForDetails": "Press Enter to view details",
+    "exportIcal": "Calendar",
+    "exportIcalAria": "Export to calendar (.ics)",
+    "exportPdf": "PDF",
+    "exportPdfAria": "Save as PDF",
     "form": {
       "name": "Name",
       "email": "E-mail"
