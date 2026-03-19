@@ -16,6 +16,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import AccessibilityBadges from './AccessibilityBadges';
 import CommentSection from '../comments/CommentSection';
 import EventFormModal from './EventFormModal';
+import EventMap from './EventMap';
 
 export default function EventDetailModal() {
   const { eventId, closeEvent } = useEventDetail();
@@ -282,6 +283,9 @@ export default function EventDetailModal() {
                             {event.location}
                             <br />
                             <span className="text-sm text-gray-600 dark:text-gray-400">{event.address}</span>
+                          </dd>
+                          <dd className="mt-2">
+                            <EventMap address={event.address} location={event.location} />
                           </dd>
                         </div>
                         {spotsLeft !== null && (

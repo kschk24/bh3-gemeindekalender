@@ -86,9 +86,9 @@ async function main() {
   const events = [
     {
       title: 'Sommerkonzert im Park',
-      description: 'Genießen Sie einen wunderbaren Abend mit Live-Musik im Stadtpark. Verschiedene lokale Bands spielen ein buntes Programm von Jazz bis Pop.',
-      location: 'Stadtpark',
-      address: 'Parkstraße 1, 12345 Musterstadt',
+      description: 'Genießen Sie einen wunderbaren Abend mit Live-Musik im Englischen Garten. Verschiedene lokale Bands spielen ein buntes Programm von Jazz bis Pop.',
+      location: 'Englischer Garten',
+      address: 'Englischer Garten 1, 80538 München',
       startDate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000),
       categoryId: categories[3].id, // Musik
@@ -107,8 +107,8 @@ async function main() {
     {
       title: 'Yoga im Freien',
       description: 'Kostenlose Yoga-Stunde für alle Levels. Bitte eigene Matte mitbringen.',
-      location: 'Bürgerwiese',
-      address: 'Am Rathaus 5, 12345 Musterstadt',
+      location: 'Olympiapark',
+      address: 'Spiridon-Louis-Ring 21, 80809 München',
       startDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000 + 1.5 * 60 * 60 * 1000),
       categoryId: categories[1].id, // Sport
@@ -127,8 +127,8 @@ async function main() {
     {
       title: 'Kunstausstellung: Lokale Künstler',
       description: 'Eine Ausstellung mit Werken von Künstlern aus unserer Gemeinde. Eintritt frei.',
-      location: 'Kulturzentrum',
-      address: 'Kulturplatz 10, 12345 Musterstadt',
+      location: 'Gasteig München',
+      address: 'Rosenheimer Str. 5, 81667 München',
       startDate: new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 28 * 24 * 60 * 60 * 1000),
       categoryId: categories[0].id, // Kultur
@@ -146,8 +146,8 @@ async function main() {
     {
       title: 'Vortrag: Klimawandel und lokale Maßnahmen',
       description: 'Experten erklären, wie unsere Gemeinde zum Klimaschutz beitragen kann.',
-      location: 'Rathaus, Großer Saal',
-      address: 'Rathausplatz 1, 12345 Musterstadt',
+      location: 'Neues Rathaus München',
+      address: 'Marienplatz 8, 80331 München',
       startDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000),
       categoryId: categories[5].id, // Umwelt
@@ -166,8 +166,8 @@ async function main() {
     {
       title: 'Kinderfest',
       description: 'Ein buntes Programm für die ganze Familie mit Spielen, Basteln und Unterhaltung.',
-      location: 'Marktplatz',
-      address: 'Marktplatz, 12345 Musterstadt',
+      location: 'Viktualienmarkt',
+      address: 'Viktualienmarkt 3, 80331 München',
       startDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 21 * 24 * 60 * 60 * 1000 + 6 * 60 * 60 * 1000),
       categoryId: categories[4].id, // Familie
@@ -192,8 +192,8 @@ async function main() {
       id: 'seed-testfest-2026',
       title: 'TestFest',
       description: 'Ein großes Gemeindefest auf der Großen Wiese mit Musik, Essen und Unterhaltung für die ganze Familie. Eintritt frei!',
-      location: 'Große Wiese',
-      address: 'Große Wiese 1, 12345 Musterstadt',
+      location: 'Theresienwiese',
+      address: 'Theresienwiese, 80339 München',
       startDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000),
       endDate: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000),
       categoryId: categories[0].id, // Kultur

@@ -84,6 +84,14 @@
     "form": {
       "name": "Name",
       "email": "E-Mail"
+    },
+    "map": {
+      "loading": "Karte wird geladen...",
+      "openGoogleMaps": "Google Maps",
+      "openAppleMaps": "Apple Karten",
+      "openAriaGoogle": "Ort in Google Maps öffnen",
+      "openAriaApple": "Ort in Apple Karten öffnen",
+      "ariaLabel": "Karte für {{location}}"
     }
   }
   ,
