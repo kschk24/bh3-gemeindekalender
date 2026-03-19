@@ -73,6 +73,14 @@ const TextSizeIcon = () => (
   <span className="font-bold text-sm">aA</span>
 );
 
+const HighContrastIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <circle cx="12" cy="12" r="9" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12 3v18" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M12 3a9 9 0 010 18" fill="currentColor" />
+  </svg>
+);
+
 interface SidebarButtonProps {
   onClick?: () => void;
   href?: string;
@@ -119,7 +127,7 @@ function SidebarButton({ onClick, href, icon, label, variant = 'default' }: Side
 
 export default function Sidebar() {
   const { effectiveTheme, setTheme } = useTheme();
-  const { fontScale, setFontScale } = useAccessibility();
+  const { fontScale, highContrast, setFontScale, setHighContrast } = useAccessibility();
   const { i18n } = useTranslation();
   const [showFontMenu, setShowFontMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
@@ -295,6 +303,14 @@ export default function Sidebar() {
           </>
         )}
       </div>
+
+      {/* High Contrast Toggle */}
+      <SidebarButton
+        onClick={() => setHighContrast(!highContrast)}
+        icon={<HighContrastIcon />}
+        label={`Hoher Kontrast: ${highContrast ? 'An' : 'Aus'}`}
+        variant={highContrast ? 'primary' : 'default'}
+      />
 
       {/* Theme Toggle */}
       <SidebarButton

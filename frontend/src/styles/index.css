@@ -60,10 +60,16 @@ html {
   --color-border: #374151;
 }
 
-/* High Contrast Mode */
+/* ============================================================
+   HIGH CONTRAST MODE
+   Overrides Tailwind utility classes globally so every component
+   gets maximum-contrast colours without per-component changes.
+   ============================================================ */
+
+/* --- Light + High-Contrast --------------------------------- */
 .high-contrast {
-  --color-primary: #0000ff;
-  --color-primary-dark: #0000cc;
+  --color-primary: #0000EE;
+  --color-primary-dark: #0000CC;
   --color-background: #ffffff;
   --color-surface: #ffffff;
   --color-text: #000000;
@@ -71,14 +77,255 @@ html {
   --color-border: #000000;
 }
 
+/* Backgrounds */
+.high-contrast,
+.high-contrast *[class*="bg-white"],
+.high-contrast *[class*="bg-gray-"],
+.high-contrast *[class*="bg-primary-50"],
+.high-contrast *[class*="bg-primary-100"] {
+  background-color: #ffffff !important;
+}
+
+.high-contrast *[class*="bg-primary-"],
+.high-contrast .btn-primary,
+.high-contrast *[class*="bg-primary-500"],
+.high-contrast *[class*="bg-primary-600"],
+.high-contrast *[class*="bg-primary-700"] {
+  background-color: #0000EE !important;
+  color: #ffffff !important;
+}
+
+/* Text */
+.high-contrast *[class*="text-gray-"],
+.high-contrast *[class*="text-black"],
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast h6,
+.high-contrast p,
+.high-contrast span,
+.high-contrast label,
+.high-contrast td,
+.high-contrast th,
+.high-contrast li {
+  color: #000000 !important;
+}
+
+/* Links & primary-coloured text */
+.high-contrast a:not([class*="bg-primary-"]),
+.high-contrast *[class*="text-primary-"] {
+  color: #0000EE !important;
+}
+
+/* Borders */
+.high-contrast *[class*="border-gray-"],
+.high-contrast *[class*="border-primary-"],
+.high-contrast *[class*="border-t"],
+.high-contrast *[class*="border-b"] {
+  border-color: #000000 !important;
+}
+
+/* Remove shadows & backdrop-blur for clarity */
+.high-contrast *[class*="shadow"],
+.high-contrast *[class*="backdrop-blur"] {
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Inputs & selects */
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #000000 !important;
+}
+
+/* Buttons (non-primary) */
+.high-contrast button:not([class*="bg-primary-"]) {
+  border: 2px solid #000000 !important;
+}
+
+/* Focus ring */
+.high-contrast *:focus-visible {
+  outline: 3px solid #0000EE !important;
+  outline-offset: 2px;
+}
+
+/* Badges / pills */
+.high-contrast *[class*="rounded-full"][class*="bg-"] {
+  border: 2px solid #000000 !important;
+}
+
+/* Text on primary-coloured backgrounds must stay white (inverted) */
+.high-contrast *[class*="bg-primary-"] h1,
+.high-contrast *[class*="bg-primary-"] h2,
+.high-contrast *[class*="bg-primary-"] h3,
+.high-contrast *[class*="bg-primary-"] h4,
+.high-contrast *[class*="bg-primary-"] h5,
+.high-contrast *[class*="bg-primary-"] h6,
+.high-contrast *[class*="bg-primary-"] p,
+.high-contrast *[class*="bg-primary-"] span,
+.high-contrast *[class*="bg-primary-"] label,
+.high-contrast *[class*="bg-primary-"] li,
+.high-contrast *[class*="bg-primary-"] a,
+.high-contrast *[class*="bg-primary-"] address,
+.high-contrast *[class*="bg-primary-"] *[class*="text-white"],
+.high-contrast *[class*="bg-primary-"] *[class*="text-gray-"],
+.high-contrast *[class*="bg-primary-"] *[class*="text-primary-"],
+.high-contrast a[class*="bg-primary-"],
+.high-contrast a[class*="bg-primary-"] span,
+.high-contrast button[class*="bg-primary-"],
+.high-contrast button[class*="bg-primary-"] span {
+  color: #ffffff !important;
+}
+
+/* SVG icons inside primary backgrounds */
+.high-contrast *[class*="bg-primary-"] svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Inverted elements (bg-white) inside primary backgrounds – e.g. "Zum Kalender" button */
+.high-contrast *[class*="bg-primary-"] *[class*="bg-white"],
+.high-contrast *[class*="bg-primary-"] a[class*="bg-white"] {
+  background-color: #ffffff !important;
+  color: #0000EE !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* --- Dark + High-Contrast ---------------------------------- */
 .dark.high-contrast {
-  --color-primary: #ffff00;
-  --color-primary-dark: #cccc00;
+  --color-primary: #FFFF00;
+  --color-primary-dark: #CCCC00;
   --color-background: #000000;
   --color-surface: #000000;
   --color-text: #ffffff;
   --color-text-secondary: #ffffff;
   --color-border: #ffffff;
+}
+
+/* Backgrounds */
+.dark.high-contrast,
+.dark.high-contrast *[class*="bg-white"],
+.dark.high-contrast *[class*="bg-gray-"],
+.dark.high-contrast *[class*="bg-primary-50"],
+.dark.high-contrast *[class*="bg-primary-100"] {
+  background-color: #000000 !important;
+}
+
+.dark.high-contrast *[class*="bg-primary-"],
+.dark.high-contrast .btn-primary,
+.dark.high-contrast *[class*="bg-primary-500"],
+.dark.high-contrast *[class*="bg-primary-600"],
+.dark.high-contrast *[class*="bg-primary-700"] {
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+/* Text */
+.dark.high-contrast *[class*="text-gray-"],
+.dark.high-contrast *[class*="text-white"],
+.dark.high-contrast h1,
+.dark.high-contrast h2,
+.dark.high-contrast h3,
+.dark.high-contrast h4,
+.dark.high-contrast h5,
+.dark.high-contrast h6,
+.dark.high-contrast p,
+.dark.high-contrast span,
+.dark.high-contrast label,
+.dark.high-contrast td,
+.dark.high-contrast th,
+.dark.high-contrast li {
+  color: #ffffff !important;
+}
+
+/* Links & primary-coloured text */
+.dark.high-contrast a:not([class*="bg-primary-"]),
+.dark.high-contrast *[class*="text-primary-"] {
+  color: #FFFF00 !important;
+}
+
+/* Borders */
+.dark.high-contrast *[class*="border-gray-"],
+.dark.high-contrast *[class*="border-primary-"],
+.dark.high-contrast *[class*="border-t"],
+.dark.high-contrast *[class*="border-b"] {
+  border-color: #ffffff !important;
+}
+
+/* Remove shadows & backdrop-blur */
+.dark.high-contrast *[class*="shadow"],
+.dark.high-contrast *[class*="backdrop-blur"] {
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Inputs & selects */
+.dark.high-contrast input,
+.dark.high-contrast select,
+.dark.high-contrast textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Buttons (non-primary) */
+.dark.high-contrast button:not([class*="bg-primary-"]) {
+  border: 2px solid #ffffff !important;
+}
+
+/* Focus ring */
+.dark.high-contrast *:focus-visible {
+  outline: 3px solid #FFFF00 !important;
+  outline-offset: 2px;
+}
+
+/* Badges / pills */
+.dark.high-contrast *[class*="rounded-full"][class*="bg-"] {
+  border: 2px solid #ffffff !important;
+}
+
+/* Text on primary-coloured backgrounds must stay black (inverted) */
+.dark.high-contrast *[class*="bg-primary-"] h1,
+.dark.high-contrast *[class*="bg-primary-"] h2,
+.dark.high-contrast *[class*="bg-primary-"] h3,
+.dark.high-contrast *[class*="bg-primary-"] h4,
+.dark.high-contrast *[class*="bg-primary-"] h5,
+.dark.high-contrast *[class*="bg-primary-"] h6,
+.dark.high-contrast *[class*="bg-primary-"] p,
+.dark.high-contrast *[class*="bg-primary-"] span,
+.dark.high-contrast *[class*="bg-primary-"] label,
+.dark.high-contrast *[class*="bg-primary-"] li,
+.dark.high-contrast *[class*="bg-primary-"] a,
+.dark.high-contrast *[class*="bg-primary-"] address,
+.dark.high-contrast *[class*="bg-primary-"] *[class*="text-white"],
+.dark.high-contrast *[class*="bg-primary-"] *[class*="text-gray-"],
+.dark.high-contrast *[class*="bg-primary-"] *[class*="text-primary-"],
+.dark.high-contrast a[class*="bg-primary-"],
+.dark.high-contrast a[class*="bg-primary-"] span,
+.dark.high-contrast button[class*="bg-primary-"],
+.dark.high-contrast button[class*="bg-primary-"] span {
+  color: #000000 !important;
+}
+
+/* Inverted elements (bg-white) inside primary backgrounds – e.g. "Zum Kalender" button */
+.dark.high-contrast *[class*="bg-primary-"] *[class*="bg-white"],
+.dark.high-contrast *[class*="bg-primary-"] a[class*="bg-white"] {
+  background-color: #000000 !important;
+  color: #FFFF00 !important;
+  border: 2px solid #000000 !important;
+}
+
+/* SVG icons inside primary backgrounds */
+.dark.high-contrast *[class*="bg-primary-"] svg {
+  color: #000000 !important;
+  stroke: #000000 !important;
 }
 
 /* Base styles */
