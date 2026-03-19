@@ -200,6 +200,38 @@
     "createSuccess": "Event created successfully",
     "editSuccess": "Event updated successfully"
   },
+  "profile": {
+    "title": "My Profile",
+    "accountInfo": "Account Information",
+    "email": "Email Address",
+    "role": "Role",
+    "memberSince": "Member since",
+    "activity": "Activity",
+    "favorites": "Favorites",
+    "myEvents": "My Events",
+    "roles": {
+      "admin": "Administrator",
+      "eventManager": "Event Manager",
+      "user": "Member"
+    },
+    "avatar": {
+      "change": "Change profile picture",
+      "presets": "Preset icons",
+      "upload": "Upload image",
+      "remove": "Remove",
+      "error": "Failed to save profile picture.",
+      "invalidType": "Please select an image file."
+    },
+    "gdpr": {
+      "title": "Privacy",
+      "description": "You have the right to view your stored data or permanently delete your account.",
+      "export": "Export my data",
+      "delete": "Delete account",
+      "deleteConfirm": "Are you sure? This action cannot be undone. All your data will be permanently deleted.",
+      "deleteYes": "Yes, delete account",
+      "deleteNo": "Cancel"
+    }
+  },
   "footer": {
     "title": "Community Calendar",
     "description": "Your portal for local events. Accessible and available for everyone.",

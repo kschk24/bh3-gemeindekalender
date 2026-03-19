@@ -194,6 +194,38 @@
     "createSuccess": "Evento creado exitosamente",
     "editSuccess": "Evento actualizado exitosamente"
   },
+  "profile": {
+    "title": "Mi perfil",
+    "accountInfo": "Información de la cuenta",
+    "email": "Correo electrónico",
+    "role": "Rol",
+    "memberSince": "Miembro desde",
+    "activity": "Actividad",
+    "favorites": "Favoritos",
+    "myEvents": "Mis eventos",
+    "roles": {
+      "admin": "Administrador",
+      "eventManager": "Organizador",
+      "user": "Miembro"
+    },
+    "avatar": {
+      "change": "Cambiar foto de perfil",
+      "presets": "Iconos predefinidos",
+      "upload": "Subir imagen",
+      "remove": "Eliminar",
+      "error": "Error al guardar la foto de perfil.",
+      "invalidType": "Por favor seleccione un archivo de imagen."
+    },
+    "gdpr": {
+      "title": "Privacidad",
+      "description": "Tiene derecho a consultar sus datos almacenados o eliminar su cuenta de forma permanente.",
+      "export": "Exportar mis datos",
+      "delete": "Eliminar cuenta",
+      "deleteConfirm": "¿Está seguro? Esta acción no se puede deshacer. Todos sus datos serán eliminados permanentemente.",
+      "deleteYes": "Sí, eliminar cuenta",
+      "deleteNo": "Cancelar"
+    }
+  },
   "footer": {
     "title": "Calendario comunitario",
     "description": "Tu portal de eventos locales. Sin barreras y accesible para todos.",

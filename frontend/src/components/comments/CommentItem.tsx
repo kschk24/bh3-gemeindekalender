@@ -3,6 +3,7 @@ import { de, enUS } from 'date-fns/locale';
 import { Comment } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
+import UserAvatar from '../common/UserAvatar';
 import { useTranslation } from 'react-i18next';
 
 interface CommentItemProps {
@@ -36,12 +37,10 @@ export default function CommentItem({ comment, onDelete, isDeleting, showDeleteC
     <article className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
       <header className="flex items-start justify-between mb-2">
         <div className="flex items-center space-x-2">
-          {/* Avatar */}
-          <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-            <span className="text-primary-600 dark:text-primary-400 text-sm font-medium">
-              {displayName.charAt(0).toUpperCase()}
-            </span>
-          </div>
+          <UserAvatar
+            user={{ email: displayName, avatar: comment.user?.avatar }}
+            size="sm"
+          />
           
           <div>
             <p className="font-medium text-gray-900 dark:text-white text-sm">

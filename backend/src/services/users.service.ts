@@ -11,6 +11,7 @@ export class UsersService {
         id: true,
         email: true,
         role: true,
+        avatar: true,
         createdAt: true,
         _count: {
           select: {
@@ -76,6 +77,21 @@ export class UsersService {
     });
 
     return favorite;
+  }
+
+  async updateAvatar(userId: string, avatar: string | null) {
+    const MAX_SIZE = 200 * 1024; // 200 KB limit for base64 string
+    if (avatar && avatar.length > MAX_SIZE) {
+      throw new AppError('Avatar zu groß (max. 150 KB)', 413);
+    }
+
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { avatar },
+      select: { id: true, email: true, role: true, avatar: true, createdAt: true },
+    });
+
+    return user;
   }
 
   async removeFavorite(userId: string, eventId: string) {

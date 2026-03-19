@@ -16,7 +16,7 @@ export class CommentsService {
       where: { eventId },
       include: {
         user: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, avatar: true },
         },
       },
       orderBy: { createdAt: 'desc' },
@@ -46,7 +46,7 @@ export class CommentsService {
       },
       include: {
         user: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, avatar: true },
         },
       },
     });
@@ -76,7 +76,7 @@ export class CommentsService {
       where: { id: commentId },
       include: {
         user: {
-          select: { id: true, email: true },
+          select: { id: true, email: true, avatar: true },
         },
       },
     });

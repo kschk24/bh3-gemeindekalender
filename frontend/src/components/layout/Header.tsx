@@ -7,6 +7,7 @@ import { Role } from '../../types';
 import LoginModal from '../auth/LoginModal';
 import RegisterModal from '../auth/RegisterModal';
 import EventFormModal from '../events/EventFormModal';
+import UserAvatar from '../common/UserAvatar';
 
 // Icon components for navigation
 const CalendarIcon = () => (
@@ -117,9 +118,14 @@ export default function Header() {
                       <span className="hidden sm:inline">{t('nav.createEvent')}</span>
                     </button>
                   )}
-                  <span className="text-sm text-gray-600 dark:text-gray-400 hidden lg:inline">
-                    {user?.email}
-                  </span>
+                  <Link
+                    to="/profile"
+                    className="focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-full"
+                    aria-label={`Profil von ${user?.email}`}
+                    title={user?.email}
+                  >
+                    <UserAvatar user={user!} size="md" />
+                  </Link>
                   <button
                     onClick={logout}
                     className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"

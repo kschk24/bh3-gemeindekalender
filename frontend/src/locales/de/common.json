@@ -200,6 +200,38 @@
     "createSuccess": "Veranstaltung erfolgreich erstellt",
     "editSuccess": "Veranstaltung erfolgreich aktualisiert"
   },
+  "profile": {
+    "title": "Mein Profil",
+    "accountInfo": "Kontoinformationen",
+    "email": "E-Mail-Adresse",
+    "role": "Rolle",
+    "memberSince": "Mitglied seit",
+    "activity": "Aktivität",
+    "favorites": "Favoriten",
+    "myEvents": "Meine Veranstaltungen",
+    "roles": {
+      "admin": "Administrator",
+      "eventManager": "Veranstalter",
+      "user": "Mitglied"
+    },
+    "avatar": {
+      "change": "Profilbild ändern",
+      "presets": "Vordefinierte Icons",
+      "upload": "Bild hochladen",
+      "remove": "Entfernen",
+      "error": "Fehler beim Speichern des Profilbilds.",
+      "invalidType": "Bitte eine Bilddatei auswählen."
+    },
+    "gdpr": {
+      "title": "Datenschutz",
+      "description": "Sie haben das Recht, Ihre gespeicherten Daten einzusehen oder Ihr Konto vollständig zu löschen.",
+      "export": "Meine Daten exportieren",
+      "delete": "Konto löschen",
+      "deleteConfirm": "Sind Sie sicher? Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht.",
+      "deleteYes": "Ja, Konto löschen",
+      "deleteNo": "Abbrechen"
+    }
+  },
   "footer": {
     "title": "Gemeindekalender",
     "description": "Ihr Portal für lokale Veranstaltungen. Barrierefrei und für alle zugänglich.",

@@ -9,6 +9,7 @@ const usersController = new UsersController();
 router.use(authenticate);
 
 router.get('/me', usersController.getProfile);
+router.patch('/me/avatar', usersController.updateAvatar);
 router.get('/me/favorites', usersController.getFavorites);
 router.post('/me/favorites/:eventId', usersController.addFavorite);
 router.delete('/me/favorites/:eventId', usersController.removeFavorite);

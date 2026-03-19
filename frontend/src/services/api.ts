@@ -219,8 +219,13 @@ export const commentsService = {
   },
 };
 
-// Users Service (GDPR)
+// Users Service (GDPR + Avatar)
 export const usersService = {
+  updateAvatar: async (avatar: string | null): Promise<import('../types').User> => {
+    const response = await api.patch<import('../types').User>('/users/me/avatar', { avatar });
+    return response.data;
+  },
+
   exportData: async (): Promise<void> => {
     const response = await api.get('/users/me/export', { responseType: 'blob' });
     const url = URL.createObjectURL(response.data as Blob);

@@ -49,6 +49,17 @@ export class UsersController {
     }
   };
 
+  updateAvatar = async (req: AuthRequest, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user!.id;
+      const { avatar } = req.body as { avatar: string | null };
+      const user = await usersService.updateAvatar(userId, avatar ?? null);
+      res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   exportData = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const userId = req.user!.id;

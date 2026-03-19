@@ -3,6 +3,7 @@ export interface User {
   id: string;
   email: string;
   role: Role;
+  avatar?: string | null;
   createdAt: string;
 }
 
@@ -138,6 +139,7 @@ export interface Comment {
   user?: {
     id: string;
     email: string;
+    avatar?: string | null;
   };
   createdAt: string;
   updatedAt: string;

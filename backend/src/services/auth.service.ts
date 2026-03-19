@@ -32,6 +32,7 @@ export class AuthService {
         id: true,
         email: true,
         role: true,
+        avatar: true,
         createdAt: true,
       },
     });
@@ -65,6 +66,7 @@ export class AuthService {
         id: user.id,
         email: user.email,
         role: user.role,
+        avatar: user.avatar,
         createdAt: user.createdAt,
       },
       accessToken,
@@ -75,7 +77,7 @@ export class AuthService {
   async refreshAccessToken(token: string) {
     const existing = await prisma.refreshToken.findUnique({
       where: { token },
-      include: { user: { select: { id: true, email: true, role: true, createdAt: true } } },
+      include: { user: { select: { id: true, email: true, role: true, avatar: true, createdAt: true } } },
     });
 
     if (!existing || existing.expiresAt < new Date()) {
